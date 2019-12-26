@@ -99,6 +99,45 @@
 #define APPLEIOS
 #endif /// !defined(APPLEIOS)
 #endif /// defined(APPLEOS) && (TARGET_OS_IPHONE != 0)
+
+///
+/// Define SUNOS if any of the SunOS variants are defined
+///
+#if defined(SUNOS) || defined(_SUNOS) || defined(__SUNOS__) || defined(__sun__) || defined(__sun) || defined(__SunOS)
+#if !defined(SUNOS)
+#define SUNOS
+#endif /// !defined(SUNOS) ///
+#if !defined(SOLARIS)
+#define SOLARIS
+#endif /// !defined(SOLARIS) ///
+#endif /// defined(SUNOS) || defined(_SUNOS) || defined(__SUNOS__) || defined(__sun__) || defined(__sun) || defined(__SunOS) ///
+
+///
+/// Define ANDROID if any of the Android variants are defined
+///
+#if defined(ANDROID) || defined(_ANDROID) || defined(__ANDROID__) || defined(__android__) || defined(__android) || defined(__Android__) || defined(__Android)
+#if !defined(ANDROID)
+#define ANDROID
+#endif /// !defined(ANDROID) ///
+#endif /// defined(ANDROID) || defined(_ANDROID) || defined(__ANDROID__) || defined(__android__) || defined(__android) || defined(__Android__) || defined(__Android)
+
+///
+/// Define FUCHSIA if any of the Fuchsia variants are defined
+///
+#if defined(FUCHSIA) || defined(_FUCHSIA) || defined(__FUCHSIA__) || defined(__fuchsia__) || defined(__fuchsia) || defined(__Fuchsia__) || defined(__Fuchsia)
+#if !defined(FUCHSIA)
+#define FUCHSIA
+#endif /// !defined(FUCHSIA) ///
+#endif /// defined(FUCHSIA) || defined(_FUCHSIA) || defined(__FUCHSIA__) || defined(__fuchsia__) || defined(__fuchsia) || defined(__Fuchsia__) || defined(__Fuchsia)
+
+///
+/// Define MACH if any of the Mach variants are defined
+///
+#if defined(MACH) || defined(_MACH) || defined(__MACH__) || defined(__mach__) || defined(__mach) || defined(__Mach__) || defined(__Mach)
+#if !defined(MACH)
+#define MACH
+#endif /// !defined(MACH) ///
+#endif /// defined(MACH) || defined(_MACH) || defined(__MACH__) || defined(__mach__) || defined(__mach) || defined(__Mach__) || defined(__Mach)
 /// ...
 /// build
 ///////////////////////////////////////////////////////////////////////
@@ -130,6 +169,11 @@
 #endif /// defined(APPLEIOS)
 /// ...
 /// Apple
+#elif defined(SOLARIS)
+/// Solaris
+/// ...
+/// ...
+/// Solaris
 #elif defined(LINUX)
 /// Linux
 /// ...

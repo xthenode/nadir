@@ -49,11 +49,13 @@ public:
     enum { end_char = extends::end_char };
 
     /// constructor / destructor
-    loggert(int argc, char_t** argv, char_t** env): io_(this_io_) {
+    loggert(int argc, char_t** argv, char_t** env): io_(this_io_), locked_(io_) {
     }
-    loggert(console::io& io): io_(io) {
+    loggert(console::io& io): io_(io), locked_(io_) {
     }
-    loggert(): io_(this_io_) {
+    loggert(xos::locked &locked): io_(this_io_), locked_(locked) {
+    }
+    loggert(): io_(this_io_), locked_(io_) {
     }
     virtual ~loggert() {
     }
@@ -82,23 +84,24 @@ protected:
 
     /// ...lock / ...unlock
     virtual bool lock() { 
-        return io_.lock(); 
+        return locked_.lock(); 
     }
     virtual lock_status try_lock() { 
-        return io_.try_lock(); 
+        return locked_.try_lock(); 
     }
     virtual lock_status untimed_lock() { 
-        return io_.untimed_lock(); 
+        return locked_.untimed_lock(); 
     }
     virtual lock_status timed_lock(mseconds_t milliseconds) { 
-        return io_.timed_lock(milliseconds); 
+        return locked_.timed_lock(milliseconds); 
     }
     virtual bool unlock() { 
-        return io_.unlock(); 
+        return locked_.unlock(); 
     }
 
 protected:
     console::io this_io_, &io_;
+    xos::locked &locked_;
 }; /// class loggert
 typedef loggert<> logger;
 

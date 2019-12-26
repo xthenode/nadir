@@ -13,51 +13,17 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: main.hpp
+///   File: mutex.cpp
 ///
 /// Author: $author$
-///   Date: 12/3/2019
+///   Date: 12/26/2019
 ///////////////////////////////////////////////////////////////////////
-#ifndef XOS_APP_CONSOLE_NADIR_MAIN_HPP
-#define XOS_APP_CONSOLE_NADIR_MAIN_HPP
-
-#include "xos/app/console/nadir/main_opt.hpp"
+#include "xos/mt/os/mutex.hpp"
 
 namespace xos {
-namespace app {
-namespace console {
-namespace nadir {
+namespace mt {
+namespace os {
 
-/// class maint
-template 
-<class TExtends = main_opt, 
- class TImplements = typename TExtends::implements>
-
-class exported maint: virtual public TImplements, public TExtends {
-public:
-    typedef TImplements implements;
-    typedef TExtends extends;
-    typedef maint derives;
-
-    typedef typename extends::char_t char_t;
-    typedef typename extends::end_char_t end_char_t;
-    enum { end_char = extends::end_char };
-
-    /// constructor / destructor
-    maint() {
-    }
-    virtual ~maint() {
-    }
-private:
-    maint(const maint& copy): extends(copy) {
-    }
-public:
-}; /// class maint
-typedef maint<> main;
-
-} /// namespace nadir
-} /// namespace console
-} /// namespace app
+} /// namespace os
+} /// namespace mt
 } /// namespace xos
-
-#endif /// ndef XOS_APP_CONSOLE_NADIR_MAIN_HPP

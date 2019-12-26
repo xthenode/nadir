@@ -13,51 +13,48 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: main.hpp
+///   File: main_opt.hpp
 ///
 /// Author: $author$
-///   Date: 12/3/2019
+///   Date: 12/20/2019
 ///////////////////////////////////////////////////////////////////////
-#ifndef XOS_APP_CONSOLE_NADIR_MAIN_HPP
-#define XOS_APP_CONSOLE_NADIR_MAIN_HPP
+#ifndef XOS_APP_CONSOLE_NADIR_MAIN_OPT_HPP
+#define XOS_APP_CONSOLE_NADIR_MAIN_OPT_HPP
 
-#include "xos/app/console/nadir/main_opt.hpp"
+#include "xos/console/getopt/main.hpp"
 
 namespace xos {
 namespace app {
 namespace console {
 namespace nadir {
 
-/// class maint
-template 
-<class TExtends = main_opt, 
- class TImplements = typename TExtends::implements>
-
-class exported maint: virtual public TImplements, public TExtends {
+/// class main_optt
+template <class TExtends = xos::console::getopt::main, class TImplements = typename TExtends::implements>
+class exported main_optt: virtual public TImplements, public TExtends {
 public:
     typedef TImplements implements;
     typedef TExtends extends;
-    typedef maint derives;
+    typedef main_optt derives;
 
     typedef typename extends::char_t char_t;
     typedef typename extends::end_char_t end_char_t;
     enum { end_char = extends::end_char };
 
     /// constructor / destructor
-    maint() {
+    main_optt() {
     }
-    virtual ~maint() {
+    virtual ~main_optt() {
     }
 private:
-    maint(const maint& copy): extends(copy) {
+    main_optt(const main_optt& copy): extends(copy) {
     }
 public:
-}; /// class maint
-typedef maint<> main;
+}; /// class main_optt
+typedef main_optt<> main_opt;
 
 } /// namespace nadir
 } /// namespace console
 } /// namespace app
 } /// namespace xos
 
-#endif /// ndef XOS_APP_CONSOLE_NADIR_MAIN_HPP
+#endif /// ndef XOS_APP_CONSOLE_NADIR_MAIN_OPT_HPP

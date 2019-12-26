@@ -18,6 +18,7 @@
 /// Author: $author$
 ///   Date: 12/3/2019
 ///////////////////////////////////////////////////////////////////////
+#include "xos/mt/os/mutex.hpp"
 #include "xos/console/main_main.hpp"
 #include "xos/console/logger.hpp"
 
@@ -29,21 +30,56 @@ namespace console {
 
 /// function main
 int main(int argc, char** argv, char** env) {
-    ::xos::console::logger logger;
     int err = 0;
 
-    LOGGER_LOG_DEBUG("try {...");
     try {
-        LOGGER_LOG_DEBUG("::xos::console::main::the_main(argc, argv, env)...");
-        err = ::xos::console::main::the_main(argc, argv, env);
-        LOGGER_LOG_DEBUG("..." << err << " = ::xos::console::main::the_main(argc, argv, env)");
+        ::xos::console::logger logger;
+
+        try {
+            bool mutex_is_logged = true;
+            ::xos::mt::os::mutex mutex(mutex_is_logged);
+
+            mutex.set_is_logged(false);
+            try {
+                LOGGING_LEVELS levels = DEFAULT_LOGGING_LEVELS;
+                ::xos::console::logger logger(mutex);
+    
+                GET_LOGGING_LEVEL(levels);
+                LOGGER_LOG_DEBUG("try {...");
+                try {
+                    LOGGER_LOG_DEBUG("::xos::console::main::the_main(argc, argv, env)...");
+                    err = ::xos::console::main::the_main(argc, argv, env);
+                    SET_LOGGING_LEVEL(levels);
+                    LOGGER_LOG_DEBUG("..." << err << " = ::xos::console::main::the_main(argc, argv, env)");
+                } catch (const ::xos::exception& e) {
+                    SET_LOGGING_LEVEL(levels);
+                    LOGGER_LOG_ERROR("...catch (const ::xos::exception& e = \"" << e.status_to_chars() << "\")");
+                    err = 1;
+                } catch (...) {
+                    SET_LOGGING_LEVEL(levels);
+                    LOGGER_LOG_ERROR("...catch (...)");
+                    err = 1;
+                }
+                LOGGER_LOG_DEBUG("...} try");
+            } catch (const ::xos::exception& e) {
+                err = 1;
+            } catch (...) {
+                err = 1;
+            }
+            mutex.set_is_logged(mutex_is_logged);
+        } catch (const ::xos::exception& e) {
+            ::xos::console::logger logger;
+            LOGGER_LOG_ERROR("...catch (const ::xos::exception& e = \"" << e.status_to_chars() << "\")");
+            err = 1;
+        } catch (...) {
+            ::xos::console::logger logger;
+            LOGGER_LOG_ERROR("...catch (...)");
+            err = 1;
+        }
     } catch (const ::xos::exception& e) {
-        LOGGER_LOG_ERROR("...catch (const ::xos::exception& e = \"" << e.status_to_chars() << "\")");
-        return err = 1;
+        err = 1;
     } catch (...) {
-        LOGGER_LOG_ERROR("...catch (...)");
-        return err = 1;
+        err = 1;
     }
-    LOGGER_LOG_DEBUG("...} try");
     return err;
 } /// function main

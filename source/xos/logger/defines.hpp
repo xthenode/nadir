@@ -46,6 +46,14 @@ namespace logger {
 #if !defined(LOGGER_GET_DEFAULT)
 #define LOGGER_GET_DEFAULT LOGGER_INTERFACE::get_default
 #endif /// !defined(LOGGER_GET_DEFAULT)
+
+#if !defined(LOGGER_SET_LEVEL)
+#define LOGGER_SET_LEVEL(logger, level) { if (logger) { logger->enable_for(level); } }
+#endif /// !defined(LOGGER_SET_LEVEL)
+
+#if !defined(LOGGER_GET_LEVEL)
+#define LOGGER_GET_LEVEL(logger, level) { if (logger) { level = logger->enabled_for(); } }
+#endif /// !defined(LOGGER_GET_LEVEL)
 /// ...
 /// LOGGER...
 
@@ -195,15 +203,13 @@ if ((this->is_logged())) { LOGGER_LOG_LOCATIONF(logger_, level_, format_,  ##__V
 /// ...
 /// LOGGER_IS_LOGGED
 
-/// LOGGER_  DEFAULT / INIT / FINI / LEVEL
+/// LOGGER_  DEFAULT / LEVELS
 /// 
 #define DEFAULT_LOGGER LOGGER_GET_DEFAULT()
-#define LOGGER_INIT() INIT_LOGGER(DEFAULT_LOGGER)
-#define LOGGER_FINI() FINI_LOGGER(DEFAULT_LOGGER)
-#define SET_LOGGING_LEVEL(level)  SET_LOGGER_LEVEL(DEFAULT_LOGGER, level)
-#define GET_LOGGING_LEVEL(level)  (level = GET_LOGGER_LEVEL(DEFAULT_LOGGER))
+#define SET_LOGGING_LEVEL(level)  LOGGER_SET_LEVEL(DEFAULT_LOGGER, level)
+#define GET_LOGGING_LEVEL(level)  LOGGER_GET_LEVEL(DEFAULT_LOGGER, level)
 /// ...
-/// LOGGER_  DEFAULT / INIT / FINI / LEVEL
+/// LOGGER_  DEFAULT / LEVELS
 
 /// LOGGER_LOG_ ANY / FATAL .. TRACE
 /// 

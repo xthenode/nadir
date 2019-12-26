@@ -13,51 +13,44 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: main.hpp
+///   File: os.hpp
 ///
 /// Author: $author$
-///   Date: 12/3/2019
+///   Date: 12/23/2019
 ///////////////////////////////////////////////////////////////////////
-#ifndef XOS_APP_CONSOLE_NADIR_MAIN_HPP
-#define XOS_APP_CONSOLE_NADIR_MAIN_HPP
+#ifndef XOS_MT_OS_OS_HPP
+#define XOS_MT_OS_OS_HPP
 
-#include "xos/app/console/nadir/main_opt.hpp"
+#include "xos/platform/build.hpp"
 
 namespace xos {
-namespace app {
-namespace console {
-namespace nadir {
+namespace mt {
 
-/// class maint
-template 
-<class TExtends = main_opt, 
- class TImplements = typename TExtends::implements>
+namespace apple { namespace ios {} namespace osx {} namespace mach {} } /// namespace apple
+namespace microsoft { namespace windows { namespace crt {} } } /// namespace microsoft
+namespace oracle { namespace solaris {} } /// namespace oracle
+namespace sun { namespace solaris {} } /// namespace sun
+namespace linux {} /// namespace linux
+namespace posix {} /// namespace posix
 
-class exported maint: virtual public TImplements, public TExtends {
-public:
-    typedef TImplements implements;
-    typedef TExtends extends;
-    typedef maint derives;
+namespace os {
 
-    typedef typename extends::char_t char_t;
-    typedef typename extends::end_char_t end_char_t;
-    enum { end_char = extends::end_char };
+#if defined(WINDOWS)  
+namespace os = micfrosoft::windows;
+#elif defined(APPLEOSX)  
+namespace os = apple::osx;
+#elif defined(APPLEIOS)  
+namespace os = apple::ios;
+#elif defined(SOLARIS)  
+namespace os = oracle::solaris;
+#elif defined(LINUX)  
+namespace os = linux;
+#else /// defined(LINUX)  
+namespace os = posix;
+#endif /// defined(LINUX) 
 
-    /// constructor / destructor
-    maint() {
-    }
-    virtual ~maint() {
-    }
-private:
-    maint(const maint& copy): extends(copy) {
-    }
-public:
-}; /// class maint
-typedef maint<> main;
-
-} /// namespace nadir
-} /// namespace console
-} /// namespace app
+} /// namespace os
+} /// namespace mt
 } /// namespace xos
 
-#endif /// ndef XOS_APP_CONSOLE_NADIR_MAIN_HPP
+#endif /// ndef XOS_MT_OS_OS_HPP

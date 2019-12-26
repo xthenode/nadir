@@ -13,14 +13,11 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: main.hpp
+///   File: main_opt.cpp
 ///
 /// Author: $author$
-///   Date: 12/3/2019
+///   Date: 12/20/2019
 ///////////////////////////////////////////////////////////////////////
-#ifndef XOS_APP_CONSOLE_NADIR_MAIN_HPP
-#define XOS_APP_CONSOLE_NADIR_MAIN_HPP
-
 #include "xos/app/console/nadir/main_opt.hpp"
 
 namespace xos {
@@ -28,36 +25,9 @@ namespace app {
 namespace console {
 namespace nadir {
 
-/// class maint
-template 
-<class TExtends = main_opt, 
- class TImplements = typename TExtends::implements>
-
-class exported maint: virtual public TImplements, public TExtends {
-public:
-    typedef TImplements implements;
-    typedef TExtends extends;
-    typedef maint derives;
-
-    typedef typename extends::char_t char_t;
-    typedef typename extends::end_char_t end_char_t;
-    enum { end_char = extends::end_char };
-
-    /// constructor / destructor
-    maint() {
-    }
-    virtual ~maint() {
-    }
-private:
-    maint(const maint& copy): extends(copy) {
-    }
-public:
-}; /// class maint
-typedef maint<> main;
+/// class main_optt
 
 } /// namespace nadir
 } /// namespace console
 } /// namespace app
 } /// namespace xos
-
-#endif /// ndef XOS_APP_CONSOLE_NADIR_MAIN_HPP

@@ -18,11 +18,13 @@
 /// Author: $author$
 ///   Date: 12/5/2019
 ///////////////////////////////////////////////////////////////////////
-#ifndef _IO_HPP
-#define _IO_HPP
+#ifndef XOS_CONSOLE_IO_HPP
+#define XOS_CONSOLE_IO_HPP
 
 #include "xos/base/to_string.hpp"
 #include "xos/base/locked.hpp"
+#include <stdarg.h>
+#include <stdio.h>
 
 namespace xos {
 namespace console {
@@ -201,7 +203,8 @@ public:
         return count;
     }
     virtual ssize_t errlv(const what_t *what, va_list va) {
-        return 0;
+        file_t f = err_std_err();
+        return console::outlv(f, what, va);
     }
     virtual ssize_t errf(const sized_t *format, ...) {
         ssize_t count = 0;
@@ -241,4 +244,4 @@ typedef iot<> io;
 } /// namespace console
 } /// namespace xos
 
-#endif /// ndef _IO_HPP
+#endif /// ndef XOS_CONSOLE_IO_HPP
