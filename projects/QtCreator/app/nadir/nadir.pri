@@ -54,9 +54,19 @@ $${nadir_DEFINES} \
 #
 nadir_exe_HEADERS += \
 $${NADIR_SRC}/xos/base/exception.hpp \
+$${NADIR_SRC}/xos/base/attached.hpp \
+$${NADIR_SRC}/xos/base/created.hpp \
 $${NADIR_SRC}/xos/base/locked.hpp \
 $${NADIR_SRC}/xos/base/logged.hpp \
 $${NADIR_SRC}/xos/base/logger.hpp \
+\
+$${NADIR_SRC}/xos/mt/mutex.hpp \
+$${NADIR_SRC}/xos/mt/posix/timed.hpp \
+$${NADIR_SRC}/xos/mt/posix/mutex.hpp \
+$${NADIR_SRC}/xos/mt/apple/osx/mutex.hpp \
+$${NADIR_SRC}/xos/mt/os/mutex.hpp \
+$${NADIR_SRC}/xos/mt/os/os.hpp \
+\
 $${NADIR_SRC}/xos/logger/level.hpp \
 $${NADIR_SRC}/xos/logger/levels.hpp \
 $${NADIR_SRC}/xos/logger/function.hpp \
@@ -67,15 +77,27 @@ $${NADIR_SRC}/xos/logger/defines.hpp \
 \
 $${NADIR_SRC}/xos/console/io.hpp \
 $${NADIR_SRC}/xos/console/logger.hpp \
+$${NADIR_SRC}/xos/console/main.hpp \
 $${NADIR_SRC}/xos/console/main_main.hpp \
+$${NADIR_SRC}/xos/console/getopt/main_opt.hpp \
+$${NADIR_SRC}/xos/console/getopt/main.hpp \
+\
+$${NADIR_SRC}/xos/app/console/nadir/main_opt.hpp \
 $${NADIR_SRC}/xos/app/console/nadir/main.hpp \
 
 # nadir_exe SOURCES
 #
 nadir_exe_SOURCES += \
 $${NADIR_SRC}/xos/base/exception.cpp \
+$${NADIR_SRC}/xos/base/attached.cpp \
+$${NADIR_SRC}/xos/base/created.cpp \
 $${NADIR_SRC}/xos/base/locked.cpp \
 $${NADIR_SRC}/xos/base/logged.cpp \
+\
+$${NADIR_SRC}/xos/mt/posix/timed.cpp \
+$${NADIR_SRC}/xos/mt/posix/mutex.cpp \
+$${NADIR_SRC}/xos/mt/os/os.cpp \
+\
 $${NADIR_SRC}/xos/logger/level.cpp \
 $${NADIR_SRC}/xos/logger/levels.cpp \
 $${NADIR_SRC}/xos/logger/function.cpp \
@@ -87,6 +109,8 @@ $${NADIR_SRC}/xos/logger/defines.cpp \
 $${NADIR_SRC}/xos/console/io.cpp \
 $${NADIR_SRC}/xos/console/logger.cpp \
 $${NADIR_SRC}/xos/console/main_main.cpp \
+\
+$${NADIR_SRC}/xos/app/console/nadir/main_opt.cpp \
 $${NADIR_SRC}/xos/app/console/nadir/main.cpp \
 
 ########################################################################
