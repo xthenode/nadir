@@ -22,10 +22,8 @@
 #define XOS_PLATFORM_INCLUDES_HPP
 
 #include "xos/platform/compiler.hpp"
+#include "xos/platform/includes.h"
 
-///////////////////////////////////////////////////////////////////////
-/// includes
-/// ...
 #if defined(WINDOWS)
 /// Windows
 /// ...
@@ -64,18 +62,6 @@
 /// ...
 /// Unix
 #endif /// defined(WINDOWS)
-
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <errno.h>
-#include <unistd.h>
-#include <stdint.h>
-#include <stdlib.h>
-#include <time.h>
-#include <stdio.h>
-/// ...
-/// includes
-///////////////////////////////////////////////////////////////////////
 
 namespace xos {
 namespace platform {

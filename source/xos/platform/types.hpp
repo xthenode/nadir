@@ -22,17 +22,11 @@
 #define XOS_PLATFORM_TYPES_HPP
 
 #include "xos/platform/defines.hpp"
+#include "xos/platform/types.h"
 
-///////////////////////////////////////////////////////////////////////
-// types
-/// ...
 #if defined(WINDOWS)
 /// Windows
 /// ...
-typedef TCHAR tchar_t;
-typedef WCHAR wchar_t;
-typedef BYTE byte_t;
-typedef WORD word_t;
 /// ...
 /// Windows
 #else /// defined(WINDOWS)
@@ -41,9 +35,6 @@ typedef WORD word_t;
 #if defined(APPLEOS)
 /// Apple
 /// ...
-#if !defined(pointer_t)
-#define pointer_t platform_pointer_t
-#endif /// !defined(pointer_t)
 #if defined(APPLEOSX)
 /// Apple OSX
 /// ...
@@ -68,28 +59,9 @@ typedef WORD word_t;
 /// ...
 /// Posix
 #endif /// defined(LINUX)
-typedef uint8_t byte_t;
-typedef uint16_t word_t;
-typedef char tchar_t;
-typedef char CHAR;
-typedef wchar_t WCHAR;
-typedef tchar_t TCHAR;
-typedef byte_t BYTE;
-typedef word_t WORD;
 /// ...
 /// Unix
 #endif /// defined(WINDOWS)
-
-typedef FILE* file_t;
-typedef void* pointer_t;
-#define null ((pointer_t)0)
-
-typedef useconds_t nseconds_t;
-typedef useconds_t mseconds_t;
-typedef mseconds_t seconds_t;
-/// ...
-/// types
-///////////////////////////////////////////////////////////////////////
 
 namespace xos {
 namespace platform {

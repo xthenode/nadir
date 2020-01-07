@@ -21,176 +21,19 @@
 #ifndef XOS_PLATFORM_BUILD_HPP
 #define XOS_PLATFORM_BUILD_HPP
 
-///////////////////////////////////////////////////////////////////////
-/// build
-/// ...
-///
-/// Define WIN32 if any of the Win32 variants are defined
-///
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__Win32__) || defined(__win32__)
-#if !defined(WIN32)
-#define WIN32
-#endif /// !defined(WIN32)
-#endif /// defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__Win32__) || defined(__win32__)
+#include "xos/platform/build.h"
 
-///
-/// Define WIN64 if any of the Win64 variants are defined
-///
-#if defined(WIN64) || defined(_WIN64) || defined(__WIN64__) || defined(__Win64__) || defined(__win64__)
-#if !defined(WIN64)
-#define WIN64
-#endif /// !defined(WIN64)
-#endif /// defined(WIN64) || defined(_WIN64) || defined(__WIN64__) || defined(__Win64__) || defined(__win64__)
-
-///
-/// Define WINDOWS if any of the Windows variants are defined
-///
-#if defined(WIN32) || defined(WIN64)
-#if !defined(WINDOWS)
-#define WINDOWS
-#endif /// !defined(WINDOWS)
-#endif /// defined(WIN32) || defined(WIN64)
-
-///
-/// Define APPLE if any of the Apple variants are defined
-///
-#if defined(APPLE) || defined(_APPLE) || defined(__APPLE__) || defined(__Apple__) || defined(__apple__)
-#if !defined(APPLE)
-#define APPLE
-#endif /// !defined(APPLE)
-#endif /// defined(APPLE) || defined(_APPLE) || defined(__APPLE__) || defined(__Apple__) || defined(__apple__)
-
-///
-/// Define MACH if any of the Mach variants are defined
-///
-#if defined(MACH) || defined(_MACH) || defined(__MACH__) || defined(__Mach__) || defined(__mach__)
-#if !defined(MACH)
-#define MACH
-#endif /// !defined(MACH)
-#endif /// defined(MACH) || defined(_MACH) || defined(__MACH__) || defined(__Mach__) || defined(__mach__)
-
-///
-/// Define APPLEOS if Apple and Mach variants are defined
-///
-#if defined(APPLE) && defined(MACH)
-#include <TargetConditionals.h>
-#include <Availability.h>
-#include <mach/task.h>
-#include <mach/mach.h>
-#if !defined(APPLEOS)
-#define APPLEOS
-#endif /// !defined(APPLEOS)
-#endif /// defined(APPLE) && defined(MACH)
-
-///
-/// Define APPLEOSX if defined(APPLEOS) && (TARGET_OS_IPHONE == 0)
-///
-#if defined(APPLEOS) && (TARGET_OS_IPHONE == 0)
-#if !defined(APPLEOSX)
-#define APPLEOSX
-#endif /// !defined(APPLEOSX)
-#endif /// defined(APPLEOS) && (TARGET_OS_IPHONE == 0)
-
-///
-/// Define APPLEIOS if defined(APPLEOS) && (TARGET_OS_IPHONE != 0)
-///
-#if defined(APPLEOS) && (TARGET_OS_IPHONE != 0)
-#if !defined(APPLEIOS)
-#define APPLEIOS
-#endif /// !defined(APPLEIOS)
-#endif /// defined(APPLEOS) && (TARGET_OS_IPHONE != 0)
-
-///
-/// Define SUNOS if any of the SunOS variants are defined
-///
-#if defined(SUNOS) || defined(_SUNOS) || defined(__SUNOS__) || defined(__sun__) || defined(__sun) || defined(__SunOS)
-#if !defined(SUNOS)
-#define SUNOS
-#endif /// !defined(SUNOS) ///
-#if !defined(SOLARIS)
-#define SOLARIS
-#endif /// !defined(SOLARIS) ///
-#endif /// defined(SUNOS) || defined(_SUNOS) || defined(__SUNOS__) || defined(__sun__) || defined(__sun) || defined(__SunOS) ///
-
-///
-/// Define ANDROID if any of the Android variants are defined
-///
-#if defined(ANDROID) || defined(_ANDROID) || defined(__ANDROID__) || defined(__android__) || defined(__android) || defined(__Android__) || defined(__Android)
-#if !defined(ANDROID)
-#define ANDROID
-#endif /// !defined(ANDROID) ///
-#endif /// defined(ANDROID) || defined(_ANDROID) || defined(__ANDROID__) || defined(__android__) || defined(__android) || defined(__Android__) || defined(__Android)
-
-///
-/// Define FUCHSIA if any of the Fuchsia variants are defined
-///
-#if defined(FUCHSIA) || defined(_FUCHSIA) || defined(__FUCHSIA__) || defined(__fuchsia__) || defined(__fuchsia) || defined(__Fuchsia__) || defined(__Fuchsia)
-#if !defined(FUCHSIA)
-#define FUCHSIA
-#endif /// !defined(FUCHSIA) ///
-#endif /// defined(FUCHSIA) || defined(_FUCHSIA) || defined(__FUCHSIA__) || defined(__fuchsia__) || defined(__fuchsia) || defined(__Fuchsia__) || defined(__Fuchsia)
-
-///
-/// Define MACH if any of the Mach variants are defined
-///
-#if defined(MACH) || defined(_MACH) || defined(__MACH__) || defined(__mach__) || defined(__mach) || defined(__Mach__) || defined(__Mach)
-#if !defined(MACH)
-#define MACH
-#endif /// !defined(MACH) ///
-#endif /// defined(MACH) || defined(_MACH) || defined(__MACH__) || defined(__mach__) || defined(__mach) || defined(__Mach__) || defined(__Mach)
-/// ...
-/// build
-///////////////////////////////////////////////////////////////////////
-
-///////////////////////////////////////////////////////////////////////
-/// os
-/// ...
 #if defined(WINDOWS)
-/// Windows
-/// ...
-/// ...
-/// Windows
 #else /// defined(WINDOWS)
-/// Unix
-/// ...
 #if defined(APPLEOS)
-/// Apple
-/// ...
 #if defined(APPLEOSX)
-/// Apple OSX
-/// ...
-/// ...
-/// Apple OSX
 #elif defined(APPLEIOS)
-/// Apple IOS
-/// ...
-/// ...
-/// Apple IOS
 #endif /// defined(APPLEIOS)
-/// ...
-/// Apple
 #elif defined(SOLARIS)
-/// Solaris
-/// ...
-/// ...
-/// Solaris
 #elif defined(LINUX)
-/// Linux
-/// ...
-/// ...
-/// Linux
 #else /// defined(LINUX)
-/// Posix
-/// ...
-/// ...
-/// Posix
 #endif /// defined(LINUX)
-/// ...
-/// Unix
 #endif /// defined(WINDOWS)
-/// ...
-/// os
-///////////////////////////////////////////////////////////////////////
 
 namespace xos {
 namespace platform {

@@ -24,6 +24,10 @@
 #include "xos/console/io.hpp"
 #include "xos/base/logger.hpp"
 
+#if !defined(__LOCATION__)
+#define __LOCATION__ __FILE__, "[", ::xos::unsigned_to_string(__LINE__).chars(), "] "
+#endif /// !defined(__LOCATION__)
+
 namespace xos {
 namespace console {
 
@@ -37,6 +41,7 @@ public:
     typedef TExtends extends;
     typedef maint derives;
 
+    typedef typename implements::string_t string_t;
     typedef TChar char_t;
     typedef char_t end_char_t;
     enum { end_char = 0 };

@@ -35,6 +35,7 @@ public:
     typedef TExtends extends;
     typedef maint derives;
 
+    typedef typename extends::string_t string_t;
     typedef typename extends::char_t char_t;
     typedef typename extends::end_char_t end_char_t;
     enum { end_char = extends::end_char };
@@ -112,7 +113,7 @@ protected:
      const char_t* optname, int optind,
      int argc, char_t**argv, char_t**env) {
         int err = 0;
-        err = this->usage(argc, argv, env);
+        err = this->all_usage(argc, argv, env);
         return err;
     }
     virtual const char_t* usage_option_usage

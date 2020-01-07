@@ -103,4 +103,75 @@ public:
     }
 }; /// class %Do%_exceptiont
 typedef %Do%_exceptiont<> %Do%_exception;
+
+/// class %Done%t 
+template <class TImplements = implement>
+class exported %Done%t: virtual public TImplements {
+public:
+    typedef TImplements implements;
+    typedef %Done%t derives;
+
+    /// %Do%...
+    virtual bool %Do%() {
+        return (%Do%_success == untimed_%Do%());
+    }
+    virtual %Do%_status timed_%Do%(mseconds_t milliseconds) {
+        return %Do%_success;
+    }
+    virtual %Do%_status untimed_%Do%() {
+        return %Do%_success;
+    }
+    virtual %Do%_status try_%Do%() {
+        return %Do%_success;
+    }
+
+    /// %Undo%...
+    virtual bool %Undo%() {
+        return (%Undo%_success == untimed_%Undo%());
+    }
+    virtual %Do%_status timed_%Undo%(mseconds_t milliseconds) {
+        return %Do%_success;
+    }
+    virtual %Do%_status untimed_%Undo%() {
+        return %Do%_success;
+    }
+    virtual %Do%_status try_%Undo%() {
+        return %Do%_success;
+    }
+}; /// class %Done%t
+typedef %Done%t<> %Done%;
+
+/// class %Do%t
+template <class TExtends = extend, class TImplements = implement>
+class exported %Do%t: virtual public TImplements, public TExtends {
+public:
+    typedef TImplements implements;
+    typedef TExtends extends;
+    typedef %Do%t derives;
+
+    /// constructor / destructor
+    %Do%t(%Done%& _%Done%, mseconds_t mseconds): %Done%_(_%Done%) {
+        if (!(%Done%_.timed_%Do%(mseconds))) {
+            throw %Do%_exception(%Do%_failed);
+        }
+    }
+    %Do%t(%Done%& _%Done%): %Done%_(_%Done%) {
+        if (!(%Done%_.%Do%())) {
+            throw %Do%_exception(%Do%_failed);
+        }
+    }
+    virtual ~%Do%t() {
+        if (!(%Done%_.%Undo%())) {
+            throw %Do%_exception(%Undo%_failed);
+        }
+    }
+private:
+    %Do%t(const %Do%t& copy): %Done%_(this_%Done%_) {
+        throw exception(exception_unexpected);
+    }
+
+protected:
+    %Done% this_%Done%_, &%Done%_;
+}; /// class %Do%t
+typedef %Do%t<> %Do%;
 )%)%

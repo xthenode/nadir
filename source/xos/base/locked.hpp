@@ -93,10 +93,14 @@ public:
     typedef lockedt derives;
 
     typedef xos::lock_status lock_status;
-    enum { lock_success = xos::lock_success, 
-           lock_failed = xos::lock_failed };
+    enum {
+        lock_success = xos::lock_success,
+        lock_failed = xos::lock_failed,
+        unlock_success = xos::unlock_success,
+        unlock_failed = xos::unlock_failed
+    };
     
-    /// lock, ...
+    /// lock...
     virtual bool lock() {
         return (lock_success == untimed_lock());
     }
@@ -110,7 +114,7 @@ public:
         return lock_success;
     }
 
-    /// unlock, ...
+    /// unlock...
     virtual bool unlock() {
         return (unlock_success == untimed_lock());
     }
@@ -123,8 +127,6 @@ public:
     virtual lock_status try_unlock() {
         return lock_success;
     }
-
-protected:
 }; /// class lockedt
 typedef lockedt<> locked;
 
@@ -137,6 +139,11 @@ public:
     typedef lockt derives;
 
     /// constructor / destructor
+    lockt(locked& _locked, mseconds_t mseconds): locked_(_locked) {
+        if (!(locked_.timed_lock(mseconds))) {
+            throw lock_exception(lock_failed);
+        }
+    }
     lockt(locked& _locked): locked_(_locked) {
         if (!(locked_.lock())) {
             throw lock_exception(lock_failed);
@@ -156,6 +163,35 @@ protected:
     locked this_locked_, &locked_;
 }; /// class lockt
 typedef lockt<> lock;
+
+/// class try_lockt
+template <class TExtends = extend, class TImplements = implement>
+class exported try_lockt: virtual public TImplements, public TExtends {
+public:
+    typedef TImplements implements;
+    typedef TExtends extends;
+    typedef try_lockt derives;
+
+    /// constructor / destructor
+    try_lockt(locked& _locked): locked_(_locked) {
+        if (!(locked_.try_lock())) {
+            throw lock_exception(lock_failed);
+        }
+    }
+    virtual ~try_lockt() {
+        if (!(locked_.unlock())) {
+            throw lock_exception(unlock_failed);
+        }
+    }
+private:
+    try_lockt(const try_lockt& copy): locked_(this_locked_) {
+        throw exception(exception_unexpected);
+    }
+
+protected:
+    locked this_locked_, &locked_;
+}; /// class try_lockt
+typedef try_lockt<> try_lock;
 
 } /// namespace xos
 

@@ -21,7 +21,7 @@
 #ifndef XOS_PLATFORM_OS_MICROSOFT_WINDOWS_HPP
 #define XOS_PLATFORM_OS_MICROSOFT_WINDOWS_HPP
 
-#include "xos/platform/types.hpp"
+#include "xos/platform/microsoft/windows.h"
 
 namespace xos {
 namespace platform {

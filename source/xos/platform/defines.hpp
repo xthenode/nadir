@@ -22,26 +22,16 @@
 #define XOS_PLATFORM_DEFINES_HPP
 
 #include "xos/platform/includes.hpp"
+#include "xos/platform/defines.h"
 
-///////////////////////////////////////////////////////////////////////
-/// defines
-/// ...
 #if defined(WINDOWS)
 /// Windows
 /// ...
-#if !defined(exported)
-#define imported __declspec(dllimport)
-#define exported __declspec(dllexport)
-#endif /// !defined(exported)
 /// ...
 /// Windows
 #else /// defined(WINDOWS)
 /// Unix
 /// ...
-#if !defined(exported)
-#define imported
-#define exported
-#endif /// !defined(exported)
 #if defined(APPLEOS)
 /// Apple
 /// ...
@@ -55,7 +45,7 @@
 /// ...
 /// ...
 /// Apple IOS
-#endif /// defined(APPLEIOS)
+#endif /// defined(APPLEOSX)
 /// ...
 /// Apple
 #elif defined(LINUX)
@@ -72,9 +62,6 @@
 /// ...
 /// Unix
 #endif /// defined(WINDOWS)
-/// ...
-/// defines
-///////////////////////////////////////////////////////////////////////
 
 namespace xos {
 namespace platform {

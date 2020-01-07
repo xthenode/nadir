@@ -165,7 +165,131 @@ public:
         return false;
     }
 
-    /// create... / desstroy...
+    /// ...lock / ...unlock
+    virtual lock_status timed_lock(mseconds_t milliseconds) {
+        lock_status status = lock_failed;
+        if (0 > milliseconds) {
+            status = untimed_lock();
+        } else {
+#if defined(PTHREAD_MUTEX_HAS_TIMEDLOCK_RELATIVE_NP)
+            attached_t detached = 0;
+            if ((detached = this->attached_to())) {
+                int err = 0;
+                bool logged = this->is_logged(), 
+                     debug = this->is_logged_debug(milliseconds);
+                struct timespec until_time;
+
+                until_time.tv_sec =  mseconds_seconds(milliseconds);
+                until_time.tv_nsec =  mseconds_nseconds(mseconds_mseconds(milliseconds));
+
+                LOGGER_IF_LOGGED_DEBUG_TRACE(debug, logged, "::pthread_mutex_timedlock_relative_np(detached, &until_time)...");
+                if (!(err = ::pthread_mutex_timedlock_relative_np(detached, &until_time))) {
+                    LOGGER_IF_LOGGED_DEBUG_TRACE(debug, logged, "...::pthread_mutex_timedlock_relative_np(detached, &until_time)");
+                    return lock_success;
+                } else {
+                    if (EBUSY != (err)) {
+                        if (ETIMEDOUT != (err)) {
+                            if (EINTR != (err)) {
+                                LOGGER_IS_LOGGED_ERROR("...failed err = " << err << " on ::pthread_mutex_timedlock_relative_np(detached, &until_time)");
+                            } else {
+                                LOGGER_IS_LOGGED_ERROR("...failed EINTR err = " << err << " on ::pthread_mutex_timedlock_relative_np(detached, &until_time)");
+                                return lock_interrupted;
+                            }
+                        } else {
+                            LOGGER_IF_LOGGED_DEBUG_TRACE(debug, logged, "...failed ETIMEDOUT err = " << err << " on ::pthread_mutex_timedlock_relative_np(detached, &until_time)");
+                            return lock_busy;
+                        }
+                    } else {
+                        LOGGER_IF_LOGGED_DEBUG_TRACE(debug, logged, "...failed EBUSY err = " << err << " on ::pthread_mutex_timedlock_relative_np(detached, &until_time)");
+                        return lock_busy;
+                    }
+                }
+            }
+#else /// defined(PTHREAD_MUTEX_HAS_TIMEDLOCK_RELATIVE_NP)
+            if (milliseconds) {
+                LOGGER_IS_LOGGED_ERROR("...invalid ::pthread_mutex_timedlock_relative_np(detached, ...)");
+                status = lock_invalid;
+            } else {
+                status = this->try_lock();
+            }
+#endif /// defined(PTHREAD_MUTEX_HAS_TIMEDLOCK_RELATIVE_NP)
+        }
+        return status;
+    }
+    virtual lock_status try_lock() {
+        attached_t detached = 0;
+        if ((detached = this->attached_to())) {
+            int err = 0;
+            LOGGER_IS_LOGGED_TRACE("::pthread_mutex_trylock(detached)...");
+            if (!(err = ::pthread_mutex_trylock(detached))) {
+                LOGGER_IS_LOGGED_TRACE("...::pthread_mutex_trylock(detached)");
+                return lock_success;
+            } else {
+                if (EBUSY != (err)) {
+                    if (ETIMEDOUT != (err)) {
+                        if (EINTR != (err)) {
+                            LOGGER_IS_LOGGED_ERROR("...failed err = " << err << " on ::pthread_mutex_trylock(detached)");
+                        } else {
+                            LOGGER_IS_LOGGED_ERROR("...failed EINTR err = " << err << " on ::pthread_mutex_trylock(detached)");
+                            return lock_interrupted;
+                        }
+                    } else {
+                        LOGGER_IS_LOGGED_TRACE("...failed ETIMEDOUT err = " << err << " on ::pthread_mutex_trylock(detached)");
+                        return lock_busy;
+                    }
+                } else {
+                    LOGGER_IS_LOGGED_TRACE("...failed EBUSY err = " << err << " on ::pthread_mutex_trylock(detached)");
+                    return lock_busy;
+                }
+            }
+        }
+        return lock_failed;
+    }
+    virtual lock_status untimed_lock() {
+        attached_t detached = 0;
+        if ((detached = this->attached_to())) {
+            int err = 0;
+            LOGGER_IS_LOGGED_DEBUG("::pthread_mutex_lock(detached)...");
+            if (!(err = ::pthread_mutex_lock(detached))) {
+                LOGGER_IS_LOGGED_DEBUG("...::pthread_mutex_lock(detached)");
+                return lock_success;
+            } else {
+                if (EINTR != (err)) {
+                    if (EBUSY != (err)) {
+                        if (ETIMEDOUT != (err)) {
+                            LOGGER_IS_LOGGED_ERROR("...failed err = " << err << " on ::pthread_mutex_lock(detached)");
+                        } else {
+                            LOGGER_IS_LOGGED_ERROR("...failed ETIMEDOUT err = " << err << " on ::pthread_mutex_lock(detached)");
+                            return lock_timeout;
+                        }
+                    } else {
+                        LOGGER_IS_LOGGED_ERROR("...failed EBUSY err = " << err << " on ::pthread_mutex_lock(detached)");
+                        return lock_busy;
+                    }
+                } else {
+                    LOGGER_IS_LOGGED_ERROR("...failed EINTR err = " << err << " on ::pthread_mutex_lock(detached)");
+                    return lock_interrupted;
+                }
+            }
+        }
+        return lock_failed;
+    }
+    virtual bool unlock() {
+        attached_t detached = 0;
+        if ((detached = this->attached_to())) {
+            int err = 0;
+            LOGGER_IS_LOGGED_DEBUG("::pthread_mutex_unlock(detached)...");
+            if (!(err = ::pthread_mutex_unlock(detached))) {
+                LOGGER_IS_LOGGED_DEBUG("...::pthread_mutex_unlock(detached)");
+                return true;
+            } else {
+                LOGGER_IS_LOGGED_ERROR("...failed err =" << err << " on ::pthread_mutex_unlock(detached)");
+            }
+        }
+        return false;
+    }
+
+    /// create... / destroy...
     virtual attached_t create_attached(mutex_t& mutex, bool initially_locked) {
         attached_t detached = 0;
         if ((detached = this->create_detached(mutex_, initially_locked))) {
