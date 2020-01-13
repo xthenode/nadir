@@ -31,55 +31,14 @@
 #include "xos/platform/os/oracle/solaris/mutex.h"
 #endif /// defined(SOLARIS)
 
-#if !defined(MUTEX_HAS_TIMEDLOCK)
-#define MUTEX_HAS_TIMEDLOCK
-#endif /// !defined(MUTEX_HAS_TIMEDLOCK)
-
-#if !defined(MUTEX_HAS_RELTIMEDLOCK)
-#define MUTEX_HAS_RELTIMEDLOCK
-#endif /// !defined(MUTEX_HAS_RELTIMEDLOCK)
-
-///
-/// int clock_relgettime
-/// 
-#if !defined(CLOCK_HAS_RELGETTIME)
-inline int clock_relgettime(timestruc_t* abstime) {
-    if ((abstime)) {
-        abstime->tv_sec = 0;
-        abstime->tv_nsec = 0;
-        return 0;
-    }
-    return EINVAL;
-}
-#define CLOCK_HAS_RELGETTIME
-#endif /// !defined(CLOCK_HAS_RELGETTIME)
-
-///
-/// int clock_gettime
-/// 
-#if defined(MUTEX_HAS_TIMEDLOCK)
-#if !defined(CLOCK_REALTIME)
-#define CLOCK_REALTIME 0
-#define clockid_t int
-#endif /// !defined(CLOCK_REALTIME)
-#if !defined(CLOCK_HAS_GETTIME)
-inline int clock_gettime(int id, timestruc_t* abstime) {
-    return ::clock_relgettime(abstime);
-}
-#endif /// !defined(CLOCK_HAS_GETTIME)
-#endif /// defined(MUTEX_HAS_TIMEDLOCK)
-
 namespace xos {
 namespace mt {
 namespace oracle {
 namespace solaris {
 
-typedef ::mutex_t mutex_t;
-typedef mutex_t* mutex_attached_t;
-
 /// class mutext
 template 
-<class TExtends = mt::extended::mutext<mutex_attached_t>, 
+<class TExtends = mt::extended::mutext<mutex_t*>, 
  class TImplements = typename TExtends::implements>
 class exported mutext: virtual public TImplements, public TExtends {
 public:
@@ -120,6 +79,13 @@ public:
     }
 
     /// ...lock... / ...unlock...
+    virtual lock_status time_lock(mseconds_t milliseconds) {
+        attached_t detached = 0;
+        if ((detached = this->attached_to())) {
+            return time_lock_detached(*detached, milliseconds);
+        }
+        return lock_failed;
+    }
     virtual lock_status timed_lock(mseconds_t milliseconds) {
         attached_t detached = 0;
         if ((detached = this->attached_to())) {
@@ -155,48 +121,64 @@ public:
     }
     virtual lock_status timed_lock_detached(mutex_t& mutex, mseconds_t milliseconds) const { 
         if (0 < (milliseconds)) {
-#if defined(MUTEX_HAS_TIMEDLOCK)
             bool is_logged = ((this->is_logged()) && (milliseconds >= this->is_logged_debug_threashold()));
             int err = 0;
             timestruc_t until_time;
-
-            LOGGER_IF_LOGGED_DEBUG_TRACE(is_logged, is_logged, "clock_gettime(CLOCK_REALTIME, &until_time)...");
-            if ((err = clock_gettime(CLOCK_REALTIME, &until_time))) {
-                LOGGER_IS_LOGGED_ERROR("...failed " << err << " on clock_gettime(CLOCK_REALTIME, &until_time)");
-                return lock_failed;
-            } else {
-                LOGGER_IF_LOGGED_DEBUG_TRACE(is_logged, is_logged, "...clock_gettime(CLOCK_REALTIME, &until_time)");
-            }
-            until_time.tv_sec +=  mseconds_seconds(milliseconds);
-            until_time.tv_nsec +=  mseconds_nseconds(mseconds_mseconds(milliseconds));
-
-            LOGGER_IF_LOGGED_DEBUG_TRACE(is_logged, is_logged, "mutex_timedlock(&mutex, &until_time)...");
-            if ((err = mutex_timedlock(&mutex, &until_time))) {
+            until_time.tv_sec =  mseconds_seconds(milliseconds);
+            until_time.tv_nsec =  mseconds_nseconds(mseconds_mseconds(milliseconds));
+            LOGGER_IF_LOGGED_DEBUG_TRACE(is_logged, is_logged, "::mutex_reltimedlock(&mutex, &until_time)...");
+            if ((err = ::mutex_reltimedlock(&mutex, &until_time))) {
                 switch(err) {
-                case ETIME:
-                    LOGGER_IF_LOGGED_DEBUG_TRACE(is_logged, is_logged, "...ETIME err = "<< err << " on mutex_timedlock(&mutex, &until_time)");
+                case EBUSY:
+                    LOGGER_IF_LOGGED_DEBUG_TRACE(is_logged, is_logged, "...EBUSY err = "<< err << " on ::mutex_reltimedlock(&mutex, &until_time)");
                     return lock_busy;
+                case ETIMEDOUT:
+                    LOGGER_IF_LOGGED_DEBUG_TRACE(is_logged, is_logged, "...ETIMEDOUT err = "<< err << " on ::mutex_reltimedlock(&mutex, &until_time)");
+                    return lock_timeout;
                 case EINTR:
-                    LOGGER_IS_LOGGED_ERROR("...EINTR err = "<< err << " on mutex_timedlock(&mutex, &until_time)");
+                    LOGGER_IS_LOGGED_ERROR("...EINTR err = "<< err << " on ::mutex_reltimedlock(&mutex, &until_time)");
                     return lock_interrupted;
                 default:
-                    LOGGER_IS_LOGGED_ERROR("...failed err = "<< err << " on mutex_timedlock(&mutex, &until_time)");
+                    LOGGER_IS_LOGGED_ERROR("...failed err = "<< err << " on ::mutex_reltimedlock(&mutex, &until_time)");
                     return lock_failed;
                 }
             } else {
-                LOGGER_IF_LOGGED_DEBUG_TRACE(is_logged, is_logged, "...mutex_timedlock(&mutex, &until_time)");
+                LOGGER_IF_LOGGED_DEBUG_TRACE(is_logged, is_logged, "...::mutex_reltimedlock(&mutex, &until_time)");
                 return lock_success;
             }
-#else /// defined(MUTEX_HAS_TIMEDLOCK)
-            LOGGER_IS_LOGGED_ERROR("...return lock_invalid");
-            return lock_invalid;
-#endif /// defined(MUTEX_HAS_TIMEDLOCK)
         } else {
             if (0 > (milliseconds)) {
                 return untimed_lock_detached(mutex);
             } else {
                 return try_lock_detached(mutex);
             }
+        }
+        return lock_failed; 
+    }
+    virtual lock_status time_lock_detached(mutex_t& mutex, mseconds_t milliseconds) const { 
+        int err = 0;
+        timestruc_t until_time;
+        until_time.tv_sec =  mseconds_seconds(milliseconds);
+        until_time.tv_nsec =  mseconds_nseconds(mseconds_mseconds(milliseconds));
+        LOGGER_IS_LOGGED_TRACE("::mutex_timedlock(&mutex, &until_time)...");
+        if ((err = ::mutex_timedlock(&mutex, &until_time))) {
+            switch(err) {
+            case EBUSY:
+                LOGGER_IS_LOGGED_TRACE("...EBUSY err = "<< err << " on ::mutex_timedlock(&mutex, &until_time)");
+                return lock_busy;
+            case ETIMEDOUT:
+                LOGGER_IS_LOGGED_TRACE("...ETIMEDOUT err = "<< err << " on ::mutex_timedlock(&mutex, &until_time)");
+                return lock_timeout;
+            case EINTR:
+                LOGGER_IS_LOGGED_ERROR("...EINTR err = "<< err << " on ::mutex_timedlock(&mutex, &until_time)");
+                return lock_interrupted;
+            default:
+                LOGGER_IS_LOGGED_ERROR("...failed err = "<< err << " on ::mutex_timedlock(&mutex, &until_time)");
+                return lock_failed;
+            }
+        } else {
+            LOGGER_IS_LOGGED_TRACE("...::mutex_timedlock(&mutex, &until_time)");
+            return lock_success;
         }
         return lock_failed; 
     }
@@ -252,7 +234,7 @@ public:
     virtual attached_t create_attached() {
         attached_t detached = (attached_t)(unattached);
         if ((this->destroyed())) {
-            if (((attached_t)(unattached) != (detached = create_detached(_mutex)))) {
+            if (((attached_t)(unattached) != (detached = create_detached(mutex_)))) {
                 this->attach(detached);
             }
         }
@@ -286,23 +268,7 @@ public:
     }
 
 protected:
-    inline int clock_gettime(int id, timestruc_t* abstime) const {
-#if defined(MUTEX_HAS_RELTIMEDLOCK)
-        return ::clock_relgettime(abstime);
-#else /// defined(MUTEX_HAS_RELTIMEDLOCK)
-        return ::clock_gettime(id, abstime);
-#endif /// defined(MUTEX_HAS_RELTIMEDLOCK)
-    }
-    inline int mutex_timedlock(mutex_t *mp, timestruc_t *abstime) const {
-#if defined(MUTEX_HAS_RELTIMEDLOCK)
-        return ::mutex_reltimedlock(mp, abstime);
-#else /// defined(MUTEX_HAS_RELTIMEDLOCK)
-        return ::mutex_timedlock(mp, abstime);
-#endif /// defined(MUTEX_HAS_RELTIMEDLOCK)
-    }
-
-protected:
-    mutex_t _mutex;
+    mutex_t mutex_;
 }; /// class mutext
 typedef mutext<> mutex;
 

@@ -1,3 +1,4 @@
+/*/
 ///////////////////////////////////////////////////////////////////////
 /// Copyright (c) 1988-2020 $organization$
 ///
@@ -13,32 +14,42 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: semaphores.cpp
+///   File: semaphore.h
 ///
 /// Author: $author$
-///   Date: 1/6/2020
+///   Date: 1/12/2020
 ///////////////////////////////////////////////////////////////////////
-#include "xos/mt/semaphores.hpp"
-#include "xos/platform/os/platform/semaphore.cpp"
+/*/
+#ifndef XOS_PLATFORM_OS_MACH_SEMAPHORE_H
+#define XOS_PLATFORM_OS_MACH_SEMAPHORE_H
 
-#if defined(MACH) || defined(WINDOWS)
-#include "xos/platform/os/posix/semaphore.cpp"
-#endif /// defined(MACH) || defined(WINDOWS)
+#include "xos/platform/os/mach/task.h"
+
+#if defined(__cplusplus)
+extern "C" {
+#endif /*/ defined(__cplusplus) /*/
 
 #if !defined(MACH)
-#include "xos/platform/os/mach/semaphore.cpp"
-#endif /// !defined(MACH)
+/*/
+/// mach semaphores
+/// ...
+/*/
+typedef mach_port_t semaphore_t;
 
-#if !defined(SOLARIS)
-#include "xos/platform/os/oracle/solaris/semaphore.cpp"
-#endif /// !defined(SOLARIS)
+extern kern_return_t semaphore_create(task_t task, semaphore_t *semaphore, int policy, int value);
+extern kern_return_t semaphore_destroy(task_t task, semaphore_t semaphore);
 
-#if !defined(WINDOWS)
-#include "xos/platform/os/microsoft/windows/Semaphore.cpp"
-#endif /// !defined(WINDOWS)
+extern kern_return_t semaphore_signal(semaphore_t semaphore);
+extern kern_return_t semaphore_wait(semaphore_t semaphore);
+extern kern_return_t semaphore_timedwait(semaphore_t semaphore, mach_timespec_t wait_time);
+/*/
+/// ...
+/// mach semaphores
+/*/
+#endif /*/ !defined(MACH) /*/
 
-namespace xos {
-namespace mt {
+#if defined(__cplusplus)
+} /*/ extern "C" /*/
+#endif /*/ defined(__cplusplus) /*/
 
-} /// namespace mt
-} /// namespace xos
+#endif /*/ ndef XOS_PLATFORM_OS_MACH_SEMAPHORE_H /*/

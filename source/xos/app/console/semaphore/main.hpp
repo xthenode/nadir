@@ -24,6 +24,11 @@
 #include "xos/app/console/semaphore/main_opt.hpp"
 #include "xos/mt/microsoft/windows/semaphore.hpp"
 #include "xos/mt/apple/osx/semaphore.hpp"
+#include "xos/mt/oracle/solaris/semaphore.hpp"
+#include "xos/mt/mach/semaphore.hpp"
+#include "xos/mt/linux/semaphore.hpp"
+#include "xos/mt/posix/semaphore.hpp"
+#include "xos/mt/os/semaphore.hpp"
 #include "xos/mt/semaphore.hpp"
 
 namespace xos {
@@ -64,36 +69,32 @@ protected:
         bool untimed = this->infinite_timeout(timeout);
 
         this->outlln(__LOCATION__, "try {...", NULL);
-        for (unsigned tried = 0, tries = 1; tries; --tries, ++tried) {
-            try {
-                if (untimed) {
-                    this->outlln(__LOCATION__, "::xos::acquire acquire(acquired)...", NULL);
-                    ::xos::acquire acquire(acquired);
+        try {
+            if (untimed) {
+                this->outlln(__LOCATION__, "::xos::acquire acquire(acquired)...", NULL);
+                ::xos::acquire acquire(acquired);
+                this->outlln(__LOCATION__, "...::xos::acquire acquire(acquired)", NULL);
+            } else {
+                if (timeout) {
+                    this->outlln(__LOCATION__, "::xos::acquire acquire(acquired, timeout = ", unsigned_to_string(timeout).chars(), ")...", NULL);
+                    ::xos::acquire acquire(acquired, timeout);
+                    this->outlln(__LOCATION__, "...::xos::acquire acquire(acquired, timeout = ", unsigned_to_string(timeout).chars(), ")", NULL);
                 } else {
-                    if (timeout) {
-                        this->outlln(__LOCATION__, "::xos::acquire acquire(acquired, timeout = ", unsigned_to_string(timeout).chars(), ")...", NULL);
-                        ::xos::acquire acquire(acquired, timeout);
-                    } else {
-                        this->outlln(__LOCATION__, "::xos::try_acquire try_acquire(acquired)...", NULL);
-                        ::xos::try_acquire try_acquire(acquired);
-                    }
+                    this->outlln(__LOCATION__, "::xos::try_acquire try_acquire(acquired)...", NULL);
+                    ::xos::try_acquire try_acquire(acquired);
+                    this->outlln(__LOCATION__, "...::xos::try_acquire try_acquire(acquired)", NULL);
                 }
-                this->outlln(__LOCATION__, "...} try", NULL);
-            } catch (const acquire_exception& e) {
-                this->outlln(__LOCATION__, "...catch (const acquire_exception& e.status = \"", e.status_to_chars(), "\")", NULL);
-                if ((acquire_busy == (e.status())) && (tried <  2)) {
-                    ::xos::release release(acquired);
-                    tries = 2;
-                } else {
-                    err = 1;
-                }
-            } catch (const exception& e) {
-                this->outlln(__LOCATION__, "...catch (const exception& e.status = \"", e.status_to_chars(), "\")", NULL);
-                err = 1;
-            } catch (...) {
-                this->outlln(__LOCATION__, "...catch (...)", NULL);
-                err = 1;
             }
+            this->outlln(__LOCATION__, "...} try", NULL);
+        } catch (const acquire_exception& e) {
+            this->outlln(__LOCATION__, "...catch (const acquire_exception& e.status = \"", e.status_to_chars(), "\")", NULL);
+            err = 1;
+        } catch (const exception& e) {
+            this->outlln(__LOCATION__, "...catch (const exception& e.status = \"", e.status_to_chars(), "\")", NULL);
+            err = 1;
+        } catch (...) {
+            this->outlln(__LOCATION__, "...catch (...)", NULL);
+            err = 1;
         }
         return err;
     }
@@ -111,7 +112,13 @@ protected:
                 this->outlln(__LOCATION__, "::xos::release release(semaphore)...", NULL);
                 ::xos::release release(semaphore);
             }
-            run(semaphore);
+            if ((err = run(semaphore))) {
+                if (!untimed) {
+                    this->outlln(__LOCATION__, "::xos::release release(semaphore)...", NULL);
+                    ::xos::release release(semaphore);
+                    err = run(semaphore);
+                }
+            }
             this->outlln(__LOCATION__, "...} try", NULL);
         } catch (const exception& e) {
             this->outlln(__LOCATION__, "...catch (const exception& e.status = \"", e.status_to_chars(), "\")", NULL);
@@ -129,6 +136,21 @@ protected:
     }
     virtual int osx_run(int argc, char_t** argv, char_t** env) {
         return this->run< ::xos::mt::apple::mach::semaphore >();
+    }
+    virtual int solaris_run(int argc, char_t** argv, char_t** env) {
+        return this->run< ::xos::mt::oracle::solaris::semaphore >();
+    }
+    virtual int mach_run(int argc, char_t** argv, char_t** env) {
+        return this->run< ::xos::mt::mach::semaphore >();
+    }
+    virtual int linux_run(int argc, char_t** argv, char_t** env) {
+        return this->run< ::xos::mt::linux::semaphore >();
+    }
+    virtual int posix_run(int argc, char_t** argv, char_t** env) {
+        return this->run< ::xos::mt::posix::semaphore >();
+    }
+    virtual int os_run(int argc, char_t** argv, char_t** env) {
+        return this->run< ::xos::mt::os::semaphore >();
     }
     virtual int derived_run(int argc, char_t** argv, char_t** env) {
         return this->run< ::xos::mt::derived::semaphore >();

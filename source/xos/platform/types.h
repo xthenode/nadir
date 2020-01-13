@@ -138,7 +138,8 @@ typedef int BOOL;
 /// ...
 /// Apple
 /*/
-#elif defined(LINUX)
+#else /*/ defined(APPLEOS) /*/
+#if defined(LINUX)
 /*/
 /// Linux
 /// ...
@@ -152,13 +153,22 @@ typedef int BOOL;
 /// Posix
 /// ...
 /*/
-typedef int BOOL;
-typedef void* pointer_t;
 /*/
 /// ...
 /// Posix
 /*/
 #endif /*/ defined(LINUX) /*/
+/*/
+/// Unix
+/// ...
+/*/
+typedef int BOOL;
+typedef void* pointer_t;
+/*/
+/// ...
+/// Unix
+/*/
+#endif /*/ defined(APPLEOS) /*/
 typedef char tchar_t;
 typedef uint8_t byte_t;
 typedef uint16_t word_t;

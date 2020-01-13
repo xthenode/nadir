@@ -218,18 +218,18 @@ public:
                     return acquire_success;
                 } else {
                     if (error_busy == (err)) {
-                        LOGGER_IF_LOGGED_DEBUG_TRACE(is_logged, is_logged, "...failed error_busy = "<< err << " ::platform_semaphore_timed_acquire(detached, &until_time)");
+                        LOGGER_IF_LOGGED_DEBUG_TRACE(is_logged, is_logged, "...error_busy = "<< err << " on ::platform_semaphore_timed_acquire(detached, &until_time)");
                         return acquire_busy;
                     } else {
                         if (error_timeout == (err)) {
-                            LOGGER_IF_LOGGED_DEBUG_TRACE(is_logged, is_logged, "...failed error_timeout = "<< err << " ::platform_semaphore_timed_acquire(detached, &until_time)");
+                            LOGGER_IF_LOGGED_DEBUG_TRACE(is_logged, is_logged, "...error_timeout = "<< err << " on ::platform_semaphore_timed_acquire(detached, &until_time)");
                             return acquire_timeout;
                         } else {
                             if (error_interrupted == (err)) {
-                                LOGGER_IS_LOGGED_ERROR("...failed error_interrupted = "<< err << " ::platform_semaphore_timed_acquire(detached, &until_time)");
+                                LOGGER_IS_LOGGED_ERROR("...error_interrupted = "<< err << " on ::platform_semaphore_timed_acquire(detached, &until_time)");
                                 return acquire_interrupted;
                             } else {
-                                LOGGER_IS_LOGGED_ERROR("...failed err = "<< err << " ::platform_semaphore_timed_acquire(detached, &until_time)");
+                                LOGGER_IS_LOGGED_ERROR("...failed err = "<< err << " on ::platform_semaphore_timed_acquire(detached, &until_time)");
                             }
                         }
                     }
@@ -253,18 +253,18 @@ public:
                 return acquire_success;
             } else {
                 if (error_busy == (err)) {
-                    LOGGER_IS_LOGGED_TRACE("...failed error_busy = "<< err << " ::platform_semaphore_try_acquire(detached)");
+                    LOGGER_IS_LOGGED_TRACE("...error_busy = "<< err << " on ::platform_semaphore_try_acquire(detached)");
                     return acquire_busy;
                 } else {
                     if (error_timeout == (err)) {
-                        LOGGER_IS_LOGGED_TRACE("...failed error_timeout = "<< err << " ::platform_semaphore_try_acquire(detached)");
+                        LOGGER_IS_LOGGED_TRACE("...error_timeout = "<< err << " on ::platform_semaphore_try_acquire(detached)");
                         return acquire_timeout;
                     } else {
                         if (error_interrupted == (err)) {
-                            LOGGER_IS_LOGGED_ERROR("...failed error_interrupted = "<< err << " ::platform_semaphore_try_acquire(detached)");
+                            LOGGER_IS_LOGGED_ERROR("...error_interrupted = "<< err << " on ::platform_semaphore_try_acquire(detached)");
                             return acquire_interrupted;
                         } else {
-                            LOGGER_IS_LOGGED_ERROR("...failed err = "<< err << " ::platform_semaphore_try_acquire(detached)");
+                            LOGGER_IS_LOGGED_ERROR("...failed err = "<< err << " on ::platform_semaphore_try_acquire(detached)");
                         }
                     }
                 }

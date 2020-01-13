@@ -59,6 +59,10 @@ inline mseconds_t nseconds_mseconds
 
 inline seconds_t nseconds_seconds
 (nseconds_t nseconds) { return nseconds_mseconds(nseconds) / 1000; }
+
+inline mseconds_t nseconds_nseconds
+(mseconds_t nseconds) { return nseconds % (1000 * 1000 * 1000); }
+
 /// ...
 /// mseconds_ seconds / mseconds / useconds / nseconds
 

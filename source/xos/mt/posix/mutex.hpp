@@ -75,16 +75,18 @@ inline int pthread_mutex_timedlock(pthread_mutex_t *mutex, const struct timespec
 #if !defined(PTHREAD_MUTEX_HAS_TIMEDLOCK_RELATIVE_NP)
 inline int pthread_mutex_timedlock_relative_np(pthread_mutex_t *mutex, const struct timespec *timeout) {
 #if defined(PTHREAD_MUTEX_HAS_TIMEDLOCK)
+#if defined(CLOCK_HAS_GETTIME_RELATIVE_NP)
     if ((mutex) && (timeout)) {
-        int err = 0; 
+        int err = EFAULT; 
         struct timespec until_time;
-        if (!(err = ::clock_gettime(CLOCK_REALTIME, &until_time))) {
-            until_time.tv_sec +=  timeout->tv_sec;
-            until_time.tv_nsec +=  timeout->tv_nsec;
-            err = ::pthread_mutex_timedlock(mutex, &until_time);
+        if (!(err = ::clock_gettime_relative_np(&until_time, timeout))) {
+            if (0 > (err = ::pthread_mutex_timedlock(mutex, &until_time))) {
+                err = errno;
+            }
         }
         return err;
     }
+#endif /// defined(CLOCK_HAS_GETTIME_RELATIVE_NP)
 #endif /// defined(PTHREAD_MUTEX_HAS_TIMEDLOCK)
     return EINVAL;
 }

@@ -21,7 +21,7 @@
 #ifndef XOS_MT_OS_OS_HPP
 #define XOS_MT_OS_OS_HPP
 
-#include "xos/platform/build.hpp"
+#include "xos/platform/os.hpp"
 
 namespace xos {
 namespace mt {

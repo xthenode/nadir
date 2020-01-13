@@ -96,6 +96,9 @@ public:
     enum {
         lock_success = xos::lock_success,
         lock_failed = xos::lock_failed,
+        lock_busy = xos::lock_busy,
+        lock_timeout = xos::lock_timeout,
+        lock_interrupted = xos::lock_interrupted,
         unlock_success = xos::unlock_success,
         unlock_failed = xos::unlock_failed
     };
@@ -138,29 +141,44 @@ public:
     typedef TExtends extends;
     typedef lockt derives;
 
+    typedef xos::lock_status lock_status;
+    enum {
+        lock_success = xos::lock_success,
+        lock_failed = xos::lock_failed,
+        lock_busy = xos::lock_busy,
+        lock_timeout = xos::lock_timeout,
+        lock_interrupted = xos::lock_interrupted,
+        unlock_success = xos::unlock_success,
+        unlock_failed = xos::unlock_failed
+    };
+
     /// constructor / destructor
-    lockt(locked& _locked, mseconds_t mseconds): locked_(_locked) {
-        if (!(locked_.timed_lock(mseconds))) {
-            throw lock_exception(lock_failed);
+    lockt(locked& _locked, mseconds_t mseconds): locked_(_locked), is_locked_(false) {
+        lock_status status = lock_failed;
+        if (!(is_locked_ = !(lock_success != (status = locked_.timed_lock(mseconds))))) {
+            throw lock_exception(status);
         }
     }
-    lockt(locked& _locked): locked_(_locked) {
-        if (!(locked_.lock())) {
+    lockt(locked& _locked): locked_(_locked), is_locked_(false) {
+        if (!(is_locked_ = locked_.lock())) {
             throw lock_exception(lock_failed);
         }
     }
     virtual ~lockt() {
-        if (!(locked_.unlock())) {
-            throw lock_exception(unlock_failed);
+        if ((is_locked_)) {
+            if (!(locked_.unlock())) {
+                throw lock_exception(unlock_failed);
+            }
         }
     }
 private:
-    lockt(const lockt& copy): locked_(this_locked_) {
+    lockt(const lockt& copy): locked_(this_locked_), is_locked_(false) {
         throw exception(exception_unexpected);
     }
 
 protected:
     locked this_locked_, &locked_;
+    bool is_locked_;
 }; /// class lockt
 typedef lockt<> lock;
 
@@ -172,24 +190,39 @@ public:
     typedef TExtends extends;
     typedef try_lockt derives;
 
+    typedef xos::lock_status lock_status;
+    enum {
+        lock_success = xos::lock_success,
+        lock_failed = xos::lock_failed,
+        lock_busy = xos::lock_busy,
+        lock_timeout = xos::lock_timeout,
+        lock_interrupted = xos::lock_interrupted,
+        unlock_success = xos::unlock_success,
+        unlock_failed = xos::unlock_failed
+    };
+
     /// constructor / destructor
-    try_lockt(locked& _locked): locked_(_locked) {
-        if (!(locked_.try_lock())) {
-            throw lock_exception(lock_failed);
+    try_lockt(locked& _locked): locked_(_locked), is_locked_(false) {
+        lock_status status = lock_failed;
+        if (!(is_locked_ = !(lock_success != (status = locked_.try_lock())))) {
+            throw lock_exception(status);
         }
     }
     virtual ~try_lockt() {
-        if (!(locked_.unlock())) {
-            throw lock_exception(unlock_failed);
+        if ((is_locked_)) {
+            if (!(locked_.unlock())) {
+                throw lock_exception(unlock_failed);
+            }
         }
     }
 private:
-    try_lockt(const try_lockt& copy): locked_(this_locked_) {
+    try_lockt(const try_lockt& copy): locked_(this_locked_), is_locked_(false) {
         throw exception(exception_unexpected);
     }
 
 protected:
     locked this_locked_, &locked_;
+    bool is_locked_;
 }; /// class try_lockt
 typedef try_lockt<> try_lock;
 

@@ -1,3 +1,4 @@
+/*/
 ///////////////////////////////////////////////////////////////////////
 /// Copyright (c) 1988-2020 $organization$
 ///
@@ -13,32 +14,32 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: semaphores.cpp
+///   File: semaphore.h
 ///
 /// Author: $author$
-///   Date: 1/6/2020
+///   Date: 1/9/2020
 ///////////////////////////////////////////////////////////////////////
-#include "xos/mt/semaphores.hpp"
-#include "xos/platform/os/platform/semaphore.cpp"
+/*/
+#ifndef XOS_PLATFORM_OS_ORACLE_SOLARIS_SEMAPHORE_H
+#define XOS_PLATFORM_OS_ORACLE_SOLARIS_SEMAPHORE_H
 
-#if defined(MACH) || defined(WINDOWS)
-#include "xos/platform/os/posix/semaphore.cpp"
-#endif /// defined(MACH) || defined(WINDOWS)
+#include "xos/platform/os/oracle/solaris/sync.h"
 
-#if !defined(MACH)
-#include "xos/platform/os/mach/semaphore.cpp"
-#endif /// !defined(MACH)
+#if defined(__cplusplus)
+extern "C" {
+#endif /*/ defined(__cplusplus) /*/
 
-#if !defined(SOLARIS)
-#include "xos/platform/os/oracle/solaris/semaphore.cpp"
-#endif /// !defined(SOLARIS)
+typedef void* sema_t;
+extern int sema_init(sema_t *sp, unsigned int count, int type, void *arg);
+extern int sema_destroy(sema_t *sp);
+extern int sema_post(sema_t *sp);
+extern int sema_wait(sema_t *sp);
+extern int sema_trywait(sema_t *sp);
+extern int sema_timedwait(sema_t *sp, timestruc_t *abstime);
+extern int sema_reltimedwait(sema_t *sp, timestruc_t *reltime);
 
-#if !defined(WINDOWS)
-#include "xos/platform/os/microsoft/windows/Semaphore.cpp"
-#endif /// !defined(WINDOWS)
+#if defined(__cplusplus)
+} /*/ extern "C" /*/
+#endif /*/ defined(__cplusplus) /*/
 
-namespace xos {
-namespace mt {
-
-} /// namespace mt
-} /// namespace xos
+#endif /*/ ndef XOS_PLATFORM_OS_ORACLE_SOLARIS_SEMAPHORE_H /*/

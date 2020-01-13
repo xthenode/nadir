@@ -13,32 +13,25 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: semaphores.cpp
+///   File: mutex.hpp
 ///
 /// Author: $author$
-///   Date: 1/6/2020
+///   Date: 1/10/2020
 ///////////////////////////////////////////////////////////////////////
-#include "xos/mt/semaphores.hpp"
-#include "xos/platform/os/platform/semaphore.cpp"
+#ifndef XOS_MT_LINUX_MUTEX_HPP
+#define XOS_MT_LINUX_MUTEX_HPP
 
-#if defined(MACH) || defined(WINDOWS)
-#include "xos/platform/os/posix/semaphore.cpp"
-#endif /// defined(MACH) || defined(WINDOWS)
-
-#if !defined(MACH)
-#include "xos/platform/os/mach/semaphore.cpp"
-#endif /// !defined(MACH)
-
-#if !defined(SOLARIS)
-#include "xos/platform/os/oracle/solaris/semaphore.cpp"
-#endif /// !defined(SOLARIS)
-
-#if !defined(WINDOWS)
-#include "xos/platform/os/microsoft/windows/Semaphore.cpp"
-#endif /// !defined(WINDOWS)
+#include "xos/platform/linux.hpp"
+#include "xos/mt/posix/mutex.hpp"
 
 namespace xos {
 namespace mt {
+namespace linux {
 
+typedef posix::mutex mutex;
+
+} /// namespace linux
 } /// namespace mt
 } /// namespace xos
+
+#endif /// ndef XOS_MT_LINUX_MUTEX_HPP 

@@ -25,6 +25,10 @@
 #include "xos/platform/os/microsoft/windows/Handle.cpp"
 #endif /// !defined(WINDOWS)
 
+#if !defined(MACH)
+#include "xos/platform/os/mach/task.cpp"
+#endif /// !defined(MACH)
+
 namespace xos {
 namespace platform {
 namespace os {

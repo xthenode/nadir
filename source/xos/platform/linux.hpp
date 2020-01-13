@@ -23,6 +23,11 @@
 
 #include "xos/platform/types.hpp"
 
+#if defined(linux)
+#define linux_define linux
+#undef linux
+#endif /// defined(linux)
+
 namespace xos {
 namespace platform {
 namespace linux {

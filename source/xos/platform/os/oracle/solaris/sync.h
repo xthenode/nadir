@@ -1,3 +1,4 @@
+/*/
 ///////////////////////////////////////////////////////////////////////
 /// Copyright (c) 1988-2020 $organization$
 ///
@@ -13,32 +14,32 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: semaphores.cpp
+///   File: sync.h
 ///
 /// Author: $author$
-///   Date: 1/6/2020
+///   Date: 1/9/2020
 ///////////////////////////////////////////////////////////////////////
-#include "xos/mt/semaphores.hpp"
-#include "xos/platform/os/platform/semaphore.cpp"
+/*/
+#ifndef XOS_PLATFORM_OS_ORACLE_SOLARIS_SYNC_H
+#define XOS_PLATFORM_OS_ORACLE_SOLARIS_SYNC_H
 
-#if defined(MACH) || defined(WINDOWS)
-#include "xos/platform/os/posix/semaphore.cpp"
-#endif /// defined(MACH) || defined(WINDOWS)
+#include "xos/platform/os/oracle/solaris/time.h"
 
-#if !defined(MACH)
-#include "xos/platform/os/mach/semaphore.cpp"
-#endif /// !defined(MACH)
+#if defined(__cplusplus)
+extern "C" {
+#endif /*/ defined(__cplusplus) /*/
 
-#if !defined(SOLARIS)
-#include "xos/platform/os/oracle/solaris/semaphore.cpp"
-#endif /// !defined(SOLARIS)
+/*/
+/// enum usync_t
+/*/
+typedef int usync_t;
+enum {
+    USYNC_THREAD,
+    USYNC_PROCESS,
+}; /*/ enum usync_t /*/
 
-#if !defined(WINDOWS)
-#include "xos/platform/os/microsoft/windows/Semaphore.cpp"
-#endif /// !defined(WINDOWS)
+#if defined(__cplusplus)
+} /*/ extern "C" /*/
+#endif /*/ defined(__cplusplus) /*/
 
-namespace xos {
-namespace mt {
-
-} /// namespace mt
-} /// namespace xos
+#endif /*/ ndef XOS_PLATFORM_OS_ORACLE_SOLARIS_SYNC_H /*/

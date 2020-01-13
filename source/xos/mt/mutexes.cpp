@@ -21,6 +21,10 @@
 #include "xos/mt/mutexes.hpp"
 #include "xos/platform/os/platform/mutex.cpp"
 
+#if !defined(WINDOWS)
+#include "xos/platform/os/microsoft/windows/Mutex.cpp"
+#endif /// !defined(WINDOWS)
+
 #if !defined(SOLARIS)
 #include "xos/platform/os/oracle/solaris/mutex.cpp"
 #endif /// !defined(SOLARIS)

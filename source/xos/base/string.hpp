@@ -22,6 +22,7 @@
 #define XOS_BASE_STRING_HPP
 
 #include "xos/base/base.hpp"
+#include <stdarg.h>
 #include <locale>
 #include <string>
 #include <sstream>
@@ -99,9 +100,10 @@ public:
         return *this;
     }
     virtual stringt& appendv(const char_t* chars, va_list va) {
+        typedef const char_t* const_chars_t;
         if ((chars)) {
             do { this->append(chars);
-            } while ((chars = va_arg(va, const char_t*)));
+            } while ((chars = va_arg(va, const_chars_t)));
         }
         return *this;
     }

@@ -24,17 +24,19 @@
 #include "xos/mt/os/os.hpp"
 
 #if defined(WINDOWS)  
-#include "xos/mt/semaphore.hpp"
+#include "xos/mt/microsoft/windows/semaphore.hpp"
 #elif defined(APPLEOSX)  
 #include "xos/mt/apple/osx/semaphore.hpp"
 #elif defined(APPLEIOS)  
-#include "xos/mt/semaphore.hpp"
+#include "xos/mt/apple/ios/semaphore.hpp"
 #elif defined(SOLARIS)  
-#include "xos/mt/semaphore.hpp"
-#elif defined(LINUX)  
-#include "xos/mt/semaphore.hpp"
+#include "xos/mt/oracle/solaris/semaphore.hpp"
+#elif defined(MACH)
+#include "xos/mt/mach/semaphore.hpp"
+#elif defined(LINUX)
+#include "xos/mt/linux/semaphore.hpp"
 #else /// defined(LINUX)  
-#include "xos/mt/semaphore.hpp"
+#include "xos/mt/posix/semaphore.hpp"
 #endif /// defined(LINUX) 
 
 namespace xos {

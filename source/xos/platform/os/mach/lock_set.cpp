@@ -26,6 +26,8 @@ namespace platform {
 namespace os {
 namespace mach {
 
+typedef mt::os::mutex mutex;
+
 } /// namespace mach
 } /// namespace os
 } /// namespace platform
@@ -42,16 +44,20 @@ kern_return_t lock_set_create (
         int policy
 ) {
     if ((0 != new_lock_set) && (1 == n_ulocks) && (SYNC_POLICY_FIFO == policy)) {
-        ::xos::mt::os::mutex* mtx = 0;
-        if ((mtx = new ::xos::mt::os::mutex(((::xos::mt::os::mutex::attached_t)::xos::mt::os::mutex::unattached), false, false))) {
-            kern_return_t err = KERN_FAILURE;
-            if ((mtx->create())) {
-                *new_lock_set = mtx;
-                err = KERN_SUCCESS;
-            } else {
-                delete mtx;
+        try {
+            ::xos::platform::os::mach::mutex* mtx = 0;
+            if ((mtx = new ::xos::platform::os::mach::mutex(((::xos::platform::os::mach::mutex::attached_t)::xos::platform::os::mach::mutex::unattached), false, false))) {
+                kern_return_t err = KERN_FAILURE;
+                if ((mtx->create())) {
+                    *new_lock_set = mtx;
+                    err = KERN_SUCCESS;
+                } else {
+                    delete mtx;
+                }
+                return err;
             }
-            return err;
+        } catch (...) {
+            return KERN_MEMORY_ERROR;
         }
     }
     return KERN_FAILURE;
@@ -62,13 +68,17 @@ kern_return_t lock_set_destroy (
         lock_set_t lock_set
 ) {
     if ((lock_set)) {
-        ::xos::mt::os::mutex* mtx = 0;
-        if ((mtx = ((::xos::mt::os::mutex*)(lock_set)))) {
+        ::xos::platform::os::mach::mutex* mtx = 0;
+        if ((mtx = ((::xos::platform::os::mach::mutex*)(lock_set)))) {
             kern_return_t err = KERN_FAILURE;
             if ((mtx->destroy())) {
                 err = KERN_SUCCESS;
             }
-            delete mtx;
+            try {
+                delete mtx;
+            } catch (...) {
+                err = KERN_MEMORY_ERROR;
+            }
             return err;
         }
     }
@@ -80,8 +90,8 @@ kern_return_t lock_acquire (
         int lock_id
 ) {
     if ((lock_set) && (!lock_id)) {
-        ::xos::mt::os::mutex* mtx = 0;
-        if ((mtx = ((::xos::mt::os::mutex*)(lock_set)))) {
+        ::xos::platform::os::mach::mutex* mtx = 0;
+        if ((mtx = ((::xos::platform::os::mach::mutex*)(lock_set)))) {
             kern_return_t err = KERN_FAILURE;
             if ((mtx->lock())) {
                 err = KERN_SUCCESS;
@@ -97,8 +107,8 @@ kern_return_t lock_release (
         int lock_id
 ) {
     if ((lock_set) && (!lock_id)) {
-        ::xos::mt::os::mutex* mtx = 0;
-        if ((mtx = ((::xos::mt::os::mutex*)(lock_set)))) {
+        ::xos::platform::os::mach::mutex* mtx = 0;
+        if ((mtx = ((::xos::platform::os::mach::mutex*)(lock_set)))) {
             kern_return_t err = KERN_FAILURE;
             if ((mtx->unlock())) {
                 err = KERN_SUCCESS;
@@ -114,8 +124,8 @@ kern_return_t lock_try (
         int lock_id
 ) {
     if ((lock_set) && (!lock_id)) {
-        ::xos::mt::os::mutex* mtx = 0;
-        if ((mtx = ((::xos::mt::os::mutex*)(lock_set)))) {
+        ::xos::platform::os::mach::mutex* mtx = 0;
+        if ((mtx = ((::xos::platform::os::mach::mutex*)(lock_set)))) {
             kern_return_t err = KERN_FAILURE;
             ::xos::lock_status status = ::xos::lock_failed;
             if (::xos::lock_success == (status = mtx->try_lock())) {

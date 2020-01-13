@@ -20,6 +20,22 @@
 ///////////////////////////////////////////////////////////////////////
 #include "xos/mt/os/mutex.hpp"
 
+#if defined(WINDOWS)  
+#include "xos/mt/microsoft/windows/mutex.cpp"
+#elif defined(APPLEOSX)  
+#include "xos/mt/apple/osx/mutex.cpp"
+#elif defined(APPLEIOS)  
+#include "xos/mt/apple/ios/mutex.cpp"
+#elif defined(SOLARIS)  
+#include "xos/mt/oracle/solaris/mutex.cpp"
+#elif defined(MACH)  
+#include "xos/mt/mach/mutex.cpp"
+#elif defined(LINUX)  
+#include "xos/mt/linux/mutex.cpp"
+#else /// defined(LINUX)  
+#include "xos/mt/posix/mutex.cpp"
+#endif /// defined(LINUX) 
+
 namespace xos {
 namespace mt {
 namespace os {

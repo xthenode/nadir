@@ -60,6 +60,27 @@ inline int clock_gettime(clockid_t clk_id, struct timespec *res) {
 #endif /// !defined(CLOCK_HAS_GETTIME)
 #endif /// !defined(CLOCK_REALTIME)
 
+///
+/// clock_gettime_relative_np
+///
+#if !defined(CLOCK_HAS_GETTIME_RELATIVE_NP)
+#define CLOCK_HAS_GETTIME_RELATIVE_NP
+inline int clock_gettime_relative_np(struct timespec *timeout, const struct timespec *relative_timeout) {
+    if ((timeout) && (relative_timeout)) {
+        int err = EFAULT;
+        struct timespec until_time;
+        if (!(err = ::clock_gettime(CLOCK_REALTIME, &until_time))) {
+            seconds_t seconds = until_time.tv_sec + relative_timeout->tv_sec;
+            nseconds_t nseconds = until_time.tv_nsec + relative_timeout->tv_nsec;
+            timeout->tv_sec = (seconds + ::xos::nseconds_seconds(nseconds));
+            timeout->tv_nsec = ::xos::nseconds_nseconds(nseconds);
+            return err;
+        }
+    }
+    return EINVAL;
+}
+#endif /// !defined(CLOCK_HAS_GETTIME_RELATIVE_NP)
+
 namespace xos {
 namespace mt {
 namespace posix {

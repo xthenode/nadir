@@ -38,88 +38,111 @@ namespace solaris {
 /// solaris mutexes
 /// ...
 int mutex_init(mutex_t *mp, int type, void *arg) {
-    int err = EINVAL;
     if ((mp)) {
-        ::xos::mt::os::mutex* mtx = 0;
-        if ((mtx = new ::xos::mt::os::mutex(((::xos::mt::os::mutex::attached_t)::xos::mt::os::mutex::unattached), false, false))) {
-            if ((mtx->create())) {
-                *mp = mtx;
-                err = 0;
-            } else {
-                delete mtx;
+        int err = EFAULT;
+        try {
+            ::xos::mt::os::mutex* mtx = 0;
+            if ((mtx = new ::xos::mt::os::mutex(((::xos::mt::os::mutex::attached_t)::xos::mt::os::mutex::unattached), false, false))) {
+                if ((mtx->create())) {
+                    *mp = mtx;
+                    err = 0;
+                } else {
+                    delete mtx;
+                }
             }
+        } catch (...) {
+            err = ENOMEM;
         }
+        return err;
     }
-    return err;
+    return EINVAL;
 }
 int mutex_destroy(mutex_t *mp) {
-    int err = EINVAL;
     if ((mp)) {
         ::xos::mt::os::mutex* mtx = 0;
         if ((mtx = ((::xos::mt::os::mutex*)(*mp)))) {
+            int err = EFAULT;
             if ((mtx->destroy())) {
                 err = 0;
             }
             *mp = 0;
-            delete mtx;
+            try {
+                delete mtx;
+            } catch (...) {
+                err = ENOMEM;
+            }
+            return err;
         }
     }
-    return err;
+    return EINVAL;
 }
 int mutex_lock(mutex_t *mp) {
-    int err = EINVAL;
     if ((mp)) {
         ::xos::mt::os::mutex* mtx = 0;
         if ((mtx = ((::xos::mt::os::mutex*)(*mp)))) {
             if ((mtx->lock())) {
-                err = 0;
+                return 0;
             }
+            return EFAULT;
         }
     }
-    return err;
+    return EINVAL;
 }
 int mutex_trylock(mutex_t *mp) {
-    int err = EINVAL;
     if ((mp)) {
         ::xos::mt::os::mutex* mtx = 0;
         if ((mtx = ((::xos::mt::os::mutex*)(*mp)))) {
-            if (::xos::lock_success == (mtx->try_lock())) {
-                err = 0;
+            ::xos::lock_status status = mtx->try_lock();
+            if (::xos::lock_success == (status)) {
+                return 0;
+            } else {
+                if (::xos::lock_busy == (status)) {
+                    return EBUSY;
+                } else {
+                    if (::xos::lock_timeout == (status)) {
+                        return ETIMEDOUT;
+                    } else {
+                        if (::xos::lock_interrupted == (status)) {
+                            return EINTR;
+                        } else {
+                            return EFAULT;
+                        }
+                    }
+                }
             }
         }
     }
-    return err;
+    return EINVAL;
 }
 int mutex_unlock(mutex_t *mp) {
-    int err = EINVAL;
     if ((mp)) {
         ::xos::mt::os::mutex* mtx = 0;
         if ((mtx = ((::xos::mt::os::mutex*)(*mp)))) {
             if ((mtx->unlock())) {
-                err = 0;
+                return 0;
             }
+            return EFAULT;
         }
     }
-    return err;
+    return EINVAL;
 }
 int mutex_timedlock(mutex_t *mp, timestruc_t *abstime) {
-    int err = EINVAL;
     if ((mp) && (abstime)) {
         ::xos::mt::os::mutex* mtx = 0;
         if ((mtx = ((::xos::mt::os::mutex*)(*mp)))) {
+            int err = 0;
             timestruc_t reltime;
             if (!(err = ::clock_gettime(CLOCK_REALTIME, &reltime))) {
                 reltime.tv_sec = abstime->tv_sec - reltime.tv_sec;
                 reltime.tv_nsec = abstime->tv_nsec - reltime.tv_nsec;
                 err = mutex_reltimedlock(mp, &reltime);
-                return err;
             }
+            return err;
         }
     }
-    return err;
+    return EINVAL;
 }
 int mutex_reltimedlock(mutex_t *mp, timestruc_t *reltime) {
-    int err = EINVAL;
     if ((mp) && (reltime)) {
         ::xos::mt::os::mutex* mtx = 0;
         if ((mtx = ((::xos::mt::os::mutex*)(*mp)))) {
@@ -129,17 +152,22 @@ int mutex_reltimedlock(mutex_t *mp, timestruc_t *reltime) {
                 return 0;
             } else {
                 if (::xos::lock_busy == (status)) {
-                    return ETIME;
+                    return EBUSY;
                 } else {
-                    if (::xos::lock_interrupted == (status)) {
-                        return EINTR;
+                    if (::xos::lock_timeout == (status)) {
+                        return ETIMEDOUT;
                     } else {
+                        if (::xos::lock_interrupted == (status)) {
+                            return EINTR;
+                        } else {
+                            return EFAULT;
+                        }
                     }
                 }
             }
         }
     }
-    return err;
+    return EINVAL;
 }
 /// ...
 /// solaris mutexes

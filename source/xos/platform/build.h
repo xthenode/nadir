@@ -138,6 +138,15 @@
 #endif /*/ !defined(MACH) /*/
 #endif /*/ defined(MACH) || defined(_MACH) || defined(__MACH__) || defined(__mach__) || defined(__mach) || defined(__Mach__) || defined(__Mach) /*/
 
+/*/
+/// Define LINUX if any of the Linux variants are defined
+/*/
+#if defined(LINUX) || defined(_LINUX) || defined(__LINUX__) || defined(__Linux__) || defined(__linux__)
+#if !defined(LINUX)
+#define LINUX
+#endif /*/ !defined(LINUX) /*/
+#endif /*/ defined(LINUX) || defined(_LINUX) || defined(__LINUX__) || defined(__Linux__) || defined(__linux__) /*/
+
 #if defined(__cplusplus)
 extern "C" {
 #endif /*/ defined(__cplusplus) /*/

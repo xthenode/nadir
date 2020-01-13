@@ -27,7 +27,9 @@
 #include "xos/mt/oracle/solaris/mutex.hpp"
 #include "xos/mt/mach/mutex.hpp"
 #include "xos/mt/posix/mutex.hpp"
+#include "xos/mt/linux/mutex.hpp"
 #include "xos/mt/os/mutex.hpp"
+#include "xos/mt/mutex.hpp"
 
 namespace xos {
 namespace app {
@@ -69,13 +71,16 @@ protected:
             if (untimed) {
                 this->outlln(__LOCATION__, "::xos::lock lock(locked)...", NULL);
                 ::xos::lock lock(locked);
+                this->outlln(__LOCATION__, "...::xos::lock lock(locked)", NULL);
             } else {
                 if (0 < timeout) {
                     this->outlln(__LOCATION__, "::xos::lock lock(locked, timeout = ", unsigned_to_string(timeout).chars(), ")...", NULL);
                     ::xos::lock lock(locked, timeout);
+                    this->outlln(__LOCATION__, "...::xos::lock lock(locked, timeout = ", unsigned_to_string(timeout).chars(), ")", NULL);
                 } else {
                     this->outlln(__LOCATION__, "::xos::try_lock try_lock(locked)...", NULL);
                     ::xos::try_lock try_lock(locked);
+                    this->outlln(__LOCATION__, "...::xos::try_lock try_lock(locked)", NULL);
                 }
             }
             this->outlln(__LOCATION__, "...} try", NULL);
@@ -103,7 +108,9 @@ protected:
                 try {
                     this->outlln(__LOCATION__, "::xos::lock lock(mutex)...", NULL);
                     ::xos::lock lock(mutex);
-                    err = run(mutex);
+                    if ((err = run(mutex))) {
+                        err = 2;
+                    }
                     this->outlln(__LOCATION__, "...} try", NULL);
                 } catch (const exception& e) {
                     this->outlln(__LOCATION__, "...catch (const exception& e.status = \"", e.status_to_chars(), "\")", NULL);
@@ -111,6 +118,9 @@ protected:
                 } catch (...) {
                     this->outlln(__LOCATION__, "...catch (...)", NULL);
                     err = 1;
+                }
+                if (2 == (err)) {
+                    err = run(mutex);
                 }
             }
             this->outlln(__LOCATION__, "...} try", NULL);
@@ -141,6 +151,10 @@ protected:
         int err = this->run< ::xos::mt::mach::mutex >();
         return err;
     }
+    virtual int linux_run(int argc, char_t** argv, char_t** env) {
+        int err = this->run< ::xos::mt::linux::mutex >();
+        return err;
+    }
     virtual int posix_run(int argc, char_t** argv, char_t** env) {
         int err = this->run< ::xos::mt::posix::mutex >();
         return err;
@@ -151,6 +165,10 @@ protected:
     }
     virtual int derived_run(int argc, char_t** argv, char_t** env) {
         int err = this->run< ::xos::mt::derived::mutex >();
+        return err;
+    }
+    virtual int default_run(int argc, char_t** argv, char_t** env) {
+        int err = this->usage(argc, argv, env);
         return err;
     }
 }; /// class maint

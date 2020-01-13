@@ -1,3 +1,4 @@
+/*/
 ///////////////////////////////////////////////////////////////////////
 /// Copyright (c) 1988-2020 $organization$
 ///
@@ -13,32 +14,38 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: semaphores.cpp
+///   File: task.h
 ///
 /// Author: $author$
-///   Date: 1/6/2020
+///   Date: 1/11/2020
 ///////////////////////////////////////////////////////////////////////
-#include "xos/mt/semaphores.hpp"
-#include "xos/platform/os/platform/semaphore.cpp"
+/*/
+#ifndef XOS_PLATFORM_OS_MACH_TASK_H
+#define XOS_PLATFORM_OS_MACH_TASK_H
 
-#if defined(MACH) || defined(WINDOWS)
-#include "xos/platform/os/posix/semaphore.cpp"
-#endif /// defined(MACH) || defined(WINDOWS)
+#include "xos/platform/os/mach/mach.h"
 
-#if !defined(MACH)
-#include "xos/platform/os/mach/semaphore.cpp"
-#endif /// !defined(MACH)
+#if defined(__cplusplus)
+extern "C" {
+#endif /*/ defined(__cplusplus) /*/
 
-#if !defined(SOLARIS)
-#include "xos/platform/os/oracle/solaris/semaphore.cpp"
-#endif /// !defined(SOLARIS)
+#if !defined(MACH) && !defined(APPLEOS)
+/*/
+/// mach tasks
+/// ...
+/*/
+typedef mach_port_t task_t;
+typedef mach_port_t thread_t;
+extern mach_port_t mach_task_self(void);
+extern mach_port_t mach_thread_self(void);
+/*/
+/// mach tasks
+/// ...
+/*/
+#endif /*/ !defined(MACH) && !defined(APPLEOS) /*/
 
-#if !defined(WINDOWS)
-#include "xos/platform/os/microsoft/windows/Semaphore.cpp"
-#endif /// !defined(WINDOWS)
+#if defined(__cplusplus)
+} /*/ extern "C" /*/
+#endif /*/ defined(__cplusplus) /*/
 
-namespace xos {
-namespace mt {
-
-} /// namespace mt
-} /// namespace xos
+#endif /*/ ndef XOS_PLATFORM_OS_MACH_TASK_H /*/

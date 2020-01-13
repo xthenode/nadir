@@ -1,6 +1,6 @@
 /*/
 ///////////////////////////////////////////////////////////////////////
-/// Copyright (c) 1988-2019 $organization$
+/// Copyright (c) 1988-2020 $organization$
 ///
 /// This software is provided by the author and contributors ``as is'' 
 /// and any express or implied warranties, including, but not limited to, 
@@ -14,44 +14,52 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: mutex.h
+///   File: mach.h
 ///
 /// Author: $author$
-///   Date: 12/27/2019
+///   Date: 1/11/2020
 ///////////////////////////////////////////////////////////////////////
 /*/
-#ifndef XOS_PLATFORM_OS_ORACLE_SOLARIS_MUTEX_H
-#define XOS_PLATFORM_OS_ORACLE_SOLARIS_MUTEX_H
+#ifndef XOS_PLATFORM_OS_MACH_MACH_H
+#define XOS_PLATFORM_OS_MACH_MACH_H
 
-#include "xos/platform/os/oracle/solaris/sync.h"
+#include "xos/platform/os/mach/kern.h"
 
 #if defined(__cplusplus)
 extern "C" {
 #endif /*/ defined(__cplusplus) /*/
 
+#if !defined(MACH) && !defined(APPLEOS)
 /*/
-/// enum lock_t
+/// mach
+/// ...
 /*/
-typedef int lock_t;
-enum {
-    LOCK_ROBUST,
-    LOCK_RECURSIVE,
-    LOCK_ERRORCHECK,
-    LOCK_PRIO_INHERIT,
-    LOCK_PRIO_PROTECT
-}; /*/ enum lock_t /*/
+typedef pointer_t mach_port_t;
 
-typedef void* mutex_t;
-extern int mutex_init(mutex_t *mp, int type, void *arg);
-extern int mutex_destroy(mutex_t *mp);
-extern int mutex_lock(mutex_t *mp);
-extern int mutex_unlock(mutex_t *mp);
-extern int mutex_trylock(mutex_t *mp);
-extern int mutex_timedlock(mutex_t *mp, timestruc_t *abstime);
-extern int mutex_reltimedlock(mutex_t *mp, timestruc_t *reltime);
+typedef int clock_res_t; /* clock resolution type */
+struct mach_timespec {
+    unsigned int    tv_sec;  /* seconds */
+    clock_res_t     tv_nsec; /* nanoseconds */
+};
+typedef struct mach_timespec mach_timespec_t;
+
+typedef int sync_policy_t;
+enum {
+    SYNC_POLICY_FIFO           = 0x0,
+    SYNC_POLICY_FIXED_PRIORITY = 0x1,
+    SYNC_POLICY_REVERSED       = 0x2,
+    SYNC_POLICY_ORDER_MASK     = 0x3,
+    SYNC_POLICY_LIFO           = (SYNC_POLICY_FIFO|SYNC_POLICY_REVERSED),
+    SYNC_POLICY_MAX            = 0x7
+};
+/*/
+/// ...
+/// mach
+/*/
+#endif /*/ !defined(MACH) && !defined(APPLEOS) /*/
 
 #if defined(__cplusplus)
 } /*/ extern "C" /*/
 #endif /*/ defined(__cplusplus) /*/
 
-#endif /*/ ndef XOS_PLATFORM_OS_ORACLE_SOLARIS_MUTEX_H /*/
+#endif /*/ ndef XOS_PLATFORM_OS_MACH_MACH_H /*/
