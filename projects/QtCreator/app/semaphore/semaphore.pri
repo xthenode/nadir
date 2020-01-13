@@ -63,10 +63,26 @@ $${NADIR_SRC}/xos/platform/os/microsoft/windows/Semaphore.h \
 $${NADIR_SRC}/xos/platform/os/microsoft/windows/Semaphore.hpp \
 $${NADIR_SRC}/xos/platform/os/microsoft/windows/io.h \
 $${NADIR_SRC}/xos/platform/os/microsoft/windows/io.hpp \
+$${NADIR_SRC}/xos/platform/os/oracle/solaris/time.h \
+$${NADIR_SRC}/xos/platform/os/oracle/solaris/time.hpp \
+$${NADIR_SRC}/xos/platform/os/oracle/solaris/sync.h \
+$${NADIR_SRC}/xos/platform/os/oracle/solaris/sync.hpp \
+$${NADIR_SRC}/xos/platform/os/oracle/solaris/semaphore.h \
+$${NADIR_SRC}/xos/platform/os/oracle/solaris/semaphore.hpp \
+$${NADIR_SRC}/xos/platform/os/mach/semaphore.h \
+$${NADIR_SRC}/xos/platform/os/mach/semaphore.hpp \
+$${NADIR_SRC}/xos/platform/os/apple/mach/semaphore.h \
+$${NADIR_SRC}/xos/platform/os/apple/mach/semaphore.hpp \
+$${NADIR_SRC}/xos/platform/os/posix/semaphore.h \
+$${NADIR_SRC}/xos/platform/os/posix/semaphore.hpp \
 $${NADIR_SRC}/xos/platform/os/oses.hpp \
+$${NADIR_SRC}/xos/mt/microsoft/windows/semaphore.hpp \
+$${NADIR_SRC}/xos/mt/oracle/solaris/semaphore.hpp \
 $${NADIR_SRC}/xos/mt/apple/mach/semaphore.hpp \
 $${NADIR_SRC}/xos/mt/apple/osx/semaphore.hpp \
-$${NADIR_SRC}/xos/mt/microsoft/windows/semaphore.hpp \
+$${NADIR_SRC}/xos/mt/mach/semaphore.hpp \
+$${NADIR_SRC}/xos/mt/linux/semaphore.hpp \
+$${NADIR_SRC}/xos/mt/posix/semaphore.hpp \
 $${NADIR_SRC}/xos/mt/os/semaphore.hpp \
 $${NADIR_SRC}/xos/mt/semaphore.hpp \
 $${NADIR_SRC}/xos/mt/semaphores.hpp \
@@ -85,7 +101,7 @@ $${NADIR_SRC}/xos/base/acquired.cpp \
 \
 $${NADIR_SRC}/xos/platform/os/oses.cpp \
 \
-$${NADIR_SRC}/xos/mt/microsoft/windows/Semaphore.cpp \
+$${NADIR_SRC}/xos/mt/os/semaphore.cpp \
 $${NADIR_SRC}/xos/mt/semaphores.cpp \
 \
 $${NADIR_SRC}/xos/console/io.cpp \

@@ -78,6 +78,15 @@ $${NADIR_SRC}/xos/platform/os/oracle/solaris/time.hpp \
 $${NADIR_SRC}/xos/platform/os/oracle/solaris/mutex.h \
 $${NADIR_SRC}/xos/platform/os/oracle/solaris/mutex.hpp \
 \
+$${NADIR_SRC}/xos/platform/os/mach/kern.h \
+$${NADIR_SRC}/xos/platform/os/mach/kern.hpp \
+$${NADIR_SRC}/xos/platform/os/mach/mach.h \
+$${NADIR_SRC}/xos/platform/os/mach/mach.hpp \
+$${NADIR_SRC}/xos/platform/os/mach/task.h \
+$${NADIR_SRC}/xos/platform/os/mach/task.hpp \
+$${NADIR_SRC}/xos/platform/os/mach/lock_set.h \
+$${NADIR_SRC}/xos/platform/os/mach/lock_set.hpp \
+\
 $${NADIR_SRC}/xos/platform/os/platform/mutex.h \
 $${NADIR_SRC}/xos/platform/os/platform/mutex.hpp \
 \
@@ -126,10 +135,7 @@ $${NADIR_SRC}/xos/app/console/mutex/main.hpp \
 # mutex SOURCES
 #
 mutex_SOURCES += \
-$${NADIR_SRC}/xos/platform/os/microsoft/windows/Handle.cpp \
-$${NADIR_SRC}/xos/platform/os/microsoft/windows/Mutex.cpp \
-\
-$${NADIR_SRC}/xos/platform/os/oracle/solaris/time.cpp \
+$${NADIR_SRC}/xos/platform/os/oses.cpp \
 \
 $${NADIR_SRC}/xos/base/exception.cpp \
 $${NADIR_SRC}/xos/base/attached.cpp \
@@ -137,8 +143,8 @@ $${NADIR_SRC}/xos/base/created.cpp \
 $${NADIR_SRC}/xos/base/locked.cpp \
 $${NADIR_SRC}/xos/base/logged.cpp \
 \
-$${NADIR_SRC}/xos/mt/posix/timed.cpp \
 $${NADIR_SRC}/xos/mt/os/os.cpp \
+$${NADIR_SRC}/xos/mt/os/mutex.cpp \
 $${NADIR_SRC}/xos/mt/mutexes.cpp \
 \
 $${NADIR_SRC}/xos/logger/level.cpp \

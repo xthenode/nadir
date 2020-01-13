@@ -63,6 +63,7 @@ $${NADIR_SRC}/xos/base/logger.hpp \
 $${NADIR_SRC}/xos/mt/mutex.hpp \
 $${NADIR_SRC}/xos/mt/posix/timed.hpp \
 $${NADIR_SRC}/xos/mt/posix/mutex.hpp \
+$${NADIR_SRC}/xos/mt/linux/mutex.hpp \
 $${NADIR_SRC}/xos/mt/apple/osx/mutex.hpp \
 $${NADIR_SRC}/xos/mt/os/mutex.hpp \
 $${NADIR_SRC}/xos/mt/os/os.hpp \
