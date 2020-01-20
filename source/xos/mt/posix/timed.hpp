@@ -43,7 +43,7 @@
 #define CLOCK_HAS_GETTIME
 inline int clock_gettime(clockid_t clk_id, struct timespec *res) {
     if ((res) && (CLOCK_REALTIME == clk_id)) {
-        int err = 0;
+        int err = EFAULT;
         struct timeval tv;
         if ((err = gettimeofday(&tv, NULL))) {
             res->tv_sec = 0;

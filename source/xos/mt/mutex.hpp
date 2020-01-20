@@ -309,6 +309,11 @@ public:
         return false;
     }
 
+    /// wrapped
+    virtual const mutex_t& wrapped() const {
+        return mutex_;
+    }
+
 protected:
     mutex_t mutex_;
 }; /// class mutext
