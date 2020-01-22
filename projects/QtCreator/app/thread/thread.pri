@@ -53,8 +53,19 @@ $${nadir_DEFINES} \
 # thread HEADERS
 #
 thread_HEADERS += \
+$${NADIR_SRC}/xos/base/ran.hpp \
+$${NADIR_SRC}/xos/base/suspended.hpp \
+$${NADIR_SRC}/xos/base/resumed.hpp \
 $${NADIR_SRC}/xos/base/forked.hpp \
 $${NADIR_SRC}/xos/base/joined.hpp \
+\
+$${NADIR_SRC}/xos/platform/thread.h \
+$${NADIR_SRC}/xos/platform/thread.hpp \
+$${NADIR_SRC}/xos/platform/os/platform/thread.hpp \
+$${NADIR_SRC}/xos/mt/thread.hpp \
+$${NADIR_SRC}/xos/mt/posix/thread.hpp \
+$${NADIR_SRC}/xos/mt/os/thread.hpp \
+$${NADIR_SRC}/xos/mt/threads.hpp \
 \
 $${NADIR_SRC}/xos/console/io.hpp \
 $${NADIR_SRC}/xos/console/main_main.hpp \
@@ -64,8 +75,15 @@ $${NADIR_SRC}/xos/app/console/thread/main.hpp \
 # thread SOURCES
 #
 thread_SOURCES += \
+$${NADIR_SRC}/xos/base/ran.cpp \
+$${NADIR_SRC}/xos/base/suspended.cpp \
+$${NADIR_SRC}/xos/base/resumed.cpp \
 $${NADIR_SRC}/xos/base/forked.cpp \
 $${NADIR_SRC}/xos/base/joined.cpp \
+\
+$${NADIR_SRC}/xos/mt/mutexes.cpp \
+$${NADIR_SRC}/xos/mt/os/thread.cpp \
+$${NADIR_SRC}/xos/mt/threads.cpp \
 \
 $${NADIR_SRC}/xos/console/io.cpp \
 $${NADIR_SRC}/xos/console/main_main.cpp \
