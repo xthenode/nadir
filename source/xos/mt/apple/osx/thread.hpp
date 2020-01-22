@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////
-/// Copyright (c) 1988-2019 $organization$
+/// Copyright (c) 1988-2020 $organization$
 ///
 /// This software is provided by the author and contributors ``as is'' 
 /// and any express or implied warranties, including, but not limited to, 
@@ -13,30 +13,26 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: threads.cpp
+///   File: thread.hpp
 ///
 /// Author: $author$
-///   Date: 1/14/2020
+///   Date: 1/21/2020
 ///////////////////////////////////////////////////////////////////////
-#include "xos/mt/threads.hpp"
-#include "xos/platform/os/platform/thread.cpp"
+#ifndef _XOS_MT_APPLE_OSX_THREAD_HPP_
+#define _XOS_MT_APPLE_OSX_THREAD_HPP_
 
-/*/
-#if !defined(WINDOWS)
-#include "xos/platform/os/microsoft/windows/thread.cpp"
-#endif /// !defined(WINDOWS)
-
-#if !defined(SOLARIS)
-#include "xos/platform/os/oracle/solaris/thread.cpp"
-#endif /// !defined(SOLARIS)
-
-#if !defined(MACH) || defined(APPLE)
-#include "xos/platform/os/mach/thread.cpp"
-#endif /// !defined(MACH) || defined(APPLE)
-/*/
+#include "xos/mt/posix/thread.hpp"
 
 namespace xos {
 namespace mt {
+namespace apple {
+namespace osx {
 
+typedef posix::thread thread;
+
+} /// namespace osx
+} /// namespace apple
 } /// namespace mt
 } /// namespace xos
+
+#endif /// _XOS_MT_APPLE_OSX_THREAD_HPP_

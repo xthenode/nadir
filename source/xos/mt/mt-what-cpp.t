@@ -86,6 +86,10 @@ namespace extended {
 /// class %What%t
 } /// namespace extended
 
+namespace derive {
+/// class %What%t
+} /// namespace derive
+
 namespace derived {
 /// class %What%t
 } /// namespace derived

@@ -13,30 +13,17 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: threads.cpp
+///   File: suspended.cpp
 ///
 /// Author: $author$
-///   Date: 1/14/2020
+///   Date: 1/21/2020
 ///////////////////////////////////////////////////////////////////////
-#include "xos/mt/threads.hpp"
-#include "xos/platform/os/platform/thread.cpp"
-
-/*/
-#if !defined(WINDOWS)
-#include "xos/platform/os/microsoft/windows/thread.cpp"
-#endif /// !defined(WINDOWS)
-
-#if !defined(SOLARIS)
-#include "xos/platform/os/oracle/solaris/thread.cpp"
-#endif /// !defined(SOLARIS)
-
-#if !defined(MACH) || defined(APPLE)
-#include "xos/platform/os/mach/thread.cpp"
-#endif /// !defined(MACH) || defined(APPLE)
-/*/
+#include "xos/base/suspended.hpp"
 
 namespace xos {
-namespace mt {
 
-} /// namespace mt
+/// class suspendedt 
+
+/// class suspendt
+
 } /// namespace xos

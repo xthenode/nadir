@@ -13,7 +13,7 @@
 %# or otherwise) arising in any way out of the use of this software, 
 %# even if advised of the possibility of such damage.
 %#
-%#   File: platform-what-cpp.t
+%#   File: platform-what-hpp.t
 %#
 %# Author: $author$
 %#   Date: 1/15/2020
@@ -75,16 +75,25 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: %What%.cpp
+///   File: %What%.hpp
 ///
 /// Author: $author$
 ///   Date: %date()%
 ///////////////////////////////////////////////////////////////////////
-#include "xos/platform/%What%.hpp"
+#ifndef XOS_PLATFORM_OS_PLATFORM_%WHAT%_HPP
+#define XOS_PLATFORM_OS_PLATFORM_%WHAT%_HPP
+
+#include "xos/platform/%What%.h"
 
 namespace xos {
 namespace platform {
+namespace os {
+namespace platform {
 
 } /// namespace platform
+} /// namespace os
+} /// namespace platform
 } /// namespace xos
+
+#endif /// ndef XOS_PLATFORM_OS_PLATFORM_%WHAT%_HPP
 )%)%

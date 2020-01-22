@@ -22,6 +22,15 @@
 #define XOS_APP_CONSOLE_THREAD_MAIN_HPP
 
 #include "xos/app/console/thread/main_opt.hpp"
+#include "xos/mt/apple/osx/mutex.hpp"
+#include "xos/mt/apple/osx/thread.hpp"
+#include "xos/mt/linux/mutex.hpp"
+#include "xos/mt/linux/thread.hpp"
+#include "xos/mt/posix/mutex.hpp"
+#include "xos/mt/posix/thread.hpp"
+#include "xos/mt/os/mutex.hpp"
+#include "xos/mt/os/thread.hpp"
+#include "xos/mt/thread.hpp"
 
 namespace xos {
 namespace app {
@@ -30,10 +39,11 @@ namespace thread {
 
 /// class maint
 template 
-<class TExtends = main_opt, 
+<class TRan = ran,
+ class TExtends = main_opt, 
  class TImplements = typename TExtends::implements>
 
-class exported maint: virtual public TImplements, public TExtends {
+class exported maint: virtual public TRan, virtual public TImplements, public TExtends {
 public:
     typedef TImplements implements;
     typedef TExtends extends;
@@ -44,17 +54,31 @@ public:
     enum { end_char = extends::end_char };
 
     /// constructor / destructor
-    maint() {
+    maint(): locked_(0) {
     }
     virtual ~maint() {
     }
 private:
-    maint(const maint& copy) {
+    maint(const maint& copy): locked_(0) {
     }
 
 protected:
     /// run
-    /*/
+    virtual pointer_t run(pointer_t parameter) {
+        pointer_t result = 0;
+        mseconds_t mseconds = 0;
+        bool untimed = this->infinite_sleep(mseconds);
+        this->outlln(__LOCATION__, "...parameter = ", pointer_to_string(result).chars(), "...", NULL);
+        if (!untimed) {
+            useconds_t useconds = mseconds_useconds(mseconds);
+            this->outlln(__LOCATION__, "usleep(useconds = ", unsigned_to_string(useconds).chars(), ")...", NULL);
+            usleep(useconds);
+            this->outlln(__LOCATION__, "...usleep(useconds)", unsigned_to_string(useconds).chars(), NULL);
+        }
+        return result;
+    }
+
+    /// run
     int run(::xos::joined& joined) {
         int err = 0;
         mseconds_t timeout = 0;
@@ -86,15 +110,18 @@ protected:
         }
         return err;
     }
-    template <class TThread>
+    template <class TMutex, class TThread>
     int run() {
         int err = 0;
         mseconds_t timeout = 0;
         bool untimed = this->infinite_timeout(timeout);
         this->outlln(__LOCATION__, "try {...", NULL);
         try {
+            this->outlln(__LOCATION__, "TMutex mutex...", NULL);
+            TMutex mutex;
+            locked_ = &mutex;
             this->outlln(__LOCATION__, "TThread thread...", NULL);
-            TThread thread;
+            TThread thread(*this);
             if (untimed) {
                 err = run(thread);
             } else {
@@ -112,9 +139,6 @@ protected:
                     this->outlln(__LOCATION__, "...catch (...)", NULL);
                     err = 1;
                 }
-                if (2 == (err)) {
-                    err = run(thread);
-                }
             }
             this->outlln(__LOCATION__, "...} try", NULL);
         } catch (const exception& e) {
@@ -124,49 +148,78 @@ protected:
             this->outlln(__LOCATION__, "...catch (...)", NULL);
             err = 1;
         }
+        locked_ = 0;
         return err;
     }
-    /*/
     
     /// ...run
     /*/
     virtual int windows_run(int argc, char_t** argv, char_t** env) {
-        int err = this->run< ::xos::mt::microsoft::windows::thread >();
-        return err;
-    }
-    virtual int osx_run(int argc, char_t** argv, char_t** env) {
-        int err = this->run< ::xos::mt::apple::osx::thread >();
+        int err = this->run< ::xos::mt::microsoft::windows::mutex, ::xos::mt::microsoft::windows::thread >();
         return err;
     }
     virtual int solaris_run(int argc, char_t** argv, char_t** env) {
-        int err = this->run< ::xos::mt::oracle::solaris::thread >();
+        int err = this->run< ::xos::mt::oracle::solaris::mutex, ::xos::mt::oracle::solaris::thread >();
         return err;
     }
     virtual int mach_run(int argc, char_t** argv, char_t** env) {
-        int err = this->run< ::xos::mt::mach::thread >();
-        return err;
-    }
-    virtual int linux_run(int argc, char_t** argv, char_t** env) {
-        int err = this->run< ::xos::mt::linux::thread >();
-        return err;
-    }
-    virtual int posix_run(int argc, char_t** argv, char_t** env) {
-        int err = this->run< ::xos::mt::posix::thread >();
-        return err;
-    }
-    virtual int os_run(int argc, char_t** argv, char_t** env) {
-        int err = this->run< ::xos::mt::os::thread >();
-        return err;
-    }
-    virtual int derived_run(int argc, char_t** argv, char_t** env) {
-        int err = this->run< ::xos::mt::derived::thread >();
+        int err = this->run< ::xos::mt::mach::mutex, ::xos::mt::mach::thread >();
         return err;
     }
     /*/
+    virtual int osx_run(int argc, char_t** argv, char_t** env) {
+        int err = this->run< ::xos::mt::apple::osx::mutex, ::xos::mt::apple::osx::thread >();
+        return err;
+    }
+    virtual int linux_run(int argc, char_t** argv, char_t** env) {
+        int err = this->run< ::xos::mt::linux::mutex, ::xos::mt::linux::thread >();
+        return err;
+    }
+    virtual int posix_run(int argc, char_t** argv, char_t** env) {
+        int err = this->run< ::xos::mt::posix::mutex, ::xos::mt::posix::thread >();
+        return err;
+    }
+    virtual int os_run(int argc, char_t** argv, char_t** env) {
+        int err = this->run< ::xos::mt::os::mutex, ::xos::mt::os::thread >();
+        return err;
+    }
+    virtual int derived_run(int argc, char_t** argv, char_t** env) {
+        int err = this->run< ::xos::mt::derived::mutex, ::xos::mt::derived::thread >();
+        return err;
+    }
     virtual int default_run(int argc, char_t** argv, char_t** env) {
         int err = this->usage(argc, argv, env);
         return err;
     }
+
+    /// out...
+    virtual ssize_t outllnv(const char_t *what, va_list va) {
+        ssize_t count = 0;
+        try {
+            xos::lock lock(*this);
+            count = extends::outllnv(what, va);
+        } catch (...) {
+            count = -1;
+        }
+        return count;
+    }
+    
+    /// lock / unlock
+    virtual bool lock() {
+        if ((locked_)) {
+            return locked_->lock();
+        }
+        return true;
+    }
+    virtual bool unlock() {
+        if ((locked_)) {
+            return locked_->unlock();
+        }
+        return true;
+    }
+
+protected:
+    xos::locked* locked_;
 }; /// class maint
 typedef maint<> main;
 

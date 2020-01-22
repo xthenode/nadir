@@ -90,8 +90,17 @@ public:
     };
     
     /// join...
+    virtual bool joined() {
+        if ((is_forked())) {
+            return join();
+        }
+        return true;
+    }
     virtual bool join() {
         return (join_success == untimed_join());
+    }
+    virtual join_status time_join(mseconds_t milliseconds) {
+        return join_success;
     }
     virtual join_status timed_join(mseconds_t milliseconds) {
         return join_success;
@@ -101,6 +110,14 @@ public:
     }
     virtual join_status try_join() {
         return join_success;
+    }
+    
+    /// ...is_forked
+    virtual bool set_is_forked(bool to = true) {
+        return is_forked();
+    }
+    virtual bool is_forked() const {
+        return false;
     }
 }; /// class joinedt
 typedef joinedt<> joined;

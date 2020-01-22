@@ -147,19 +147,17 @@ public:
 typedef %What%t<> %What%;
 } /// namespace extended
 
-namespace derived {
+namespace derive {
 /// class %What%t
 template 
-<typename TWhat = platform_%What%_t,
- typename TAttr = platform_%What%_attr_t,
- TAttr VAttrNone = platform_%What%_attr_none,
+<typename T%What% = platform_%What%_t,
  typename TError = platform_%What%_error_t,
  TError VErrorSuccess = platform_%What%_error_success,
  TError VErrorFailed = platform_%What%_error_failed,
  TError VErrorBusy = platform_%What%_error_busy,
  TError VErrorTimeout = platform_%What%_error_timeout,
  TError VErrorInterrupted = platform_%What%_error_interrupted,
- class TExtends = mt::extended::%What%t<TWhat*>, 
+ class TExtends = mt::extended::%What%t<T%What%*>, 
  class TImplements = typename TExtends::implements>
 class exported %What%t: virtual public TImplements, public TExtends {
 public:
@@ -167,9 +165,147 @@ public:
     typedef TExtends extends;
     typedef %What%t derives;
     
-    typedef TWhat %What%_t;
-    typedef TAttr %What%_attr_t;
-    enum { %What%_attr_none = VAttrNone };
+    typedef T%What% %What%_t;
+
+    typedef TError error_t;
+    enum { error_success = VErrorSuccess,
+           error_failed = VErrorFailed,
+           error_busy = VErrorBusy,
+           error_timeout = VErrorTimeout,
+           error_interrupted = VErrorInterrupted };
+
+    typedef typename extends::attached_t attached_t;
+    typedef typename extends::unattached_t unattached_t;
+    enum { unattached = extends::unattached };
+
+    /// constructor / destructor
+    %What%t(attached_t detached, bool is_created, bool is_logged): extends(detached, is_created, is_logged) {
+    }
+    %What%t(attached_t detached, bool is_created): extends(detached, is_created) {
+    }
+    %What%t(attached_t detached): extends(detached) {
+    }
+    %What%t(bool is_logged): extends(is_logged) {
+    }
+    %What%t(const %What%t& copy): extends(copy) {
+    }
+    %What%t() {
+    }
+    virtual ~%What%t() {
+    }
+
+    /// ...%Do%... / ...%Undo%...
+    virtual %Do%_status time_%Do%(mseconds_t milliseconds) {
+        attached_t detached = 0;
+        if ((detached = this->attached_to())) {
+            return time_%Do%_detached(*detached, milliseconds);
+        }
+        return %Do%_failed;
+    }
+    virtual %Do%_status timed_%Do%(mseconds_t milliseconds) {
+        attached_t detached = 0;
+        if ((detached = this->attached_to())) {
+            return timed_%Do%_detached(*detached, milliseconds);
+        }
+        return %Do%_failed;
+    }
+    virtual %Do%_status untimed_%Do%() {
+        attached_t detached = 0;
+        if ((detached = this->attached_to())) {
+            return untimed_%Do%_detached(*detached);
+        }
+        return %Do%_failed;
+    }
+    virtual %Do%_status try_%Do%() {
+        attached_t detached = 0;
+        if ((detached = this->attached_to())) {
+            return try_%Do%_detached(*detached);
+        }
+        return %Do%_failed;
+    }
+    virtual bool %Undo%() {
+        attached_t detached = 0;
+        if ((detached = this->attached_to())) {
+            return %Undo%_detached(*detached);
+        }
+        return false;
+    }
+
+    /// ...%Do%_detached... / ...%Undo%_detached...
+    virtual bool %Do%_detached(%What%_t& _%What%) const { 
+        return (%Do%_success == (untimed_%Do%_detached(_%What%))); 
+    }
+    virtual %Do%_status timed_%Do%_detached(%What%_t& _%What%, mseconds_t milliseconds) const { 
+        if (0 < (milliseconds)) {
+        } else {
+            if (0 > (milliseconds)) {
+                return untimed_%Do%_detached(_%What%);
+            } else {
+                return try_%Do%_detached(_%What%);
+            }
+        }
+        return %Do%_failed; 
+    }
+    virtual %Do%_status try_%Do%_detached(%What%_t& _%What%) const { 
+        return %Do%_failed; 
+    }
+    virtual %Do%_status untimed_%Do%_detached(%What%_t& _%What%) const { 
+        return %Do%_failed; 
+    }
+    virtual bool %Undo%_detached(%What%_t& _%What%) const { 
+        return false; 
+    }
+
+    /// ...create... / ...destroy...
+    virtual attached_t create_attached() {
+        attached_t detached = (attached_t)(unattached);
+        if ((this->destroyed())) {
+            if (((attached_t)(unattached) != (detached = create_detached(%What%_)))) {
+                this->attach(detached);
+            }
+        }
+        return detached;
+    }
+    virtual attached_t create_detached(%What%_t& _%What%) const {
+        attached_t detached = (attached_t)(unattached);
+        return detached;
+    }
+    virtual bool destroy_detached(%What%_t& _%What%) const {
+        return false;
+    }
+
+protected:
+    %What%_t %What%_;
+}; /// class %What%t
+typedef %What%t<> %What%;
+} /// namespace derive
+
+namespace derived {
+/// class %What%t
+template 
+<typename T%What% = platform_%What%_t,
+ typename T%What%Attr = platform_%What%_attr_t,
+ typename T%What%AttrNone = platform_%What%_attr_none_t,
+ T%What%AttrNone V%What%AttrNone = platform_%What%_attr_none,
+ typename TError = platform_%What%_error_t,
+ TError VErrorSuccess = platform_%What%_error_success,
+ TError VErrorFailed = platform_%What%_error_failed,
+ TError VErrorBusy = platform_%What%_error_busy,
+ TError VErrorTimeout = platform_%What%_error_timeout,
+ TError VErrorInterrupted = platform_%What%_error_interrupted,
+ class TExtends = mt::derive::%What%t
+ <TWhat, TError, VErrorSuccess, VErrorFailed, VErrorBusy, VErrorTimeout, VErrorInterrupted>, 
+ class TImplements = typename TExtends::implements>
+class exported %What%t: virtual public TImplements, public TExtends {
+public:
+    typedef TImplements implements;
+    typedef TExtends extends;
+    typedef %What%t derives;
+    
+    typedef T%What% %What%_t;
+    typedef T%What%Attr %What%_attr_t;
+    typedef T%What%AttrNone %What%_attr_none_t;
+    enum { %What%_attr_none = V%What%AttrNone };
     typedef TError error_t;
     enum { error_success = VErrorSuccess,
            error_failed = VErrorFailed,
@@ -208,49 +344,11 @@ public:
         }
     }
 
-    /// ...%Do%... / ...%Undo%...
-    virtual %Do%_status timed_%Do%(mseconds_t milliseconds) {
-        attached_t detached = 0;
-        if ((detached = this->attached_to())) {
-            return timed_%Do%_detached(detached, milliseconds);
-        }
-        return %Do%_failed;
-    }
-    virtual %Do%_status untimed_%Do%() {
-        attached_t detached = 0;
-        if ((detached = this->attached_to())) {
-            return untimed_%Do%_detached(detached);
-        }
-        return %Do%_failed;
-    }
-    virtual %Do%_status try_%Do%() {
-        attached_t detached = 0;
-        if ((detached = this->attached_to())) {
-            return try_%Do%_detached(detached);
-        }
-        return %Do%_failed;
-    }
-    virtual bool %Undo%() {
-        attached_t detached = 0;
-        if ((detached = this->attached_to())) {
-            return %Undo%_detached(detached);
-        }
-        return false;
-    }
-
     /// ...%Do%_detached... / ...%Undo%_detached...
-    virtual bool %Do%_detached(attached_t detached) const { 
-        return (%Do%_success == (untimed_%Do%_detached(detached))); 
+    virtual %Do%_status time_%Do%_detached(attached_t detached, mseconds_t milliseconds) const { 
+        return %Do%_failed; 
     }
     virtual %Do%_status timed_%Do%_detached(attached_t detached, mseconds_t milliseconds) const { 
-        if (0 < (milliseconds)) {
-        } else {
-            if (0 > (milliseconds)) {
-                return untimed_%Do%_detached(detached);
-            } else {
-                return try_%Do%_detached(detached);
-            }
-        }
         return %Do%_failed; 
     }
     virtual %Do%_status try_%Do%_detached(attached_t detached) const { 
@@ -264,22 +362,11 @@ public:
     }
 
     /// ...create... / ...destroy...
-    virtual attached_t create_attached() {
-        attached_t detached = (attached_t)(unattached);
-        if ((this->destroyed())) {
-            if (((attached_t)(unattached) != (detached = create_detached()))) {
-                this->attach(detached);
-            }
-        }
-        return detached;
-    }
-    virtual attached_t create_detached() const {
+    virtual attached_t create_detached(%What%_t& _%What%) const {
         attached_t detached = (attached_t)(unattached);
         return detached;
     }
-    virtual bool destroy_detached(attached_t detached) const {
-        if ((attached_t)(unattached) != (detached)) {
-        }
+    virtual bool destroy_detached(%What%_t& _%What%) const {
         return false;
     }
 }; /// class %What%t

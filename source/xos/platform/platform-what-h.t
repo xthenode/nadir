@@ -88,12 +88,13 @@
 #include "xos/platform/os.h"
 
 typedef pointer_t %Platform%_%What%_t;
+typedef pointer_t %Platform%_%What%_attr_t;
 
-/*/ enum %Platform%_%What%_attr_t /*/
-typedef int %Platform%_%What%_attr_t;
+/*/ enum %Platform%_%What%_attr_none_t /*/
+typedef int %Platform%_%What%_attr_none_t;
 enum {
     %Platform%_%What%_attr_none = 0
-}; /*/ enum %Platform%_%What%_attr_t /*/
+}; /*/ enum %Platform%_%What%_attr_none_t /*/
 
 /*/ enum %Platform%_%What%_error_t /*/ 
 typedef int %Platform%_%What%_error_t;

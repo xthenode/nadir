@@ -80,11 +80,37 @@
 /// Author: $author$
 ///   Date: %date()%
 ///////////////////////////////////////////////////////////////////////
-#include "xos/platform/%What%.hpp"
+#include "xos/platform/os/platform/%What%.hpp"
 
 namespace xos {
 namespace platform {
+namespace os {
+namespace platform {
 
 } /// namespace platform
+} /// namespace os
+} /// namespace platform
 } /// namespace xos
+
+%Platform%_%What%_error_t %Platform%_%What%_create(%Platform%_%What%_t* %What%, %Platform%_%What%_attr_t attr) {
+    return %Platform%_%What%_error_failed;
+}
+%Platform%_%What%_error_t %Platform%_%What%_destroy(%Platform%_%What%_t* %What%) {
+    return %Platform%_%What%_error_failed;
+}
+%Platform%_%What%_error_t %Platform%_%What%_%Do%(%Platform%_%What%_t* %What%) {
+    return %Platform%_%What%_error_failed;
+}
+%Platform%_%What%_error_t %Platform%_%What%_time_%Do%(%Platform%_%What%_t* %What%, %Platform%_%What%_timeout_t* timeout) {
+    return %Platform%_%What%_error_failed;
+}
+%Platform%_%What%_error_t %Platform%_%What%_timed_%Do%(%Platform%_%What%_t* %What%, %Platform%_%What%_timeout_t* timeout) {
+    return %Platform%_%What%_error_failed;
+}
+%Platform%_%What%_error_t %Platform%_%What%_try_%Do%(%Platform%_%What%_t* %What%) {
+    return %Platform%_%What%_error_failed;
+}
+%Platform%_%What%_error_t %Platform%_%What%_%Undo%(%Platform%_%What%_t* %What%) {
+    return %Platform%_%What%_error_failed;
+}
 )%)%

@@ -13,30 +13,24 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: threads.cpp
+///   File: thread.hpp
 ///
 /// Author: $author$
-///   Date: 1/14/2020
+///   Date: 1/20/2020
 ///////////////////////////////////////////////////////////////////////
-#include "xos/mt/threads.hpp"
-#include "xos/platform/os/platform/thread.cpp"
+#ifndef XOS_PLATFORM_OS_PLATFORM_THREAD_HPP
+#define XOS_PLATFORM_OS_PLATFORM_THREAD_HPP
 
-/*/
-#if !defined(WINDOWS)
-#include "xos/platform/os/microsoft/windows/thread.cpp"
-#endif /// !defined(WINDOWS)
-
-#if !defined(SOLARIS)
-#include "xos/platform/os/oracle/solaris/thread.cpp"
-#endif /// !defined(SOLARIS)
-
-#if !defined(MACH) || defined(APPLE)
-#include "xos/platform/os/mach/thread.cpp"
-#endif /// !defined(MACH) || defined(APPLE)
-/*/
+#include "xos/platform/thread.hpp"
 
 namespace xos {
-namespace mt {
+namespace platform {
+namespace os {
+namespace platform {
 
-} /// namespace mt
+} /// namespace platform
+} /// namespace os
+} /// namespace platform
 } /// namespace xos
+
+#endif /// ndef XOS_PLATFORM_OS_PLATFORM_THREAD_HPP

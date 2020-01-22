@@ -13,30 +13,40 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: threads.cpp
+///   File: thread.hpp
 ///
 /// Author: $author$
-///   Date: 1/14/2020
+///   Date: 1/21/2020
 ///////////////////////////////////////////////////////////////////////
-#include "xos/mt/threads.hpp"
-#include "xos/platform/os/platform/thread.cpp"
+#ifndef XOS_MT_OS_THREAD_HPP
+#define XOS_MT_OS_THREAD_HPP
 
-/*/
-#if !defined(WINDOWS)
-#include "xos/platform/os/microsoft/windows/thread.cpp"
-#endif /// !defined(WINDOWS)
+#include "xos/mt/os/os.hpp"
 
-#if !defined(SOLARIS)
-#include "xos/platform/os/oracle/solaris/thread.cpp"
-#endif /// !defined(SOLARIS)
-
-#if !defined(MACH) || defined(APPLE)
-#include "xos/platform/os/mach/thread.cpp"
-#endif /// !defined(MACH) || defined(APPLE)
-/*/
+#if defined(WINDOWS)  
+#include "xos/mt/microsoft/windows/thread.hpp"
+#elif defined(APPLEOSX)  
+#include "xos/mt/apple/osx/thread.hpp"
+#elif defined(APPLEIOS)  
+#include "xos/mt/apple/ios/thread.hpp"
+#elif defined(SOLARIS)  
+#include "xos/mt/oracle/solaris/thread.hpp"
+#elif defined(MACH)  
+#include "xos/mt/mach/thread.hpp"
+#elif defined(LINUX)  
+#include "xos/mt/linux/thread.hpp"
+#else /// defined(LINUX)  
+#include "xos/mt/posix/thread.hpp"
+#endif /// defined(LINUX) 
 
 namespace xos {
 namespace mt {
+namespace os {
 
+typedef os::thread thread;
+
+} /// namespace os
 } /// namespace mt
 } /// namespace xos
+
+#endif /// ndef XOS_MT_OS_THREAD_HPP
