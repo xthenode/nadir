@@ -62,6 +62,8 @@ $${NADIR_SRC}/xos/base/joined.hpp \
 $${NADIR_SRC}/xos/platform/thread.h \
 $${NADIR_SRC}/xos/platform/thread.hpp \
 $${NADIR_SRC}/xos/platform/os/platform/thread.hpp \
+$${NADIR_SRC}/xos/platform/os/microsoft/windows/Thread.h \
+$${NADIR_SRC}/xos/platform/os/microsoft/windows/Thread.hpp \
 $${NADIR_SRC}/xos/mt/thread.hpp \
 $${NADIR_SRC}/xos/mt/posix/thread.hpp \
 $${NADIR_SRC}/xos/mt/os/thread.hpp \
@@ -82,7 +84,7 @@ $${NADIR_SRC}/xos/base/forked.cpp \
 $${NADIR_SRC}/xos/base/joined.cpp \
 \
 $${NADIR_SRC}/xos/mt/mutexes.cpp \
-$${NADIR_SRC}/xos/mt/os/thread.cpp \
+$${NADIR_SRC}/xos/platform/os/microsoft/windows/Thread.hpp \
 $${NADIR_SRC}/xos/mt/threads.cpp \
 \
 $${NADIR_SRC}/xos/console/io.cpp \

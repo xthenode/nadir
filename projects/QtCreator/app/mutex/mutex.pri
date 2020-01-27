@@ -87,6 +87,14 @@ $${NADIR_SRC}/xos/platform/os/mach/task.hpp \
 $${NADIR_SRC}/xos/platform/os/mach/lock_set.h \
 $${NADIR_SRC}/xos/platform/os/mach/lock_set.hpp \
 \
+$${NADIR_SRC}/xos/platform/os/posix/sys/time.h \
+$${NADIR_SRC}/xos/platform/os/posix/sys/time.hpp \
+$${NADIR_SRC}/xos/platform/os/posix/mutex.h \
+$${NADIR_SRC}/xos/platform/os/posix/mutex.hpp \
+\
+$${NADIR_SRC}/xos/platform/microsoft/windows/posix/mutex.h \
+$${NADIR_SRC}/xos/platform/microsoft/windows/posix/mutex.hpp \
+\
 $${NADIR_SRC}/xos/platform/os/platform/mutex.h \
 $${NADIR_SRC}/xos/platform/os/platform/mutex.hpp \
 \
@@ -97,6 +105,16 @@ $${NADIR_SRC}/xos/base/locked.hpp \
 $${NADIR_SRC}/xos/base/logged.hpp \
 $${NADIR_SRC}/xos/base/logger.hpp \
 \
+$${NADIR_SRC}/xos/os/os.hpp \
+$${NADIR_SRC}/xos/os/sleep.hpp \
+$${NADIR_SRC}/xos/os/linux/sleep.hpp \
+$${NADIR_SRC}/xos/os/posix/sleep.hpp \
+$${NADIR_SRC}/xos/os/apple/osx/sleep.hpp \
+$${NADIR_SRC}/xos/os/time.hpp \
+$${NADIR_SRC}/xos/os/linux/time.hpp \
+$${NADIR_SRC}/xos/os/posix/time.hpp \
+$${NADIR_SRC}/xos/os/apple/osx/time.hpp \
+\
 $${NADIR_SRC}/xos/mt/mutex.hpp \
 $${NADIR_SRC}/xos/mt/microsoft/windows/mutex.hpp \
 $${NADIR_SRC}/xos/mt/posix/timed.hpp \
@@ -104,6 +122,7 @@ $${NADIR_SRC}/xos/mt/posix/mutex.hpp \
 $${NADIR_SRC}/xos/mt/apple/osx/mutex.hpp \
 $${NADIR_SRC}/xos/mt/oracle/solaris/mutex.hpp \
 $${NADIR_SRC}/xos/mt/mach/mutex.hpp \
+$${NADIR_SRC}/xos/mt/os/posix/mutex.hpp \
 $${NADIR_SRC}/xos/mt/os/mutex.hpp \
 $${NADIR_SRC}/xos/mt/mutexes.hpp \
 $${NADIR_SRC}/xos/mt/os/os.hpp \
@@ -135,6 +154,7 @@ $${NADIR_SRC}/xos/app/console/mutex/main.hpp \
 # mutex SOURCES
 #
 mutex_SOURCES += \
+$${NADIR_SRC}/xos/platform/os/posix/sys/time.cpp \
 $${NADIR_SRC}/xos/platform/os/oses.cpp \
 \
 $${NADIR_SRC}/xos/base/exception.cpp \
@@ -143,6 +163,7 @@ $${NADIR_SRC}/xos/base/created.cpp \
 $${NADIR_SRC}/xos/base/locked.cpp \
 $${NADIR_SRC}/xos/base/logged.cpp \
 \
+$${NADIR_SRC}/xos/os/sleep.cpp \
 $${NADIR_SRC}/xos/mt/os/os.cpp \
 $${NADIR_SRC}/xos/mt/os/mutex.cpp \
 $${NADIR_SRC}/xos/mt/mutexes.cpp \
