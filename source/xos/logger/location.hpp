@@ -43,7 +43,10 @@ public:
     enum { end_char = extends::end_char };
 
     /// constructor / destructor
-    locationt(const char* function_name, const char* file_name, size_t line_number)
+    locationt(const logger::function& function, const char_t* file_name, size_t line_number)
+    : extends(function), file_name_(file_name), line_number_(line_number) {
+    }
+    locationt(const char_t* function_name, const char_t* file_name, size_t line_number)
     : extends(function_name), file_name_(file_name), line_number_(line_number) {
     }
     locationt(const locationt& copy)

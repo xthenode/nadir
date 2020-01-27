@@ -18,15 +18,25 @@
 /// Author: $author$
 ///   Date: 12/25/2019
 ///////////////////////////////////////////////////////////////////////
-#ifndef XOS_MT_POSIX_MUTEX_HPP
+#if !defined(XOS_MT_POSIX_MUTEX_HPP) || defined(XOS_MT_OS_POSIX_MUTEX_HPP)
+#if !defined(XOS_MT_POSIX_MUTEX_HPP) && !defined(XOS_MT_OS_POSIX_MUTEX_HPP)
 #define XOS_MT_POSIX_MUTEX_HPP
+#endif /// !defined(XOS_MT_POSIX_MUTEX_HPP) && !defined(XOS_MT_OS_POSIX_MUTEX_HPP)
 
 #include "xos/mt/mutex.hpp"
 #include "xos/mt/posix/timed.hpp"
 
+#if defined(XOS_MT_OS_POSIX_MUTEX_HPP)
+#include "xos/platform/os/posix/mutex.h"
+#else defined(XOS_MT_OS_POSIX_MUTEX_HPP)
+#if !defined(WINDOWS)
 #include <pthread.h>
 #include <time.h>
 #include <errno.h>
+#else /// !defined(WINDOWS)
+#include "xos/platform/microsoft/windows/posix/mutex.h"
+#endif /// !defined(WINDOWS)
+#endif /// defined(XOS_MT_OS_POSIX_MUTEX_HPP)
 
 #if !defined(HAS_POSIX_TIMEOUTS)
 #if defined(_POSIX_TIMEOUTS) && (_POSIX_TIMEOUTS >=0 )
@@ -95,6 +105,9 @@ inline int pthread_mutex_timedlock_relative_np(pthread_mutex_t *mutex, const str
 
 namespace xos {
 namespace mt {
+#if defined(XOS_MT_OS_POSIX_MUTEX_HPP)
+namespace os {
+#endif /// defined(XOS_MT_OS_POSIX_MUTEX_HPP)
 namespace posix {
 
 typedef pthread_mutexattr_t mutexattr_t;
@@ -168,6 +181,48 @@ public:
     }
 
     /// ...lock / ...unlock
+    virtual lock_status time_lock(mseconds_t milliseconds) {
+        lock_status status = lock_failed;
+        if (0 < milliseconds) {
+#if defined(PTHREAD_MUTEX_HAS_TIMEDLOCK)
+            attached_t detached = 0;
+            if ((detached = this->attached_to())) {
+                int err = 0;
+                struct timespec until_time;
+
+                until_time.tv_sec =  mseconds_seconds(milliseconds);
+                until_time.tv_nsec =  mseconds_nseconds(mseconds_mseconds(milliseconds));
+
+                LOGGER_IS_LOGGED_TRACE("::pthread_mutex_timedlock(detached, &until_time)...");
+                if (!(err = ::pthread_mutex_timedlock(detached, &until_time))) {
+                    LOGGER_IS_LOGGED_TRACE("...::pthread_mutex_timedlock(detached, &until_time)");
+                    return lock_success;
+                } else {
+                    if (EBUSY != (err)) {
+                        if (ETIMEDOUT != (err)) {
+                            if (EINTR != (err)) {
+                                LOGGER_IS_LOGGED_ERROR("...failed err = " << err << " on ::pthread_mutex_timedlock(detached, &until_time)");
+                            } else {
+                                LOGGER_IS_LOGGED_ERROR("...failed EINTR err = " << err << " on ::pthread_mutex_timedlock(detached, &until_time)");
+                                return lock_interrupted;
+                            }
+                        } else {
+                            LOGGER_IS_LOGGED_TRACE("...failed ETIMEDOUT err = " << err << " on ::pthread_mutex_timedlock(detached, &until_time)");
+                            return lock_busy;
+                        }
+                    } else {
+                        LOGGER_IS_LOGGED_TRACE("...failed EBUSY err = " << err << " on ::pthread_mutex_timedlock(detached, &until_time)");
+                        return lock_busy;
+                    }
+                }
+            }
+#else /// defined(PTHREAD_MUTEX_HAS_TIMEDLOCK)
+            LOGGER_IS_LOGGED_ERROR("...invalid ::pthread_mutex_timedlock(detached, ...)");
+            status = lock_invalid;
+#endif /// defined(PTHREAD_MUTEX_HAS_TIMEDLOCK)
+        }
+        return status;
+    }
     virtual lock_status timed_lock(mseconds_t milliseconds) {
         lock_status status = lock_failed;
         if (0 > milliseconds) {
@@ -303,38 +358,38 @@ public:
     virtual attached_t create_detached(mutex_t& mutex, bool initially_locked) const {
         int err = 0;
         mutexattr_t mutexattr;
-        LOGGER_IS_LOGGED_DEBUG("pthread_mutexattr_init(&mutexattr)...");
-        if (!(err = pthread_mutexattr_init(&mutexattr))) {
-            LOGGER_IS_LOGGED_DEBUG("pthread_mutex_init(&mutex, &mutexattr)...");
-            if (!(err = pthread_mutex_init(&mutex, &mutexattr))) {
-                LOGGER_IS_LOGGED_DEBUG("pthread_mutexattr_destroy(&mutexattr)...");
-                if (!(err = pthread_mutexattr_destroy(&mutexattr))) {
+        LOGGER_IS_LOGGED_DEBUG("::pthread_mutexattr_init(&mutexattr)...");
+        if (!(err = ::pthread_mutexattr_init(&mutexattr))) {
+            LOGGER_IS_LOGGED_DEBUG("::pthread_mutex_init(&mutex, &mutexattr)...");
+            if (!(err = ::pthread_mutex_init(&mutex, &mutexattr))) {
+                LOGGER_IS_LOGGED_DEBUG("::pthread_mutexattr_destroy(&mutexattr)...");
+                if (!(err = ::pthread_mutexattr_destroy(&mutexattr))) {
                     return &mutex;
                 } else {
-                    LOGGER_IS_LOGGED_ERROR("...failed err =" << err << " on pthread_mutexattr_destroy(&mutexattr)");
-                    LOGGER_IS_LOGGED_DEBUG("pthread_mutex_destroy(&mutex)...");
-                    if ((err = pthread_mutex_destroy(&mutex))) {
-                        LOGGER_IS_LOGGED_ERROR("...failed err = " << err << " on pthread_mutex_destroy(&mutex)");
+                    LOGGER_IS_LOGGED_ERROR("...failed err =" << err << " on ::pthread_mutexattr_destroy(&mutexattr)");
+                    LOGGER_IS_LOGGED_DEBUG("::pthread_mutex_destroy(&mutex)...");
+                    if ((err = ::pthread_mutex_destroy(&mutex))) {
+                        LOGGER_IS_LOGGED_ERROR("...failed err = " << err << " on ::pthread_mutex_destroy(&mutex)");
                     }
                 }
             } else {
-                LOGGER_IS_LOGGED_ERROR("...failed err = " << err << " on pthread_mutex_init(&mutex, &mutexattr)");
-                LOGGER_IS_LOGGED_DEBUG("pthread_mutexattr_destroy(&mutexattr)...");
-                if ((err = pthread_mutexattr_destroy(&mutexattr))) {
-                    LOGGER_IS_LOGGED_ERROR("...failed err =" << err << " on pthread_mutexattr_destroy(&mutexattr)");
+                LOGGER_IS_LOGGED_ERROR("...failed err = " << err << " on ::pthread_mutex_init(&mutex, &mutexattr)");
+                LOGGER_IS_LOGGED_DEBUG("::pthread_mutexattr_destroy(&mutexattr)...");
+                if ((err = ::pthread_mutexattr_destroy(&mutexattr))) {
+                    LOGGER_IS_LOGGED_ERROR("...failed err =" << err << " on ::pthread_mutexattr_destroy(&mutexattr)");
                 }
             }
         } else {
-            LOGGER_IS_LOGGED_ERROR("...failed err =" << err << " on pthread_mutexattr_init(&mutexattr)");
+            LOGGER_IS_LOGGED_ERROR("...failed err =" << err << " on ::pthread_mutexattr_init(&mutexattr)");
         }
         return 0;
     }
     virtual bool destroy_detached(mutex_t& mutex) const {
         bool success = true;
         int err = 0;
-        LOGGER_IS_LOGGED_DEBUG("pthread_mutex_destroy(&mutex)...");
-        if ((err = pthread_mutex_destroy(&mutex))) {
-            LOGGER_IS_LOGGED_ERROR("...failed err = " << err << " on pthread_mutex_destroy(&mutex)");
+        LOGGER_IS_LOGGED_DEBUG("::pthread_mutex_destroy(&mutex)...");
+        if ((err = ::pthread_mutex_destroy(&mutex))) {
+            LOGGER_IS_LOGGED_ERROR("...failed err = " << err << " on ::pthread_mutex_destroy(&mutex)");
             success = false;
         }
         return success;
@@ -346,7 +401,10 @@ protected:
 typedef mutext<> mutex;
 
 } /// namespace posix
+#if defined(XOS_MT_OS_POSIX_MUTEX_HPP)
+} /// namespace os 
+#endif /// defined(XOS_MT_OS_POSIX_MUTEX_HPP)
 } /// namespace mt
 } /// namespace xos
 
-#endif /// ndef XOS_MT_POSIX_MUTEX_HPP
+#endif /// !defined(XOS_MT_POSIX_MUTEX_HPP) || defined(XOS_MT_OS_POSIX_MUTEX_HPP)

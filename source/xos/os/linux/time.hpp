@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////
-/// Copyright (c) 1988-2019 $organization$
+/// Copyright (c) 1988-2020 $organization$
 ///
 /// This software is provided by the author and contributors ``as is'' 
 /// and any express or implied warranties, including, but not limited to, 
@@ -13,29 +13,33 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: mutexes.cpp
+///   File: time.hpp
 ///
 /// Author: $author$
-///   Date: 12/30/2019
+///   Date: 1/27/2020
 ///////////////////////////////////////////////////////////////////////
-#include "xos/mt/mutexes.hpp"
-#include "xos/platform/os/platform/mutex.cpp"
-#include "xos/platform/os/posix/mutex.cpp"
+#ifndef XOS_OS_LINUX_TIME_HPP
+#define XOS_OS_LINUX_TIME_HPP
 
-#if !defined(WINDOWS)
-#include "xos/platform/os/microsoft/windows/Mutex.cpp"
-#endif /// !defined(WINDOWS)
-
-#if !defined(SOLARIS)
-#include "xos/platform/os/oracle/solaris/mutex.cpp"
-#endif /// !defined(SOLARIS)
-
-#if !defined(MACH) || defined(APPLE)
-#include "xos/platform/os/mach/lock_set.cpp"
-#endif /// !defined(MACH) || defined(APPLE)
+#include "xos/platform/os.hpp"
+#include "xos/os/posix/time.hpp"
 
 namespace xos {
-namespace mt {
+namespace os {
+namespace linux {
 
-} /// namespace mt
+/// clock_gettime
+inline int clock_gettime(clockid_t clk_id, struct timespec *res) {
+    return xos::os::posix::clock_gettime(clk_id, res);
+}
+
+/// gettimeofday
+inline int gettimeofday(struct timeval* tv, void* p) {
+    return xos::os::posix::gettimeofday(tv, p);
+}
+
+} /// namespace linux
+} /// namespace os
 } /// namespace xos
+
+#endif /// XOS_OS_LINUX_TIME_HPP

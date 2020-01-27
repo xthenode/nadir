@@ -52,12 +52,11 @@ struct platform_thread_timeout {
     nseconds_t tv_nsec;    
 }; /*/ struct platform_thread_timeout /*/
 
-extern platform_thread_error_t platform_thread_create(platform_thread_t* thread, platform_thread_attr_t attr, platform_thread_start_routine_t);
+extern platform_thread_error_t platform_thread_create(platform_thread_t* thread, platform_thread_attr_t attr, platform_thread_start_routine_t start_routine);
 extern platform_thread_error_t platform_thread_destroy(platform_thread_t* thread);
 extern platform_thread_error_t platform_thread_join(platform_thread_t* thread);
 extern platform_thread_error_t platform_thread_time_join(platform_thread_t* thread, platform_thread_timeout_t* timeout);
 extern platform_thread_error_t platform_thread_timed_join(platform_thread_t* thread, platform_thread_timeout_t* timeout);
 extern platform_thread_error_t platform_thread_try_join(platform_thread_t* thread);
-extern platform_thread_error_t platform_thread_fork(platform_thread_t* thread);
 
 #endif /*/ ndef XOS_PLATFORM_THREAD_H /*/

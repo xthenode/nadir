@@ -1,5 +1,6 @@
+/*/
 ///////////////////////////////////////////////////////////////////////
-/// Copyright (c) 1988-2019 $organization$
+/// Copyright (c) 1988-2020 $organization$
 ///
 /// This software is provided by the author and contributors ``as is'' 
 /// and any express or implied warranties, including, but not limited to, 
@@ -13,29 +14,34 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: mutexes.cpp
+///   File: stdint.h
 ///
 /// Author: $author$
-///   Date: 12/30/2019
+///   Date: 1/23/2020
 ///////////////////////////////////////////////////////////////////////
-#include "xos/mt/mutexes.hpp"
-#include "xos/platform/os/platform/mutex.cpp"
-#include "xos/platform/os/posix/mutex.cpp"
+/*/
+#ifndef XOS_PLATFORM_MICROSOFT_WINDOWS_POSIX_STDINT_H
+#define XOS_PLATFORM_MICROSOFT_WINDOWS_POSIX_STDINT_H
 
-#if !defined(WINDOWS)
-#include "xos/platform/os/microsoft/windows/Mutex.cpp"
-#endif /// !defined(WINDOWS)
+#include "xos/platform/os.h"
 
-#if !defined(SOLARIS)
-#include "xos/platform/os/oracle/solaris/mutex.cpp"
-#endif /// !defined(SOLARIS)
+#if defined(__cplusplus)
+extern "C" {
+#endif /*/ defined(__cplusplus) /*/
 
-#if !defined(MACH) || defined(APPLE)
-#include "xos/platform/os/mach/lock_set.cpp"
-#endif /// !defined(MACH) || defined(APPLE)
+#if defined(WINDOWS)
+/*/
+/// windows
+/// ...
+/*/
+/*/
+/// ...
+/// windows
+/*/
+#endif /*/ defined(WINDOWS) /*/
 
-namespace xos {
-namespace mt {
+#if defined(__cplusplus)
+} /*/ extern "C" /*/
+#endif /*/ defined(__cplusplus) /*/
 
-} /// namespace mt
-} /// namespace xos
+#endif /*/ XOS_PLATFORM_MICROSOFT_WINDOWS_POSIX_STDINT_H /*/

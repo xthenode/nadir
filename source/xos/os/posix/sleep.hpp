@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////
-/// Copyright (c) 1988-2019 $organization$
+/// Copyright (c) 1988-2020 $organization$
 ///
 /// This software is provided by the author and contributors ``as is'' 
 /// and any express or implied warranties, including, but not limited to, 
@@ -13,29 +13,37 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: mutexes.cpp
+///   File: sleep.hpp
 ///
 /// Author: $author$
-///   Date: 12/30/2019
+///   Date: 1/25/2020
 ///////////////////////////////////////////////////////////////////////
-#include "xos/mt/mutexes.hpp"
-#include "xos/platform/os/platform/mutex.cpp"
-#include "xos/platform/os/posix/mutex.cpp"
+#ifndef XOS_OS_POSIX_SLEEP_HPP
+#define XOS_OS_POSIX_SLEEP_HPP
 
-#if !defined(WINDOWS)
-#include "xos/platform/os/microsoft/windows/Mutex.cpp"
-#endif /// !defined(WINDOWS)
-
-#if !defined(SOLARIS)
-#include "xos/platform/os/oracle/solaris/mutex.cpp"
-#endif /// !defined(SOLARIS)
-
-#if !defined(MACH) || defined(APPLE)
-#include "xos/platform/os/mach/lock_set.cpp"
-#endif /// !defined(MACH) || defined(APPLE)
+#include "xos/base/time.hpp"
 
 namespace xos {
-namespace mt {
+namespace os {
+namespace posix {
 
-} /// namespace mt
+/// sleep seconds
+inline int sleep(seconds_t seconds) {
+    return ::sleep(seconds);
+}
+
+/// msleep milliseconds
+inline int msleep(mseconds_t mseconds) {
+    return ::usleep(xos::mseconds_useconds(mseconds));
+}
+
+/// usleep microseconds
+inline int usleep(useconds_t useconds) {
+    return ::usleep(useconds);
+}
+
+} /// namespace posix
+} /// namespace os
 } /// namespace xos
+
+#endif /// XOS_OS_POSIX_SLEEP_HPP

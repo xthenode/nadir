@@ -136,6 +136,15 @@ public:
         return detached;
     }
 
+    /// ...is_joined
+    virtual bool set_is_joined(bool to = true) {
+        is_forked_ = !to;
+        return !is_forked_;
+    }
+    virtual bool is_joined() const {
+        return !is_forked_;
+    }
+
     /// ...is_forked
     virtual bool set_is_forked(bool to = true) {
         is_forked_ = to;
@@ -390,20 +399,36 @@ public:
         return join_failed; 
     }
     virtual join_status untimed_join_detached(bool& is_forked, thread_t& _thread) const { 
+        ::platform_thread_error_t err = ::platform_thread_error_failed;
+        if (::platform_thread_error_success == (err = ::platform_thread_join(&_thread))) {
+            is_forked = false;
+            return join_success;
+        } else {
+            switch (err) {
+            case ::platform_thread_error_busy:
+                return join_busy;
+            case ::platform_thread_error_timeout:
+                return join_timeout;
+            case ::platform_thread_error_interrupted:
+                is_forked = false;
+                return join_interrupted;
+            }
+            is_forked = false;
+        }
         return join_failed; 
     }
 
     /// ...create... / ...destroy...
     virtual attached_t create_detached(thread_t& _thread) const {
         attached_t detached = (attached_t)(unattached);
-        thread_attr_t thread_attr = ((thread_attr_t)thread_attr_none);
+        thread_attr_t thread_attr = ((thread_attr_t)(&this->ran_));
         error_t err = error_failed;
-        LOGGER_IS_LOGGED_DEBUG("::platform_thread_create(&_thread, thread_attr, &start_routine)...");
-        if (!(err = ::platform_thread_create(&_thread, thread_attr, &start_routine))) {
-            LOGGER_IS_LOGGED_DEBUG("...::platform_thread_create(&_thread, thread_attr, &start_routine)");
+        LOGGER_IS_LOGGED_DEBUG("::platform_thread_create(&_thread, thread_attr, start_routine)...");
+        if (!(err = ::platform_thread_create(&_thread, thread_attr, start_routine))) {
+            LOGGER_IS_LOGGED_DEBUG("...::platform_thread_create(&_thread, thread_attr, start_routine)");
             detached = &_thread;
         } else {
-            LOGGER_IS_LOGGED_ERROR("...failed err = " << err << " on ::platform_thread_create(&_thread, thread_attr, &start_routine)");
+            LOGGER_IS_LOGGED_ERROR("...failed err = " << err << " on ::platform_thread_create(&_thread, thread_attr, start_routine)");
         }
         return detached;
     }

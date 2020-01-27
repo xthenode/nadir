@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////
-/// Copyright (c) 1988-2019 $organization$
+/// Copyright (c) 1988-2020 $organization$
 ///
 /// This software is provided by the author and contributors ``as is'' 
 /// and any express or implied warranties, including, but not limited to, 
@@ -16,16 +16,16 @@
 ///   File: os.hpp
 ///
 /// Author: $author$
-///   Date: 12/23/2019
+///   Date: 1/25/2020
 ///////////////////////////////////////////////////////////////////////
-#ifndef XOS_MT_OS_OS_HPP
-#define XOS_MT_OS_OS_HPP
+#ifndef XOS_OS_OS_HPP
+#define XOS_OS_OS_HPP
 
 #include "xos/platform/os.hpp"
+#include "xos/base/base.hpp"
 
 namespace xos {
-namespace mt {
-
+namespace os {
 namespace apple { namespace ios {} namespace osx {} namespace mach {} } /// namespace apple
 namespace microsoft { namespace windows { namespace crt {} } } /// namespace microsoft
 namespace oracle { namespace solaris {} } /// namespace oracle
@@ -33,8 +33,6 @@ namespace google { namespace android {} } /// namespace google
 namespace mach {} /// namespace mach
 namespace linux {} /// namespace linux
 namespace posix {} /// namespace posix
-
-namespace os {
 
 #if defined(WINDOWS)  
 namespace os = microsoft::windows;
@@ -53,7 +51,6 @@ namespace os = posix;
 #endif /// defined(LINUX) 
 
 } /// namespace os
-} /// namespace mt
 } /// namespace xos
 
-#endif /// ndef XOS_MT_OS_OS_HPP
+#endif /// XOS_OS_OS_HPP

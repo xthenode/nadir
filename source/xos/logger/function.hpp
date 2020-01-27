@@ -38,14 +38,15 @@ public:
     typedef TExtends extends;
     typedef functiont derives;
 
+    typedef TString string_t;
     typedef typename extends::char_t char_t;
     typedef typename extends::end_char_t end_char_t;
     enum { end_char = extends::end_char };
 
     /// constructor / destructor
-    functiont(const char* chars, size_t length): extends(chars, length) {
-    }
-    functiont(const char* chars): extends(chars) {
+    functiont(const char_t* chars, size_t length): extends(chars, length) {
+     }
+    functiont(const char_t* chars): extends(chars) {
     }
     functiont(const functiont& copy): extends(copy) {
     }
@@ -54,9 +55,70 @@ public:
     virtual ~functiont() {
     }
 
+    /// trim
+    virtual functiont& trim() {
+        const char_t* chars = 0;
+        size_t length = 0;
+        if ((chars = this->has_chars(length))) {
+            const char_t *lt = 0, *gt = 0, *e = chars + length;
+            for (const char_t *i = chars; length; --length, ++i) {
+                switch (*i) {
+                    case '<':
+                        if (!(lt)) {
+                            lt = i;
+                        }
+                        break;
+                    case '>':
+                        gt = i;
+                        break;
+                }
+            }
+            if ((lt) && (gt) && (lt < gt)) {
+                string_t name(chars, ((lt - chars) + 1));
+                name.append("...");
+                name.append(gt, ((e - gt) + 1));
+                this->assign(name);
+            }
+        }
+        return *this;
+    }
 protected:
 }; /// class functiont
 typedef functiont<> function;
+
+namespace trimmed {
+/// class functiont
+template 
+<typename TChar = char, class TString = stringt<TChar>,
+class TExtends = logger::functiont<TChar, TString>, class TImplements = typename TExtends::implements>
+
+class exported functiont: virtual public TImplements, public TExtends {
+public:
+    typedef TImplements implements;
+    typedef TExtends extends;
+    typedef functiont derives;
+
+    typedef TString string_t;
+    typedef typename extends::char_t char_t;
+    typedef typename extends::end_char_t end_char_t;
+    enum { end_char = extends::end_char };
+
+    /// constructor / destructor
+    functiont(const char_t* chars, size_t length): extends(chars, length) {
+        this->trim();
+    }
+    functiont(const char_t* chars): extends(chars) {
+        this->trim();
+    }
+    functiont(const functiont& copy): extends(copy) {
+    }
+    functiont() {
+    }
+    virtual ~functiont() {
+    }
+}; /// class functiont
+typedef functiont<> function;
+} /// namespace trimmed
 
 } /// namespace logger
 } /// namespace xos

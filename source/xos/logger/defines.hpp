@@ -92,7 +92,11 @@ namespace logger {
 #endif /// !defined(__LOGGER_FUNC__)
 
 #if !defined(LOGGER_FUNCTION)
+#if defined(WINDOWS)
+#define LOGGER_FUNCTION ::xos::logger::trimmed::function(__LOGGER_FUNC__)
+#else /// defined(WINDOWS)
 #define LOGGER_FUNCTION ::xos::logger::function(__LOGGER_FUNC__)
+#endif /// defined(WINDOWS)
 #endif /// !defined(LOGGER_LOCATION)
 /// ...
 /// LOGGER_FUNCTION
@@ -100,7 +104,7 @@ namespace logger {
 /// LOGGER_LOCATION
 /// ...
 #if !defined(LOGGER_LOCATION)
-#define LOGGER_LOCATION ::xos::logger::location(__LOGGER_FUNC__, __FILE__, __LINE__)
+#define LOGGER_LOCATION ::xos::logger::location(LOGGER_FUNCTION, __FILE__, __LINE__)
 #define LOGGER_LOCATION_MESSAGE(__message__) (((LOGGER_LOCATION).combined()).append(__message__))
 #endif /// !defined(LOGGER_LOCATION)
 /// ...

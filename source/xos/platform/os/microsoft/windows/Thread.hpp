@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////
-/// Copyright (c) 1988-2019 $organization$
+/// Copyright (c) 1988-2020 $organization$
 ///
 /// This software is provided by the author and contributors ``as is'' 
 /// and any express or implied warranties, including, but not limited to, 
@@ -13,29 +13,26 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: mutexes.cpp
+///   File: Thread.hpp
 ///
 /// Author: $author$
-///   Date: 12/30/2019
+///   Date: 1/23/2020
 ///////////////////////////////////////////////////////////////////////
-#include "xos/mt/mutexes.hpp"
-#include "xos/platform/os/platform/mutex.cpp"
-#include "xos/platform/os/posix/mutex.cpp"
+#ifndef XOS_PLATFORM_OS_MICROSOFT_WINDOWS_THREAD_HPP
+#define XOS_PLATFORM_OS_MICROSOFT_WINDOWS_THREAD_HPP
 
-#if !defined(WINDOWS)
-#include "xos/platform/os/microsoft/windows/Mutex.cpp"
-#endif /// !defined(WINDOWS)
-
-#if !defined(SOLARIS)
-#include "xos/platform/os/oracle/solaris/mutex.cpp"
-#endif /// !defined(SOLARIS)
-
-#if !defined(MACH) || defined(APPLE)
-#include "xos/platform/os/mach/lock_set.cpp"
-#endif /// !defined(MACH) || defined(APPLE)
+#include "xos/platform/os/microsoft/windows/Thread.h"
 
 namespace xos {
-namespace mt {
+namespace platform {
+namespace os {
+namespace microsoft {
+namespace windows {
 
-} /// namespace mt
+} /// namespace windows
+} /// namespace microsoft
+} /// namespace os
+} /// namespace platform
 } /// namespace xos
+
+#endif /// XOS_PLATFORM_OS_MICROSOFT_WINDOWS_THREAD_HPP

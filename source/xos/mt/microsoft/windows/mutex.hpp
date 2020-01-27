@@ -76,6 +76,13 @@ public:
     }
 
     /// ...lock... / ...unlock...
+    virtual lock_status time_lock(mseconds_t milliseconds) {
+        attached_t detached = 0;
+        if ((detached = this->attached_to())) {
+            return time_lock_detached(detached, milliseconds);
+        }
+        return lock_failed;
+    }
     virtual lock_status timed_lock(mseconds_t milliseconds) {
         attached_t detached = 0;
         if ((detached = this->attached_to())) {
@@ -108,6 +115,11 @@ public:
     /// ...lock_detached... / ...unlock_detached...
     virtual bool lock_detached(attached_t detached) const { 
         return (lock_success == (untimed_lock_detached(detached))); 
+    }
+    virtual lock_status time_lock_detached(attached_t detached, mseconds_t milliseconds) const { 
+        if ((attached_t)(unattached) != (detached)) {
+        }
+        return lock_failed; 
     }
     virtual lock_status timed_lock_detached(attached_t detached, mseconds_t milliseconds) const { 
         if ((attached_t)(unattached) != (detached)) {

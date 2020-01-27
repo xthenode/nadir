@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////
-/// Copyright (c) 1988-2019 $organization$
+/// Copyright (c) 1988-2020 $organization$
 ///
 /// This software is provided by the author and contributors ``as is'' 
 /// and any express or implied warranties, including, but not limited to, 
@@ -13,29 +13,51 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: mutexes.cpp
+///   File: sleep.hpp
 ///
 /// Author: $author$
-///   Date: 12/30/2019
+///   Date: 1/25/2020
 ///////////////////////////////////////////////////////////////////////
-#include "xos/mt/mutexes.hpp"
-#include "xos/platform/os/platform/mutex.cpp"
-#include "xos/platform/os/posix/mutex.cpp"
+#ifndef XOS_OS_SLEEP_HPP
+#define XOS_OS_SLEEP_HPP
 
-#if !defined(WINDOWS)
-#include "xos/platform/os/microsoft/windows/Mutex.cpp"
-#endif /// !defined(WINDOWS)
+#include "xos/os/os.hpp"
 
-#if !defined(SOLARIS)
-#include "xos/platform/os/oracle/solaris/mutex.cpp"
-#endif /// !defined(SOLARIS)
-
-#if !defined(MACH) || defined(APPLE)
-#include "xos/platform/os/mach/lock_set.cpp"
-#endif /// !defined(MACH) || defined(APPLE)
+#if defined(WINDOWS)  
+#include "xos/os/microsoft/windows/sleep.hpp"
+#elif defined(APPLEOSX)  
+#include "xos/os/apple/osx/sleep.hpp"
+#elif defined(APPLEIOS)  
+#include "xos/os/apple/ios/sleep.hpp"
+#elif defined(SOLARIS)  
+#include "xos/os/oracle/solaris/sleep.hpp"
+#elif defined(MACH)  
+#include "xos/os/mach/sleep.hpp"
+#elif defined(LINUX)  
+#include "xos/os/linux/sleep.hpp"
+#else /// defined(LINUX)  
+#include "xos/os/posix/sleep.hpp"
+#endif /// defined(LINUX) 
 
 namespace xos {
-namespace mt {
+namespace os {
 
-} /// namespace mt
+/// sleep seconds
+inline int sleep(seconds_t seconds) {
+    return xos::os::os::sleep(seconds);
+}
+
+/// msleep milliseconds
+inline int msleep(seconds_t mseconds) {
+    return xos::os::os::msleep(mseconds);
+}
+
+/// usleep microseconds
+inline int usleep(useconds_t useconds) {
+    return xos::os::os::usleep(useconds);
+}
+
+} /// namespace os
 } /// namespace xos
+
+#endif /// XOS_OS_SLEEP_HPP

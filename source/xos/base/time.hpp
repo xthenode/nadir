@@ -33,6 +33,9 @@ inline seconds_t mseconds_seconds
 inline mseconds_t mseconds_mseconds
 (mseconds_t mseconds) { return mseconds % 1000; }
 
+inline mseconds_t useconds_mseconds
+(useconds_t useconds) { return useconds / 1000; }
+
 inline useconds_t mseconds_useconds
 (mseconds_t mseconds) { return mseconds * 1000; }
 
@@ -45,10 +48,10 @@ inline nseconds_t useconds_nseconds
 inline mseconds_t seconds_mseconds
 (seconds_t seconds) { return seconds * 1000; }
 
-inline mseconds_t seconds_useconds
+inline useconds_t seconds_useconds
 (seconds_t seconds) { return seconds_mseconds(seconds) * 1000; }
 
-inline mseconds_t seconds_nseconds
+inline nseconds_t seconds_nseconds
 (seconds_t seconds) { return seconds_useconds(seconds) * 1000; }
 
 inline useconds_t nseconds_useconds
@@ -60,7 +63,7 @@ inline mseconds_t nseconds_mseconds
 inline seconds_t nseconds_seconds
 (nseconds_t nseconds) { return nseconds_mseconds(nseconds) / 1000; }
 
-inline mseconds_t nseconds_nseconds
+inline nseconds_t nseconds_nseconds
 (mseconds_t nseconds) { return nseconds % (1000 * 1000 * 1000); }
 
 /// ...
