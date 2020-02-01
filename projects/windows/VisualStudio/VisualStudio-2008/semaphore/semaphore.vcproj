@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="mutex"
-	ProjectGUID="{94264DDC-FC67-4899-A8AC-B2A8D83CBD49}"
-	RootNamespace="mutex"
+	Name="semaphore"
+	ProjectGUID="{F20003AB-7663-4E9B-97CE-FF4CD91A2AE9}"
+	RootNamespace="semaphore"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="196613"
 	>
@@ -336,7 +336,7 @@
 	</References>
 	<Files>
 		<Filter
-			Name="Sources"
+			Name="Source Files"
 			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
@@ -352,29 +352,25 @@
 				Name="app"
 				>
 				<Filter
-					Name="console"
+					Name="microsoft"
 					>
 					<Filter
 						Name="windows"
 						>
-						<Filter
-							Name="mutex"
+						<File
+							RelativePath="..\..\..\..\..\source\xos\app\console\microsoft\windows\semaphore\main.cpp"
 							>
-							<File
-								RelativePath="..\..\..\..\..\source\xos\app\console\microsoft\windows\mutex\main.cpp"
-								>
-							</File>
-							<File
-								RelativePath="..\..\..\..\..\source\xos\app\console\microsoft\windows\mutex\main_opt.cpp"
-								>
-							</File>
-						</Filter>
+						</File>
+						<File
+							RelativePath="..\..\..\..\..\source\xos\app\console\microsoft\windows\semaphore\main_opt.cpp"
+							>
+						</File>
 					</Filter>
 				</Filter>
 			</Filter>
 		</Filter>
 		<Filter
-			Name="Headers"
+			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
@@ -385,26 +381,6 @@
 					RelativePath="..\..\..\..\..\source\xos\console\main_main.hpp"
 					>
 				</File>
-			</Filter>
-			<Filter
-				Name="app"
-				>
-				<Filter
-					Name="console"
-					>
-					<Filter
-						Name="windows"
-						>
-						<File
-							RelativePath="..\..\..\..\..\source\xos\app\console\microsoft\windows\mutex\main.hpp"
-							>
-						</File>
-						<File
-							RelativePath="..\..\..\..\..\source\xos\app\console\microsoft\windows\mutex\main_opt.hpp"
-							>
-						</File>
-					</Filter>
-				</Filter>
 			</Filter>
 		</Filter>
 	</Files>

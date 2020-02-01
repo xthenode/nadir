@@ -148,15 +148,15 @@ $${NADIR_SRC}/xos/app/console/os/main.hpp \
 $${NADIR_SRC}/xos/app/console/mt/main_opt.hpp \
 $${NADIR_SRC}/xos/app/console/mt/main.hpp \
 \
+$${NADIR_SRC}/xos/app/console/mt/mutex/main_opt.hpp \
+$${NADIR_SRC}/xos/app/console/mt/mutex/main.hpp \
+\
 $${NADIR_SRC}/xos/app/console/mutex/main_opt.hpp \
 $${NADIR_SRC}/xos/app/console/mutex/main.hpp \
 
 # mutex SOURCES
 #
 mutex_SOURCES += \
-$${NADIR_SRC}/xos/platform/os/posix/sys/time.cpp \
-$${NADIR_SRC}/xos/platform/os/oses.cpp \
-\
 $${NADIR_SRC}/xos/base/exception.cpp \
 $${NADIR_SRC}/xos/base/attached.cpp \
 $${NADIR_SRC}/xos/base/created.cpp \
@@ -164,6 +164,7 @@ $${NADIR_SRC}/xos/base/locked.cpp \
 $${NADIR_SRC}/xos/base/logged.cpp \
 \
 $${NADIR_SRC}/xos/os/sleep.cpp \
+$${NADIR_SRC}/xos/os/oses.cpp \
 $${NADIR_SRC}/xos/mt/os/os.cpp \
 $${NADIR_SRC}/xos/mt/os/mutex.cpp \
 $${NADIR_SRC}/xos/mt/mutexes.cpp \
@@ -176,8 +177,6 @@ $${NADIR_SRC}/xos/logger/message.cpp \
 $${NADIR_SRC}/xos/logger/implement.cpp \
 $${NADIR_SRC}/xos/logger/defines.cpp \
 \
-$${NADIR_SRC}/xos/console/io.cpp \
-$${NADIR_SRC}/xos/console/logger.cpp \
 $${NADIR_SRC}/xos/console/main_main.cpp \
 \
 $${NADIR_SRC}/xos/app/console/mutex/main_opt.cpp \

@@ -64,6 +64,7 @@ $${NADIR_SRC}/xos/platform/thread.hpp \
 $${NADIR_SRC}/xos/platform/os/platform/thread.hpp \
 $${NADIR_SRC}/xos/platform/os/microsoft/windows/Thread.h \
 $${NADIR_SRC}/xos/platform/os/microsoft/windows/Thread.hpp \
+\
 $${NADIR_SRC}/xos/mt/thread.hpp \
 $${NADIR_SRC}/xos/mt/posix/thread.hpp \
 $${NADIR_SRC}/xos/mt/os/thread.hpp \
@@ -71,6 +72,10 @@ $${NADIR_SRC}/xos/mt/threads.hpp \
 \
 $${NADIR_SRC}/xos/console/io.hpp \
 $${NADIR_SRC}/xos/console/main_main.hpp \
+\
+$${NADIR_SRC}/xos/app/console/mt/thread/main_opt.hpp \
+$${NADIR_SRC}/xos/app/console/mt/thread/main.hpp \
+\
 $${NADIR_SRC}/xos/app/console/thread/main_opt.hpp \
 $${NADIR_SRC}/xos/app/console/thread/main.hpp \
 
@@ -83,12 +88,15 @@ $${NADIR_SRC}/xos/base/resumed.cpp \
 $${NADIR_SRC}/xos/base/forked.cpp \
 $${NADIR_SRC}/xos/base/joined.cpp \
 \
+$${NADIR_SRC}/xos/os/sleep.cpp \
+$${NADIR_SRC}/xos/os/oses.cpp \
+$${NADIR_SRC}/xos/mt/os/os.cpp \
+$${NADIR_SRC}/xos/mt/os/mutex.cpp \
 $${NADIR_SRC}/xos/mt/mutexes.cpp \
-$${NADIR_SRC}/xos/platform/os/microsoft/windows/Thread.hpp \
 $${NADIR_SRC}/xos/mt/threads.cpp \
 \
-$${NADIR_SRC}/xos/console/io.cpp \
 $${NADIR_SRC}/xos/console/main_main.cpp \
+\
 $${NADIR_SRC}/xos/app/console/thread/main_opt.cpp \
 $${NADIR_SRC}/xos/app/console/thread/main.cpp \
 

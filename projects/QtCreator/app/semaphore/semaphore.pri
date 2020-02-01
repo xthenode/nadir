@@ -58,6 +58,8 @@ $${NADIR_SRC}/xos/base/acquired.hpp \
 \
 $${NADIR_SRC}/xos/platform/semaphore.h \
 $${NADIR_SRC}/xos/platform/semaphore.hpp \
+$${NADIR_SRC}/xos/platform/microsoft/windows/posix/semaphore.h \
+$${NADIR_SRC}/xos/platform/microsoft/windows/posix/semaphore.hpp \
 $${NADIR_SRC}/xos/platform/os/platform/semaphore.hpp \
 $${NADIR_SRC}/xos/platform/os/microsoft/windows/Semaphore.h \
 $${NADIR_SRC}/xos/platform/os/microsoft/windows/Semaphore.hpp \
@@ -90,6 +92,9 @@ $${NADIR_SRC}/xos/mt/semaphores.hpp \
 $${NADIR_SRC}/xos/console/io.hpp \
 $${NADIR_SRC}/xos/console/main_main.hpp \
 \
+$${NADIR_SRC}/xos/app/console/mt/semaphore/main_opt.hpp \
+$${NADIR_SRC}/xos/app/console/mt/semaphore/main.hpp \
+\
 $${NADIR_SRC}/xos/app/console/semaphore/main_opt.hpp \
 $${NADIR_SRC}/xos/app/console/semaphore/main.hpp \
 
@@ -99,6 +104,7 @@ semaphore_SOURCES += \
 $${NADIR_SRC}/xos/base/locked.cpp \
 $${NADIR_SRC}/xos/base/acquired.cpp \
 \
+$${NADIR_SRC}/xos/platform/os/posix/sys/time.cpp \
 $${NADIR_SRC}/xos/platform/os/oses.cpp \
 \
 $${NADIR_SRC}/xos/mt/os/semaphore.cpp \

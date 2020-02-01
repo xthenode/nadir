@@ -15,8 +15,19 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libnadir", "libnadir\libnadir.vcproj", "{E906BD9F-3AAF-46BB-840B-F67AD6603AA1}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "nadir", "nadir\nadir.vcproj", "{FEE22043-CE89-4828-8154-7378CDACE93F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E906BD9F-3AAF-46BB-840B-F67AD6603AA1} = {E906BD9F-3AAF-46BB-840B-F67AD6603AA1}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mutex", "mutex\mutex.vcproj", "{94264DDC-FC67-4899-A8AC-B2A8D83CBD49}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E906BD9F-3AAF-46BB-840B-F67AD6603AA1} = {E906BD9F-3AAF-46BB-840B-F67AD6603AA1}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "semaphore", "semaphore\semaphore.vcproj", "{F20003AB-7663-4E9B-97CE-FF4CD91A2AE9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E906BD9F-3AAF-46BB-840B-F67AD6603AA1} = {E906BD9F-3AAF-46BB-840B-F67AD6603AA1}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -46,6 +57,12 @@ Global
 		{94264DDC-FC67-4899-A8AC-B2A8D83CBD49}.Release|Win32.ActiveCfg = Release|Win32
 		{94264DDC-FC67-4899-A8AC-B2A8D83CBD49}.Release|Win32.Build.0 = Release|Win32
 		{94264DDC-FC67-4899-A8AC-B2A8D83CBD49}.Release|x64.ActiveCfg = Release|Win32
+		{F20003AB-7663-4E9B-97CE-FF4CD91A2AE9}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F20003AB-7663-4E9B-97CE-FF4CD91A2AE9}.Debug|Win32.Build.0 = Debug|Win32
+		{F20003AB-7663-4E9B-97CE-FF4CD91A2AE9}.Debug|x64.ActiveCfg = Debug|Win32
+		{F20003AB-7663-4E9B-97CE-FF4CD91A2AE9}.Release|Win32.ActiveCfg = Release|Win32
+		{F20003AB-7663-4E9B-97CE-FF4CD91A2AE9}.Release|Win32.Build.0 = Release|Win32
+		{F20003AB-7663-4E9B-97CE-FF4CD91A2AE9}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -53,6 +70,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{FEE22043-CE89-4828-8154-7378CDACE93F} = {FDFD7DCA-AEE1-4F44-B61E-9323C6F1559D}
 		{94264DDC-FC67-4899-A8AC-B2A8D83CBD49} = {FDFD7DCA-AEE1-4F44-B61E-9323C6F1559D}
+		{F20003AB-7663-4E9B-97CE-FF4CD91A2AE9} = {FDFD7DCA-AEE1-4F44-B61E-9323C6F1559D}
 		{E906BD9F-3AAF-46BB-840B-F67AD6603AA1} = {B30F667F-FFB5-4843-AA4E-A065536904B6}
 	EndGlobalSection
 EndGlobal
