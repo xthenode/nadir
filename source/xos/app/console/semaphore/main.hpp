@@ -29,6 +29,7 @@
 #include "xos/mt/linux/semaphore.hpp"
 #include "xos/mt/posix/semaphore.hpp"
 #include "xos/mt/os/semaphore.hpp"
+#include "xos/mt/os/posix/semaphore.hpp"
 #include "xos/mt/semaphore.hpp"
 
 namespace xos {
@@ -62,101 +63,36 @@ private:
     }
 
 protected:
-    /// run
-    int run(::xos::acquired& acquired) {
-        int err = 0;
-        mseconds_t timeout = 0;
-        bool untimed = this->infinite_timeout(timeout);
-
-        this->outlln(__LOCATION__, "try {...", NULL);
-        try {
-            if (untimed) {
-                this->outlln(__LOCATION__, "::xos::acquire acquire(acquired)...", NULL);
-                ::xos::acquire acquire(acquired);
-                this->outlln(__LOCATION__, "...::xos::acquire acquire(acquired)", NULL);
-            } else {
-                if (timeout) {
-                    this->outlln(__LOCATION__, "::xos::acquire acquire(acquired, timeout = ", unsigned_to_string(timeout).chars(), ")...", NULL);
-                    ::xos::acquire acquire(acquired, timeout);
-                    this->outlln(__LOCATION__, "...::xos::acquire acquire(acquired, timeout = ", unsigned_to_string(timeout).chars(), ")", NULL);
-                } else {
-                    this->outlln(__LOCATION__, "::xos::try_acquire try_acquire(acquired)...", NULL);
-                    ::xos::try_acquire try_acquire(acquired);
-                    this->outlln(__LOCATION__, "...::xos::try_acquire try_acquire(acquired)", NULL);
-                }
-            }
-            this->outlln(__LOCATION__, "...} try", NULL);
-        } catch (const acquire_exception& e) {
-            this->outlln(__LOCATION__, "...catch (const acquire_exception& e.status = \"", e.status_to_chars(), "\")", NULL);
-            err = 1;
-        } catch (const exception& e) {
-            this->outlln(__LOCATION__, "...catch (const exception& e.status = \"", e.status_to_chars(), "\")", NULL);
-            err = 1;
-        } catch (...) {
-            this->outlln(__LOCATION__, "...catch (...)", NULL);
-            err = 1;
-        }
-        return err;
-    }
-    template <class TSemaphore>
-    int run() {
-        int err = 0;
-        mseconds_t timeout = 0;
-        bool untimed = this->infinite_timeout(timeout);
-
-        this->outlln(__LOCATION__, "try {...", NULL);
-        try {
-            this->outlln(__LOCATION__, "TSemaphore semaphore...", NULL);
-            TSemaphore semaphore;
-            if (untimed) {
-                this->outlln(__LOCATION__, "::xos::release release(semaphore)...", NULL);
-                ::xos::release release(semaphore);
-            }
-            if ((err = run(semaphore))) {
-                if (!untimed) {
-                    this->outlln(__LOCATION__, "::xos::release release(semaphore)...", NULL);
-                    ::xos::release release(semaphore);
-                    err = run(semaphore);
-                }
-            }
-            this->outlln(__LOCATION__, "...} try", NULL);
-        } catch (const exception& e) {
-            this->outlln(__LOCATION__, "...catch (const exception& e.status = \"", e.status_to_chars(), "\")", NULL);
-            err = 1;
-        } catch (...) {
-            this->outlln(__LOCATION__, "...catch (...)", NULL);
-            err = 1;
-        }
-        return err;
-    }
-
     /// ...run
     virtual int windows_run(int argc, char_t** argv, char_t** env) {
-        return this->run< ::xos::mt::microsoft::windows::semaphore >();
+        return this->template run< ::xos::mt::microsoft::windows::semaphore >();
     }
     virtual int osx_run(int argc, char_t** argv, char_t** env) {
-        return this->run< ::xos::mt::apple::mach::semaphore >();
+        return this->template run< ::xos::mt::apple::mach::semaphore >();
     }
     virtual int solaris_run(int argc, char_t** argv, char_t** env) {
-        return this->run< ::xos::mt::oracle::solaris::semaphore >();
+        return this->template run< ::xos::mt::oracle::solaris::semaphore >();
     }
     virtual int mach_run(int argc, char_t** argv, char_t** env) {
-        return this->run< ::xos::mt::mach::semaphore >();
+        return this->template run< ::xos::mt::mach::semaphore >();
     }
     virtual int linux_run(int argc, char_t** argv, char_t** env) {
-        return this->run< ::xos::mt::linux::semaphore >();
+        return this->template run< ::xos::mt::linux::semaphore >();
     }
     virtual int posix_run(int argc, char_t** argv, char_t** env) {
-        return this->run< ::xos::mt::posix::semaphore >();
+        return this->template run< ::xos::mt::posix::semaphore >();
+    }
+    virtual int to_posix_run(int argc, char_t** argv, char_t** env) {
+        return this->template run< ::xos::mt::os::posix::semaphore >();
     }
     virtual int os_run(int argc, char_t** argv, char_t** env) {
-        return this->run< ::xos::mt::os::semaphore >();
+        return this->template run< ::xos::mt::os::semaphore >();
     }
     virtual int derived_run(int argc, char_t** argv, char_t** env) {
-        return this->run< ::xos::mt::derived::semaphore >();
+        return this->template run< ::xos::mt::derived::semaphore >();
     }
     virtual int default_run(int argc, char_t** argv, char_t** env) {
-        return this->usage(argc, argv, env);
+        return this->os_run(argc, argv, env);
     }
 }; /// class maint
 typedef maint<> main;

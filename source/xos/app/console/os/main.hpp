@@ -65,6 +65,8 @@ protected:
     virtual int default_run(int argc, char_t** argv, char_t** env) {
         return this->derived_run(argc, argv, env);
     }
+
+    /// ...run
     virtual int derived_run(int argc, char_t** argv, char_t** env) {
         int err = 0;
         return err;
@@ -99,6 +101,44 @@ protected:
     }
     virtual int windows_run(int argc, char_t** argv, char_t** env) {
         int err = this->derived_run(argc, argv, env);
+        return err;
+    }
+
+    /// to...run
+    virtual int to_derived_run(int argc, char_t** argv, char_t** env) {
+        int err = this->derived_run(argc, argv, env);
+        return err;
+    }
+    virtual int to_os_run(int argc, char_t** argv, char_t** env) {
+        int err = this->os_run(argc, argv, env);
+        return err;
+    }
+    virtual int to_posix_run(int argc, char_t** argv, char_t** env) {
+        int err = this->to_derived_run(argc, argv, env);
+        return err;
+    }
+    virtual int to_linux_run(int argc, char_t** argv, char_t** env) {
+        int err = this->to_derived_run(argc, argv, env);
+        return err;
+    }
+    virtual int to_solaris_run(int argc, char_t** argv, char_t** env) {
+        int err = this->to_derived_run(argc, argv, env);
+        return err;
+    }
+    virtual int to_osx_run(int argc, char_t** argv, char_t** env) {
+        int err = this->to_derived_run(argc, argv, env);
+        return err;
+    }
+    virtual int to_ios_run(int argc, char_t** argv, char_t** env) {
+        int err = this->to_derived_run(argc, argv, env);
+        return err;
+    }
+    virtual int to_mach_run(int argc, char_t** argv, char_t** env) {
+        int err = this->to_derived_run(argc, argv, env);
+        return err;
+    }
+    virtual int to_windows_run(int argc, char_t** argv, char_t** env) {
+        int err = this->to_derived_run(argc, argv, env);
         return err;
     }
 
@@ -165,6 +205,72 @@ protected:
      int argc, char_t**argv, char_t**env) {
         int err = 0;
         run_ = &derives::derived_run;
+        return err;
+    }
+
+    /// on_to_..._option
+    virtual int on_to_windows_option
+    (int optval, const char_t* optarg,
+     const char_t* optname, int optind,
+     int argc, char_t**argv, char_t**env) {
+        int err = 0;
+        run_ = &derives::to_windows_run;
+        return err;
+    }
+    virtual int on_to_osx_option
+    (int optval, const char_t* optarg,
+     const char_t* optname, int optind,
+     int argc, char_t**argv, char_t**env) {
+        int err = 0;
+        run_ = &derives::to_osx_run;
+        return err;
+    }
+    virtual int on_to_linux_option
+    (int optval, const char_t* optarg,
+     const char_t* optname, int optind,
+     int argc, char_t**argv, char_t**env) {
+        int err = 0;
+        run_ = &derives::to_linux_run;
+        return err;
+    }
+    virtual int on_to_posix_option
+    (int optval, const char_t* optarg,
+     const char_t* optname, int optind,
+     int argc, char_t**argv, char_t**env) {
+        int err = 0;
+        run_ = &derives::to_posix_run;
+        return err;
+    }
+    virtual int on_to_mach_option
+    (int optval, const char_t* optarg,
+     const char_t* optname, int optind,
+     int argc, char_t**argv, char_t**env) {
+        int err = 0;
+        run_ = &derives::to_mach_run;
+        return err;
+    }
+    virtual int on_to_solaris_option
+    (int optval, const char_t* optarg,
+     const char_t* optname, int optind,
+     int argc, char_t**argv, char_t**env) {
+        int err = 0;
+        run_ = &derives::to_solaris_run;
+        return err;
+    }
+    virtual int on_to_osos_option
+    (int optval, const char_t* optarg,
+     const char_t* optname, int optind,
+     int argc, char_t**argv, char_t**env) {
+        int err = 0;
+        run_ = &derives::to_os_run;
+        return err;
+    }
+    virtual int on_to_osnone_option
+    (int optval, const char_t* optarg,
+     const char_t* optname, int optind,
+     int argc, char_t**argv, char_t**env) {
+        int err = 0;
+        run_ = &derives::to_derived_run;
         return err;
     }
 

@@ -18,12 +18,21 @@
 /// Author: $author$
 ///   Date: 1/7/2020
 ///////////////////////////////////////////////////////////////////////
-#ifndef XOS_MT_POSIX_SEMAPHORE_HPP
+#if !defined(XOS_MT_POSIX_SEMAPHORE_HPP) || defined(XOS_MT_OS_POSIX_SEMAPHORE_HPP)
+#if !defined(XOS_MT_POSIX_SEMAPHORE_HPP) && !defined(XOS_MT_OS_POSIX_SEMAPHORE_HPP)
 #define XOS_MT_POSIX_SEMAPHORE_HPP
+#endif /// !defined(XOS_MT_POSIX_SEMAPHORE_HPP) && !defined(XOS_MT_OS_POSIX_SEMAPHORE_HPP)
 
-#include "xos/mt/posix/timed.hpp"
 #include "xos/mt/semaphore.hpp"
+#include "xos/mt/posix/timed.hpp"
 
+#if defined(XOS_MT_OS_POSIX_SEMAPHORE_HPP)
+#define PLATFORM_OS_POSIX_SEMAPHORE
+#include "xos/platform/os/posix/semaphore.h"
+#else defined(XOS_MT_OS_POSIX_SEMAPHORE_HPP)
+#if defined(WINDOWS)
+#include "xos/platform/microsoft/windows/posix/semaphore.h"
+#else /// defined(WINDOWS)
 #if defined(APPLEOSX)
 #if !defined(__MAC_OS_X_VERSION_MAX_ALLOWED_NO_POSIX_SEM)
 #define __MAC_OS_X_VERSION_MAX_ALLOWED_NO_POSIX_SEM __MAC_10_9
@@ -50,6 +59,8 @@
 #else /// defined(HAS_POSIX_SEMAPHORE)
 #include "xos/platform/os/posix/semaphore.h"
 #endif /// defined(HAS_POSIX_SEMAPHORE)
+#endif /// defined(WINDOWS)
+#endif /// defined(XOS_MT_OS_POSIX_SEMAPHORE_HPP)
 
 #if !defined(HAS_POSIX_TIMEOUTS)
 #if defined(_POSIX_TIMEOUTS) && (_POSIX_TIMEOUTS >=0 )
@@ -90,8 +101,7 @@ inline int sem_timedwait(sem_t *sem, const struct timespec *abs_timeout) {
                 int err = 0;            
                 for (useconds_t useconds_sleep = ::xos::mseconds_useconds(10);
                      timeout_useconds > time_useconds; time_useconds += useconds_sleep) {
-                    err = ::sem_trywait(sem);
-                    if (EAGAIN != (err)) {
+                    if (EAGAIN != (err = ::sem_trywait(sem))) {
                         if (EBUSY != (err)) {
                             if (ETIMEDOUT != (err)) {
                                 return err;
@@ -135,6 +145,9 @@ inline int sem_timedwait_relative_np(sem_t *sem, const struct timespec *timeout)
 
 namespace xos {
 namespace mt {
+#if defined(XOS_MT_OS_POSIX_SEMAPHORE_HPP)
+namespace os {
+#endif /// defined(XOS_MT_OS_POSIX_SEMAPHORE_HPP)
 namespace posix {
 
 /// enum sem_pshared_t
@@ -388,7 +401,10 @@ protected:
 typedef semaphoret<> semaphore;
 
 } /// namespace posix
+#if defined(XOS_MT_OS_POSIX_SEMAPHORE_HPP)
+} /// namespace os 
+#endif /// defined(XOS_MT_OS_POSIX_SEMAPHORE_HPP)
 } /// namespace mt
 } /// namespace xos
 
-#endif /// ndef XOS_MT_POSIX_SEMAPHORE_HPP 
+#endif /// !defined(XOS_MT_POSIX_SEMAPHORE_HPP) || defined(XOS_MT_OS_POSIX_SEMAPHORE_HPP)

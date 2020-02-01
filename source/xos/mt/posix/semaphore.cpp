@@ -22,8 +22,14 @@
 
 namespace xos {
 namespace mt {
+#if defined(XOS_MT_OS_POSIX_SEMAPHORE_HPP)
+namespace os {
+#endif /// defined(XOS_MT_OS_POSIX_SEMAPHORE_HPP)
 namespace posix {
 
 } /// namespace posix
+#if defined(XOS_MT_OS_POSIX_SEMAPHORE_HPP)
+} /// namespace os 
+#endif /// defined(XOS_MT_OS_POSIX_SEMAPHORE_HPP)
 } /// namespace mt
 } /// namespace xos

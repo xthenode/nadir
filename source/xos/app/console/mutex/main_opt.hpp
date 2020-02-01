@@ -21,7 +21,7 @@
 #ifndef XOS_APP_CONSOLE_MUTEX_MAIN_OPT_HPP
 #define XOS_APP_CONSOLE_MUTEX_MAIN_OPT_HPP
 
-#include "xos/app/console/mt/main.hpp"
+#include "xos/app/console/mt/mutex/main.hpp"
 
 namespace xos {
 namespace app {
@@ -29,13 +29,17 @@ namespace console {
 namespace mutex {
 
 /// class main_optt
-template <class TExtends = mt::main, class TImplements = typename TExtends::implements>
+template 
+<class TExtends = mt::mutex::main, 
+ class TImplements = typename TExtends::implements>
+
 class exported main_optt: virtual public TImplements, public TExtends {
 public:
     typedef TImplements implements;
     typedef TExtends extends;
     typedef main_optt derives;
 
+    typedef typename extends::string_t string_t;
     typedef typename extends::char_t char_t;
     typedef typename extends::end_char_t end_char_t;
     enum { end_char = extends::end_char };
@@ -46,7 +50,7 @@ public:
     virtual ~main_optt() {
     }
 private:
-    main_optt(const main_optt& copy): extends(copy) {
+    main_optt(const main_optt& copy) {
     }
 
 }; /// class main_optt

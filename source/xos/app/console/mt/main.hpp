@@ -45,16 +45,28 @@ public:
     enum { end_char = extends::end_char };
 
     /// constructor / destructor
-    maint(): sleep_((mseconds_t)-1), timeout_((mseconds_t)-1) {
+    maint(): threads_(0), sleep_((mseconds_t)-1), timeout_((mseconds_t)-1) {
     }
     virtual ~maint() {
     }
 private:
-    maint(const maint& copy): sleep_((mseconds_t)-1), timeout_((mseconds_t)-1) {
+    maint(const maint& copy): threads_(0), sleep_((mseconds_t)-1), timeout_((mseconds_t)-1) {
     }
 
 protected:
     /// ...option...
+    virtual int on_threads_option
+    (int optval, const char_t* optarg,
+     const char_t* optname, int optind,
+     int argc, char_t**argv, char_t**env) {
+        int err = 0;
+        if ((optarg) && (optarg[0])) {
+            string_t opt(optarg);
+            unsigned to = opt.to_unsigned();
+            set_threads(to);
+        }
+        return err;
+    }
     virtual int on_sleep_option
     (int optval, const char_t* optarg,
      const char_t* optname, int optind,
@@ -80,7 +92,14 @@ protected:
         return err;
     }
 
-    /// ...sleep / ...timeout
+    /// ...threads / ...sleep / ...timeout
+    virtual size_t set_threads(size_t to) {
+        threads_ = to;
+        return threads_;
+    }
+    virtual size_t threads() const {
+        return threads_;
+    }
     virtual mseconds_t set_sleep(mseconds_t to) {
         sleep_ = to;
         return sleep_;
@@ -103,9 +122,52 @@ protected:
     }
 
 protected:
+    size_t threads_;
     mseconds_t sleep_, timeout_;
 }; /// class maint
 typedef maint<> main;
+
+namespace os {
+/// class maint
+template 
+<class TExtends = mt::maint<mt::os::main_opt>, 
+ class TImplements = typename TExtends::implements>
+
+class exported maint: virtual public TImplements, public TExtends {
+public:
+    typedef TImplements implements;
+    typedef TExtends extends;
+    typedef maint derives;
+
+    typedef typename extends::string_t string_t;
+    typedef typename extends::char_t char_t;
+    typedef typename extends::end_char_t end_char_t;
+    enum { end_char = extends::end_char };
+
+    /// constructor / destructor
+    maint(): run_(0) {
+    }
+    virtual ~maint() {
+    }
+private:
+    maint(const maint& copy): run_(0) {
+    }
+
+protected:
+    /// ...run
+    int (derives::*run_)(int argc, char_t** argv, char_t** env);
+    virtual int run(int argc, char_t** argv, char_t** env) {
+        if ((run_)) {
+            return (this->*run_)(argc, argv, env);
+        }
+        return this->os_run(argc, argv, env);
+    }
+    virtual int os_run(int argc, char_t** argv, char_t** env) {
+        return this->usage(argc, argv, env);
+    }
+}; /// class maint
+typedef maint<> main;
+} /// namespace os
 
 } /// namespace mt
 } /// namespace console

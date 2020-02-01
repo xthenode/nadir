@@ -220,7 +220,8 @@ protected:
         switch(optval) {
         case XOS_CONSOLE_MAIN_INVALID_OPTVAL_C:
             if (!opterr) {
-                const char_t* arg = argv[optind+1];
+                int argind = (0 < optind)?(optind):((0 < ::optind)?(::optind):((0 < argc)?(1):(0)));
+                const char_t* arg = argv[argind];
                 int optchar = (arg[1]!='-')?(arg[1]):(arg[2]);
                 const char_t* optchars = (arg[1]!='-')?(arg+1):(arg+2);
                 err = on_invalid_option

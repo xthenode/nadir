@@ -20,6 +20,7 @@
 ///////////////////////////////////////////////////////////////////////
 #include "xos/platform/microsoft/windows/posix/mutex.hpp"
 #include "xos/platform/os/posix/mutex.cpp"
+#include "xos/platform/os/posix/sys/time.cpp"
 
 namespace xos {
 namespace platform {

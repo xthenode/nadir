@@ -20,7 +20,8 @@
 ///////////////////////////////////////////////////////////////////////
 #include "xos/mt/os/mutex.hpp"
 #include "xos/console/main_main.hpp"
-#include "xos/console/logger.hpp"
+#include "xos/console/logger.cpp"
+#include "xos/console/io.cpp"
 
 namespace xos {
 namespace console {

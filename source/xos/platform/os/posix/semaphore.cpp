@@ -18,39 +18,8 @@
 /// Author: $author$
 ///   Date: 1/7/2020
 ///////////////////////////////////////////////////////////////////////
-#include "xos/platform/os/posix/semaphore.hpp"
 #include "xos/mt/os/semaphore.hpp"
-
-#include <sys/time.h>
-#include <time.h>
-#include <errno.h>
-
-///
-/// clock_gettime
-///
-#if !defined(CLOCK_REALTIME)
-#define CLOCK_REALTIME 0
-#define clockid_t int
-#if !defined(CLOCK_HAS_GETTIME)
-#define CLOCK_HAS_GETTIME
-inline int clock_gettime(clockid_t clk_id, struct timespec *res) {
-    if ((res) && (CLOCK_REALTIME == clk_id)) {
-        int err = 0;
-        struct timeval tv;
-        if ((err = gettimeofday(&tv, NULL))) {
-            res->tv_sec = 0;
-            res->tv_nsec = 0;
-            return errno;
-        } else {
-            res->tv_sec = tv.tv_sec;
-            res->tv_nsec = ::xos::useconds_nseconds(tv.tv_usec);
-            return 0;
-        }
-    }
-    return EINVAL;
-}
-#endif /// !defined(CLOCK_HAS_GETTIME)
-#endif /// !defined(CLOCK_REALTIME)
+#include "xos/platform/os/posix/semaphore.hpp"
 
 namespace xos {
 namespace platform {
@@ -64,7 +33,6 @@ typedef mt::os::semaphore semaphore;
 } /// namespace platform
 } /// namespace xos
 
-#if defined(posix_sem_t)
 ///
 /// posix semaphores
 /// ...
@@ -156,16 +124,16 @@ int sem_trywait(sem_t *sem) {
             ::xos::acquire_status status = ::xos::acquire_failed;
             int err = EFAULT;
             if (::xos::acquire_success == (status = semaphore->try_acquire())) {
-                err = 0;
+                errno = err = 0;
             } else {
                 if (::xos::acquire_busy == (status)) {
-                    err = EBUSY;
+                    errno = err = EBUSY;
                 } else {
                     if (::xos::acquire_timeout == (status)) {
-                        err = ETIMEDOUT;
+                        errno = err = ETIMEDOUT;
                     } else {
                         if (::xos::acquire_interrupted == (status)) {
-                            err = EINTR;
+                            errno = err = EINTR;
                         }
                     }
                 }
@@ -186,16 +154,16 @@ int sem_timedwait(sem_t *sem, const struct timespec *abs_timeout) {
                 mseconds_t milliseconds = ::xos::seconds_mseconds(timeout.tv_sec) + ::xos::nseconds_mseconds(timeout.tv_nsec);
                 ::xos::acquire_status status = ::xos::acquire_failed;
                 if (::xos::acquire_success == (status = semaphore->timed_acquire(((abs_milliseconds >= milliseconds)?(abs_milliseconds - milliseconds):(0))))) {
-                    err = 0;
+                    errno = err = 0;
                 } else {
                     if (::xos::acquire_busy == (status)) {
-                        err = EBUSY;
+                        errno = err = EBUSY;
                     } else {
                         if (::xos::acquire_timeout == (status)) {
-                            err = ETIMEDOUT;
+                            errno = err = ETIMEDOUT;
                         } else {
                             if (::xos::acquire_interrupted == (status)) {
-                                err = EINTR;
+                                errno = err = EINTR;
                             }
                         }
                     }
@@ -214,16 +182,16 @@ int sem_timedwait_relative_np(sem_t *sem, const struct timespec *timeout) {
             ::xos::acquire_status status = ::xos::acquire_failed;
             int err = EFAULT;
             if (::xos::acquire_success == (status = semaphore->timed_acquire(milliseconds))) {
-                err = 0;
+                errno = err = 0;
             } else {
                 if (::xos::acquire_busy == (status)) {
-                    err = EBUSY;
+                    errno = err = EBUSY;
                 } else {
                     if (::xos::acquire_timeout == (status)) {
-                        err = ETIMEDOUT;
+                        errno = err = ETIMEDOUT;
                     } else {
                         if (::xos::acquire_interrupted == (status)) {
-                            err = EINTR;
+                            errno = err = EINTR;
                         }
                     }
                 }
@@ -236,4 +204,3 @@ int sem_timedwait_relative_np(sem_t *sem, const struct timespec *timeout) {
 /// ...
 /// poxix semaphores
 /// 
-#endif /// defined(posix_sem_t)

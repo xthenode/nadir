@@ -38,31 +38,29 @@ namespace console {
 namespace thread {
 
 /// class maint
-template 
-<class TRan = ran,
- class TExtends = main_opt, 
- class TImplements = typename TExtends::implements>
-
+template <class TRan = ran, class TExtends = main_optt<TRan>, class TImplements = typename TExtends::implements>
 class exported maint: virtual public TRan, virtual public TImplements, public TExtends {
 public:
     typedef TImplements implements;
     typedef TExtends extends;
     typedef maint derives;
 
+    typedef typename extends::string_t string_t;
     typedef typename extends::char_t char_t;
     typedef typename extends::end_char_t end_char_t;
     enum { end_char = extends::end_char };
 
     /// constructor / destructor
-    maint(): locked_(0) {
+    maint(/*): locked_(0*/) {
     }
     virtual ~maint() {
     }
 private:
-    maint(const maint& copy): locked_(0) {
+    maint(const maint& copy/*): locked_(0*/) {
     }
 
 protected:
+/*/
     /// run
     virtual pointer_t run(pointer_t parameter) {
         pointer_t result = 0;
@@ -110,6 +108,8 @@ protected:
         }
         return err;
     }
+    
+    /// run
     template <class TMutex, class TThread>
     int run() {
         int err = 0;
@@ -151,47 +151,47 @@ protected:
         locked_ = 0;
         return err;
     }
-    
+/*/    
     /// ...run
-    /*/
+/*/
     virtual int windows_run(int argc, char_t** argv, char_t** env) {
-        int err = this->run< ::xos::mt::microsoft::windows::mutex, ::xos::mt::microsoft::windows::thread >();
+        int err = this->template run< ::xos::mt::microsoft::windows::mutex, ::xos::mt::microsoft::windows::thread >();
         return err;
     }
     virtual int solaris_run(int argc, char_t** argv, char_t** env) {
-        int err = this->run< ::xos::mt::oracle::solaris::mutex, ::xos::mt::oracle::solaris::thread >();
+        int err = this->template run< ::xos::mt::oracle::solaris::mutex, ::xos::mt::oracle::solaris::thread >();
         return err;
     }
     virtual int mach_run(int argc, char_t** argv, char_t** env) {
-        int err = this->run< ::xos::mt::mach::mutex, ::xos::mt::mach::thread >();
+        int err = this->template run< ::xos::mt::mach::mutex, ::xos::mt::mach::thread >();
         return err;
     }
-    /*/
+/*/
     virtual int osx_run(int argc, char_t** argv, char_t** env) {
-        int err = this->run< ::xos::mt::apple::osx::mutex, ::xos::mt::apple::osx::thread >();
+        int err = this->template run< ::xos::mt::apple::osx::mutex, ::xos::mt::apple::osx::thread >();
         return err;
     }
     virtual int linux_run(int argc, char_t** argv, char_t** env) {
-        int err = this->run< ::xos::mt::linux::mutex, ::xos::mt::linux::thread >();
+        int err = this->template run< ::xos::mt::linux::mutex, ::xos::mt::linux::thread >();
         return err;
     }
     virtual int posix_run(int argc, char_t** argv, char_t** env) {
-        int err = this->run< ::xos::mt::posix::mutex, ::xos::mt::posix::thread >();
+        int err = this->template run< ::xos::mt::posix::mutex, ::xos::mt::posix::thread >();
         return err;
     }
     virtual int os_run(int argc, char_t** argv, char_t** env) {
-        int err = this->run< ::xos::mt::os::mutex, ::xos::mt::os::thread >();
+        int err = this->template run< ::xos::mt::os::mutex, ::xos::mt::os::thread >();
         return err;
     }
     virtual int derived_run(int argc, char_t** argv, char_t** env) {
-        int err = this->run< ::xos::mt::derived::mutex, ::xos::mt::derived::thread >();
+        int err = this->template run< ::xos::mt::derived::mutex, ::xos::mt::derived::thread >();
         return err;
     }
     virtual int default_run(int argc, char_t** argv, char_t** env) {
-        int err = this->usage(argc, argv, env);
+        int err = this->os_run(argc, argv, env);
         return err;
     }
-
+/*/
     /// out...
     virtual ssize_t outllnv(const char_t *what, va_list va) {
         ssize_t count = 0;
@@ -220,6 +220,7 @@ protected:
 
 protected:
     xos::locked* locked_;
+/*/
 }; /// class maint
 typedef maint<> main;
 

@@ -21,7 +21,7 @@
 #ifndef XOS_APP_CONSOLE_SEMAPHORE_MAIN_OPT_HPP
 #define XOS_APP_CONSOLE_SEMAPHORE_MAIN_OPT_HPP
 
-#include "xos/app/console/mt/main.hpp"
+#include "xos/app/console/mt/semaphore/main.hpp"
 
 namespace xos {
 namespace app {
@@ -29,7 +29,10 @@ namespace console {
 namespace semaphore {
 
 /// class main_optt
-template <class TExtends = mt::main, class TImplements = typename TExtends::implements>
+template 
+<class TExtends = mt::semaphore::main, 
+ class TImplements = typename TExtends::implements>
+
 class exported main_optt: virtual public TImplements, public TExtends {
 public:
     typedef TImplements implements;
@@ -47,7 +50,7 @@ public:
     virtual ~main_optt() {
     }
 private:
-    main_optt(const main_optt& copy): extends(copy) {
+    main_optt(const main_optt& copy) {
     }
 
 }; /// class main_optt
