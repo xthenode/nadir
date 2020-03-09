@@ -147,6 +147,24 @@
 #endif /*/ !defined(LINUX) /*/
 #endif /*/ defined(LINUX) || defined(_LINUX) || defined(__LINUX__) || defined(__Linux__) || defined(__linux__) /*/
 
+/*/
+/// Define BSD if any of the BSD variants are defined
+/*/
+#if !defined(BSD)
+#if defined(APPLEOS)
+#define BSD
+#endif /*/ defined(APPLEOS) /*/
+#endif /*/ !defined(BSD) /*/
+
+/*/
+/// Define SYSTEMV if any of the SYSTEMV variants are defined
+/*/
+#if !defined(SYSTEMV)
+#if defined(LINUX)
+#define SYSTEMV
+#endif /*/ defined(LINUX) /*/
+#endif /*/ !defined(SYSTEMV) /*/
+
 #if defined(__cplusplus)
 extern "C" {
 #endif /*/ defined(__cplusplus) /*/

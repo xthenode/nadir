@@ -13,32 +13,34 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: semaphores.cpp
+///   File: os.hpp
 ///
 /// Author: $author$
-///   Date: 1/6/2020
+///   Date: 3/8/2020
 ///////////////////////////////////////////////////////////////////////
-#include "xos/mt/semaphores.hpp"
-#include "xos/platform/os/platform/semaphore.cpp"
+#ifndef XOS_NETWORK_ETHERNET_OS_OS_HPP
+#define XOS_NETWORK_ETHERNET_OS_OS_HPP
 
-#if defined(APPLEOSX) || defined(WINDOWS)
-#include "xos/platform/os/posix/semaphore.cpp"
-#endif /// defined(APPLEOSX) || defined(WINDOWS)
-
-#if !defined(MACH)
-#include "xos/platform/os/mach/semaphore.cpp"
-#endif /// !defined(MACH)
-
-#if !defined(SOLARIS)
-#include "xos/platform/os/oracle/solaris/semaphore.cpp"
-#endif /// !defined(SOLARIS)
-
-#if !defined(WINDOWS)
-#include "xos/platform/os/microsoft/windows/Semaphore.cpp"
-#endif /// !defined(WINDOWS)
+#include "xos/base/base.hpp"
 
 namespace xos {
-namespace mt {
+namespace network {
+namespace ethernet {
+namespace bsd {}
+namespace systemv {}
+namespace os {
 
-} /// namespace mt
+#if defined(BSD)
+namespace os = bsd;
+#elif defined(SYSTEMV)
+namespace os = systemv;
+#else /// defined(BSD)
+#error only supported on BSD or SystemV operating systems
+#endif /// defined(BSD)
+
+} /// namespace os
+} /// namespace ethernet
+} /// namespace network
 } /// namespace xos
+
+#endif /// ndef XOS_NETWORK_ETHERNET_OS_OS_HPP 

@@ -74,29 +74,40 @@ protected:
         mseconds_t timeout = 0;
         bool untimed = this->infinite_timeout(timeout);
         this->outlln(__LOCATION__, "try {...", NULL);
-        try {
-            if (untimed) {
-                this->outlln(__LOCATION__, "::xos::join join(joined)...", NULL);
-                ::xos::join join(joined);
-                this->outlln(__LOCATION__, "...::xos::join join(joined)", NULL);
-            } else {
-                if (0 < timeout) {
-                    this->outlln(__LOCATION__, "::xos::join join(joined, timeout = ", unsigned_to_string(timeout).chars(), ")...", NULL);
-                    ::xos::join join(joined, timeout);
-                    this->outlln(__LOCATION__, "...::xos::join join(joined, timeout = ", unsigned_to_string(timeout).chars(), ")", NULL);
+        for (unsigned tried = 0, tries = 1; tries; --tries, ++tried) {
+            try {
+                if (untimed) {
+                    this->outlln(__LOCATION__, "::xos::join join(joined)...", NULL);
+                    ::xos::join join(joined);
+                    this->outlln(__LOCATION__, "...::xos::join join(joined)", NULL);
                 } else {
-                    this->outlln(__LOCATION__, "::xos::try_join try_join(joined)...", NULL);
-                    ::xos::try_join try_join(joined);
-                    this->outlln(__LOCATION__, "...::xos::try_join try_join(joined)", NULL);
+                    if (0 < timeout) {
+                        this->outlln(__LOCATION__, "::xos::join join(joined, timeout = ", unsigned_to_string(timeout).chars(), ")...", NULL);
+                        ::xos::join join(joined, timeout);
+                        this->outlln(__LOCATION__, "...::xos::join join(joined, timeout = ", unsigned_to_string(timeout).chars(), ")", NULL);
+                    } else {
+                        this->outlln(__LOCATION__, "::xos::try_join try_join(joined)...", NULL);
+                        ::xos::try_join try_join(joined);
+                        this->outlln(__LOCATION__, "...::xos::try_join try_join(joined)", NULL);
+                    }
                 }
+                this->outlln(__LOCATION__, "...} try", NULL);
+            } catch (const join_exception& e) {
+                join_status status = e.status();
+                this->outlln(__LOCATION__, "...catch (const join_exception& e.status = \"", join_status_to_chars(status), "\")", NULL);
+                if (!((untimed) || (tried) || ((join_busy != status) && (join_timeout != status)))) {
+                    ++tries;
+                    untimed = true;
+                    continue;
+                }
+                err = 1;
+            } catch (const exception& e) {
+                this->outlln(__LOCATION__, "...catch (const exception& e.status = \"", e.status_to_chars(), "\")", NULL);
+                err = 1;
+            } catch (...) {
+                this->outlln(__LOCATION__, "...catch (...)", NULL);
+                err = 1;
             }
-            this->outlln(__LOCATION__, "...} try", NULL);
-        } catch (const exception& e) {
-            this->outlln(__LOCATION__, "...catch (const exception& e.status = \"", e.status_to_chars(), "\")", NULL);
-            err = 1;
-        } catch (...) {
-            this->outlln(__LOCATION__, "...catch (...)", NULL);
-            err = 1;
         }
         return err;
     }
@@ -114,24 +125,7 @@ protected:
             locked_ = &mutex;
             this->outlln(__LOCATION__, "TThread thread...", NULL);
             TThread thread(*this);
-            if (untimed) {
-                err = run(thread);
-            } else {
-                try {
-                    this->outlln(__LOCATION__, "::xos::join join(thread)...", NULL);
-                    ::xos::join join(thread);
-                    if ((err = run(thread))) {
-                        err = 2;
-                    }
-                    this->outlln(__LOCATION__, "...} try", NULL);
-                } catch (const exception& e) {
-                    this->outlln(__LOCATION__, "...catch (const exception& e.status = \"", e.status_to_chars(), "\")", NULL);
-                    err = 1;
-                } catch (...) {
-                    this->outlln(__LOCATION__, "...catch (...)", NULL);
-                    err = 1;
-                }
-            }
+            err = run(thread);
             this->outlln(__LOCATION__, "...} try", NULL);
         } catch (const exception& e) {
             this->outlln(__LOCATION__, "...catch (const exception& e.status = \"", e.status_to_chars(), "\")", NULL);

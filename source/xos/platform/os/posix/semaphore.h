@@ -20,12 +20,14 @@
 ///   Date: 1/7/2020
 ///////////////////////////////////////////////////////////////////////
 /*/
-#ifndef XOS_PLATFORM_OS_POSIX_SEMAPHORE_H
+#if !defined(XOS_PLATFORM_OS_POSIX_SEMAPHORE_H) || defined(PLATFORM_OS_POSIX_SEMAPHORE)
+#if !defined(XOS_PLATFORM_OS_POSIX_SEMAPHORE_H) && !defined(PLATFORM_OS_POSIX_SEMAPHORE)
 #define XOS_PLATFORM_OS_POSIX_SEMAPHORE_H
+#endif /*/ !defined(XOS_PLATFORM_OS_POSIX_SEMAPHORE_H) && !defined(PLATFORM_OS_POSIX_SEMAPHORE) /*/
 
 #include "xos/platform/os/posix/sys/time.h"
 
-#if !defined(WINDOWS)
+#if !defined(WINDOWS) || defined(PLATFORM_OS_POSIX_SEMAPHORE)
 /*/
 /// posix semaphores
 /// ...
@@ -69,7 +71,7 @@ typedef void* posix_semaphore_t;
 /// ...
 /// posix semaphores
 /*/
-#endif /// !defined(WINDOWS)
+#endif /// !defined(WINDOWS) || defined(PLATFORM_OS_POSIX_SEMAPHORE)
 
 #if !defined(POSIX_SEM_HAS_TRYWAIT)
 #define POSIX_SEM_HAS_TRYWAIT
@@ -104,4 +106,5 @@ extern int sem_timedwait_relative_np(sem_t *sem, const struct timespec *timeout)
 } /*/ extern "C" /*/
 #endif /*/ defined(__cplusplus) /*/
 
-#endif /*/ ndef XOS_PLATFORM_OS_POSIX_SEMAPHORE_H /*/
+#endif /*/ !defined(XOS_PLATFORM_OS_POSIX_SEMAPHORE_H) || defined(PLATFORM_OS_POSIX_SEMAPHORE) /*/
+

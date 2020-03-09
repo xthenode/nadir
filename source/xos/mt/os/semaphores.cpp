@@ -16,29 +16,16 @@
 ///   File: semaphores.cpp
 ///
 /// Author: $author$
-///   Date: 1/6/2020
+///   Date: 2/3/2020
 ///////////////////////////////////////////////////////////////////////
-#include "xos/mt/semaphores.hpp"
-#include "xos/platform/os/platform/semaphore.cpp"
-
-#if defined(APPLEOSX) || defined(WINDOWS)
-#include "xos/platform/os/posix/semaphore.cpp"
-#endif /// defined(APPLEOSX) || defined(WINDOWS)
-
-#if !defined(MACH)
-#include "xos/platform/os/mach/semaphore.cpp"
-#endif /// !defined(MACH)
-
-#if !defined(SOLARIS)
-#include "xos/platform/os/oracle/solaris/semaphore.cpp"
-#endif /// !defined(SOLARIS)
-
-#if !defined(WINDOWS)
-#include "xos/platform/os/microsoft/windows/Semaphore.cpp"
-#endif /// !defined(WINDOWS)
+#include "xos/mt/os/semaphores.hpp"
+#include "xos/mt/semaphores.cpp"
+#include "xos/mt/os/posix/semaphore.cpp"
 
 namespace xos {
 namespace mt {
+namespace os {
 
+} /// namespace os
 } /// namespace mt
 } /// namespace xos

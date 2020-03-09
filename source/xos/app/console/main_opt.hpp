@@ -13,32 +13,50 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: semaphores.cpp
+///   File: main_opt.hpp
 ///
 /// Author: $author$
-///   Date: 1/6/2020
+///   Date: 3/6/2020
 ///////////////////////////////////////////////////////////////////////
-#include "xos/mt/semaphores.hpp"
-#include "xos/platform/os/platform/semaphore.cpp"
+#ifndef XOS_APP_CONSOLE_MAIN_OPT_HPP
+#define XOS_APP_CONSOLE_MAIN_OPT_HPP
 
-#if defined(APPLEOSX) || defined(WINDOWS)
-#include "xos/platform/os/posix/semaphore.cpp"
-#endif /// defined(APPLEOSX) || defined(WINDOWS)
-
-#if !defined(MACH)
-#include "xos/platform/os/mach/semaphore.cpp"
-#endif /// !defined(MACH)
-
-#if !defined(SOLARIS)
-#include "xos/platform/os/oracle/solaris/semaphore.cpp"
-#endif /// !defined(SOLARIS)
-
-#if !defined(WINDOWS)
-#include "xos/platform/os/microsoft/windows/Semaphore.cpp"
-#endif /// !defined(WINDOWS)
+#include "xos/console/getopt/main.hpp"
 
 namespace xos {
-namespace mt {
+namespace app {
+namespace console {
 
-} /// namespace mt
+/// class main_optt
+template 
+<class TExtends = xos::console::getopt::main, 
+ class TImplements = typename TExtends::implements>
+
+class exported main_optt: virtual public TImplements, public TExtends {
+public:
+    typedef TImplements implements;
+    typedef TExtends extends;
+    typedef main_optt derives;
+
+    typedef typename extends::string_t string_t;
+    typedef typename extends::char_t char_t;
+    typedef typename extends::end_char_t end_char_t;
+    enum { end_char = extends::end_char };
+
+    /// constructor / destructor
+    main_optt() {
+    }
+    virtual ~main_optt() {
+    }
+private:
+    main_optt(const main_optt& copy) {
+    }
+
+}; /// class main_optt
+typedef main_optt<> main_opt;
+
+} /// namespace console
+} /// namespace app
 } /// namespace xos
+
+#endif /// ndef XOS_APP_CONSOLE_MAIN_OPT_HPP 

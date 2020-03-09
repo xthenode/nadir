@@ -21,7 +21,7 @@
 #ifndef XOS_BASE_STRING_HPP
 #define XOS_BASE_STRING_HPP
 
-#include "xos/base/base.hpp"
+#include "xos/base/chars.hpp"
 #include <stdarg.h>
 #include <locale>
 #include <string>
@@ -35,7 +35,8 @@ template
  typename TEndChar = TChar, TEndChar VEndChar = 0, 
  class TSStream = ::std::basic_stringstream<TChar>,
  class TString = ::std::basic_string<TChar>, 
- class TImplements = implement, class TExtends = TString>
+ class TChars = charst<TChar, TEndChar, VEndChar>,
+ class TImplements = TChars, class TExtends = TString>
 
 class exported stringt: virtual public TImplements, public TExtends {
 public:
@@ -66,6 +67,15 @@ public:
     }
     
     /// assign...
+    virtual stringt& assignX(const void* in, size_t length, bool upper_case = true) {
+        this->assignx(in, length, upper_case);
+        return *this;
+    }
+    virtual stringt& assignx(const void* in, size_t length, bool upper_case = true) {
+        this->clear();
+        this->appendx(in, length, upper_case);
+        return *this;
+    }
     virtual stringt& assignl(const char_t* chars, ...) {
         va_list va; va_start(va, chars);
         assignv(chars, va);
@@ -93,6 +103,24 @@ public:
     }
 
     /// append...
+    virtual stringt& appendX(const void* in, size_t length, bool upper_case = true) {
+        this->appendx(in, length, upper_case);
+        return *this;
+    }
+    virtual stringt& appendx(const void* in, size_t length, bool upper_case = false) {
+        const byte_t* bytes = (const byte_t*)(in);
+        if ((bytes) && (length)) {
+            char_t x[2];
+            byte_t b;
+            for (; 0 < length; --length) {
+                b = (*bytes++);
+                x[0] = this->to_x(b >> 4, upper_case);
+                x[1] = this->to_x(b & 15, upper_case);
+                this->append(x, 2);
+            }
+        }
+        return *this;
+    }
     virtual stringt& appendl(const char_t* chars, ...) {
         va_list va; va_start(va, chars);
         appendv(chars, va);

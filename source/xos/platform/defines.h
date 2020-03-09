@@ -41,7 +41,9 @@
 #endif /*/ defined(_DEBUG) /*/
 #endif /*/ !defined(DEBUG_BUILD) /*/
 
-#define PLATFORM_PACKED
+#if !defined(packed)
+#define packed
+#endif /*/ !defined(packed) /*/
 /*/
 // ...
 // Microsoft C/C++
@@ -78,7 +80,9 @@
 // Gnu C/C++
 // ...
 /*/
-#define PLATFORM_PACKED __attribute__ ((packed))
+#if !defined(packed)
+#define packed __attribute__ ((packed))
+#endif /*/ !defined(packed) /*/
 /*/
 // ...
 // Gnu C/C++

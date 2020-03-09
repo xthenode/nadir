@@ -13,32 +13,34 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: semaphores.cpp
+///   File: address.hpp
 ///
 /// Author: $author$
-///   Date: 1/6/2020
+///   Date: 3/8/2020
 ///////////////////////////////////////////////////////////////////////
-#include "xos/mt/semaphores.hpp"
-#include "xos/platform/os/platform/semaphore.cpp"
+#ifndef XOS_NETWORK_ETHERNET_OS_ADDRESS_HPP
+#define XOS_NETWORK_ETHERNET_OS_ADDRESS_HPP
 
-#if defined(APPLEOSX) || defined(WINDOWS)
-#include "xos/platform/os/posix/semaphore.cpp"
-#endif /// defined(APPLEOSX) || defined(WINDOWS)
+#include "xos/network/ethernet/os/os.hpp"
 
-#if !defined(MACH)
-#include "xos/platform/os/mach/semaphore.cpp"
-#endif /// !defined(MACH)
-
-#if !defined(SOLARIS)
-#include "xos/platform/os/oracle/solaris/semaphore.cpp"
-#endif /// !defined(SOLARIS)
-
-#if !defined(WINDOWS)
-#include "xos/platform/os/microsoft/windows/Semaphore.cpp"
-#endif /// !defined(WINDOWS)
+#if defined(BSD)
+#include "xos/network/ethernet/bsd/address.hpp"
+#elif defined(SYSTEMV)
+#include "xos/network/ethernet/systemv/address.hpp"
+#else /// defined(BSD)
+#error only supported on BSD or SystemV operating systems
+#endif /// defined(BSD)
 
 namespace xos {
-namespace mt {
+namespace network {
+namespace ethernet {
+namespace os {
 
-} /// namespace mt
+typedef os::address address;
+
+} /// namespace os
+} /// namespace ethernet
+} /// namespace network
 } /// namespace xos
+
+#endif /// ndef XOS_NETWORK_ETHERNET_OS_ADDRESS_HPP 

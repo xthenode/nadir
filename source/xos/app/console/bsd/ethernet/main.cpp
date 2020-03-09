@@ -13,32 +13,23 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: semaphores.cpp
+///   File: main.cpp
 ///
 /// Author: $author$
-///   Date: 1/6/2020
+///   Date: 3/6/2020
 ///////////////////////////////////////////////////////////////////////
-#include "xos/mt/semaphores.hpp"
-#include "xos/platform/os/platform/semaphore.cpp"
-
-#if defined(APPLEOSX) || defined(WINDOWS)
-#include "xos/platform/os/posix/semaphore.cpp"
-#endif /// defined(APPLEOSX) || defined(WINDOWS)
-
-#if !defined(MACH)
-#include "xos/platform/os/mach/semaphore.cpp"
-#endif /// !defined(MACH)
-
-#if !defined(SOLARIS)
-#include "xos/platform/os/oracle/solaris/semaphore.cpp"
-#endif /// !defined(SOLARIS)
-
-#if !defined(WINDOWS)
-#include "xos/platform/os/microsoft/windows/Semaphore.cpp"
-#endif /// !defined(WINDOWS)
+#include "xos/app/console/bsd/ethernet/main.hpp"
 
 namespace xos {
-namespace mt {
+namespace app {
+namespace console {
+namespace bsd {
+namespace ethernet {
 
-} /// namespace mt
+static main the_main;
+
+} /// namespace ethernet
+} /// namespace bsd
+} /// namespace console
+} /// namespace app
 } /// namespace xos

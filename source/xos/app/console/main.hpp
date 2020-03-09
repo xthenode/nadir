@@ -13,20 +13,56 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: semaphore.cpp
+///   File: main.hpp
 ///
 /// Author: $author$
-///   Date: 1/28/2020
+///   Date: 3/6/2020
 ///////////////////////////////////////////////////////////////////////
-#include "xos/mt/os/posix/semaphore.hpp"
-#include "xos/platform/os/posix/semaphore.cpp"
+#ifndef XOS_APP_CONSOLE_MAIN_HPP
+#define XOS_APP_CONSOLE_MAIN_HPP
+
+#include "xos/app/console/main_opt.hpp"
 
 namespace xos {
-namespace mt {
-namespace os {
-namespace posix {
+namespace app {
+namespace console {
 
-} /// namespace posix
-} /// namespace os
-} /// namespace mt
+/// class maint
+template 
+<class TExtends = main_opt, 
+ class TImplements = typename TExtends::implements>
+
+class exported maint: virtual public TImplements, public TExtends {
+public:
+    typedef TImplements implements;
+    typedef TExtends extends;
+    typedef maint derives;
+
+    typedef typename extends::string_t string_t;
+    typedef typename extends::char_t char_t;
+    typedef typename extends::end_char_t end_char_t;
+    enum { end_char = extends::end_char };
+
+    /// constructor / destructor
+    maint() {
+    }
+    virtual ~maint() {
+    }
+private:
+    maint(const maint& copy) {
+    }
+
+protected:
+    /// ...run
+    virtual int run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+}; /// class maint
+typedef maint<> main;
+
+} /// namespace console
+} /// namespace app
 } /// namespace xos
+
+#endif /// ndef XOS_APP_CONSOLE_MAIN_HPP 

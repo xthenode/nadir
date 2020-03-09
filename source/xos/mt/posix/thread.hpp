@@ -170,9 +170,73 @@ public:
 
     /// ...join_detached... / ...fork_detached...
     virtual join_status time_join_detached(bool& is_forked, thread_t& _thread, mseconds_t milliseconds) const { 
+#if defined(PTHREAD_HAS_TIMEDJOIN_NP)
+        bool is_logged = ((this->is_logged()) && (milliseconds >= this->is_logged_debug_threashold()));
+        void* value = 0;
+        int err = 0;
+        struct timespec until_time;
+        until_time.tv_sec =  mseconds_seconds(milliseconds);
+        until_time.tv_nsec =  mseconds_nseconds(mseconds_mseconds(milliseconds));
+        LOGGER_IF_LOGGED_DEBUG_TRACE(is_logged, is_logged, "::pthread_timedjoin_np(_thread, &value, &until_time)...");
+        if (!(err = ::pthread_timedjoin_np(_thread, &value, &until_time))) {
+            LOGGER_IF_LOGGED_DEBUG_TRACE(is_logged, is_logged, "...::pthread_timedjoin_np(_thread, &value, &until_time)");
+            is_forked = false;
+            return join_success;
+        } else {
+            switch(err) {
+            case EBUSY:
+                LOGGER_IF_LOGGED_DEBUG_TRACE(is_logged, is_logged, "...EBUSY err = " << err << " on ::pthread_timedjoin_np(_thread, &value, &until_time)");
+                return join_busy;
+            case ETIMEDOUT:
+                LOGGER_IF_LOGGED_DEBUG_TRACE(is_logged, is_logged, "...ETIMEDOUT err = " << err << " on ::pthread_timedjoin_np(_thread, &value, &until_time)");
+                return join_busy;
+            case EINTR:
+                LOGGER_IS_LOGGED_ERROR("...EINTR err = " << err << " on ::pthread_timedjoin_np(_thread, &value, &until_time)");
+                is_forked = false;
+                return join_interrupted;
+            default:
+                LOGGER_IS_LOGGED_ERROR("...failed err = " << err << " on ::pthread_timedjoin_np(_thread, &value, &until_time)");
+                is_forked = false;
+            }
+        }
+#else /// defined(PTHREAD_HAS_TIMEDJOIN_NP)
+        LOGGER_IS_LOGGED_ERROR("...invalid ::pthread_timedjoin_np(_thread, &value, &until_time)...");
+#endif /// defined(PTHREAD_HAS_TIMEDJOIN_NP)
         return join_failed; 
     }
     virtual join_status timed_join_detached(bool& is_forked, thread_t& _thread, mseconds_t milliseconds) const { 
+#if defined(PTHREAD_HAS_TIMEDJOIN_RELATIVE_NP)
+        bool is_logged = ((this->is_logged()) && (milliseconds >= this->is_logged_debug_threashold()));
+        void* value = 0;
+        int err = 0;
+        struct timespec until_time;
+        until_time.tv_sec =  mseconds_seconds(milliseconds);
+        until_time.tv_nsec =  mseconds_nseconds(mseconds_mseconds(milliseconds));
+        LOGGER_IF_LOGGED_DEBUG_TRACE(is_logged, is_logged, "::pthread_timedjoin_relative_np(_thread, &value, &until_time)...");
+        if (!(err = ::pthread_timedjoin_relative_np(_thread, &value, &until_time))) {
+            LOGGER_IF_LOGGED_DEBUG_TRACE(is_logged, is_logged, "...::pthread_timedjoin_relative_np(_thread, &value, &until_time)");
+            is_forked = false;
+            return join_success;
+        } else {
+            switch(err) {
+            case EBUSY:
+                LOGGER_IF_LOGGED_DEBUG_TRACE(is_logged, is_logged, "...EBUSY err = " << err << " on ::pthread_timedjoin_relative_np(_thread, &value, &until_time)");
+                return join_busy;
+            case ETIMEDOUT:
+                LOGGER_IF_LOGGED_DEBUG_TRACE(is_logged, is_logged, "...ETIMEDOUT err = " << err << " on ::pthread_timedjoin_relative_np(_thread, &value, &until_time)");
+                return join_busy;
+            case EINTR:
+                LOGGER_IS_LOGGED_ERROR("...EINTR err = " << err << " on ::pthread_timedjoin_relative_np(_thread, &value, &until_time)");
+                is_forked = false;
+                return join_interrupted;
+            default:
+                LOGGER_IS_LOGGED_ERROR("...failed err = " << err << " on ::pthread_timedjoin_relative_np(_thread, &value, &until_time)");
+                is_forked = false;
+            }
+        }
+#else /// defined(PTHREAD_HAS_TIMEDJOIN_RELATIVE_NP)
+        LOGGER_IS_LOGGED_ERROR("...invalid ::pthread_timedjoin_relative_np(_thread, &value, &until_time)...");
+#endif /// defined(PTHREAD_HAS_TIMEDJOIN_RELATIVE_NP)
         return join_failed; 
     }
     virtual join_status try_join_detached(bool& is_forked, thread_t& _thread) const { 
