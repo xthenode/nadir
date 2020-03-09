@@ -107,8 +107,6 @@ $${NADIR_SRC}/xos/logger/message.cpp \
 $${NADIR_SRC}/xos/logger/implement.cpp \
 $${NADIR_SRC}/xos/logger/defines.cpp \
 \
-$${NADIR_SRC}/xos/console/io.cpp \
-$${NADIR_SRC}/xos/console/logger.cpp \
 $${NADIR_SRC}/xos/console/main_main.cpp \
 \
 $${NADIR_SRC}/xos/app/console/nadir/main_opt.cpp \

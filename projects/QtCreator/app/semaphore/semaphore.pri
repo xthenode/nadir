@@ -78,6 +78,8 @@ $${NADIR_SRC}/xos/platform/os/apple/mach/semaphore.hpp \
 $${NADIR_SRC}/xos/platform/os/posix/semaphore.h \
 $${NADIR_SRC}/xos/platform/os/posix/semaphore.hpp \
 $${NADIR_SRC}/xos/platform/os/oses.hpp \
+\
+$${NADIR_SRC}/xos/mt/semaphore.hpp \
 $${NADIR_SRC}/xos/mt/microsoft/windows/semaphore.hpp \
 $${NADIR_SRC}/xos/mt/oracle/solaris/semaphore.hpp \
 $${NADIR_SRC}/xos/mt/apple/mach/semaphore.hpp \
@@ -86,8 +88,8 @@ $${NADIR_SRC}/xos/mt/mach/semaphore.hpp \
 $${NADIR_SRC}/xos/mt/linux/semaphore.hpp \
 $${NADIR_SRC}/xos/mt/posix/semaphore.hpp \
 $${NADIR_SRC}/xos/mt/os/semaphore.hpp \
-$${NADIR_SRC}/xos/mt/semaphore.hpp \
 $${NADIR_SRC}/xos/mt/semaphores.hpp \
+$${NADIR_SRC}/xos/mt/os/semaphores.hpp \
 \
 $${NADIR_SRC}/xos/console/io.hpp \
 $${NADIR_SRC}/xos/console/main_main.hpp \
@@ -108,9 +110,8 @@ $${NADIR_SRC}/xos/platform/os/posix/sys/time.cpp \
 $${NADIR_SRC}/xos/platform/os/oses.cpp \
 \
 $${NADIR_SRC}/xos/mt/os/semaphore.cpp \
-$${NADIR_SRC}/xos/mt/semaphores.cpp \
+$${NADIR_SRC}/xos/mt/os/semaphores.cpp \
 \
-$${NADIR_SRC}/xos/console/io.cpp \
 $${NADIR_SRC}/xos/console/main_main.cpp \
 \
 $${NADIR_SRC}/xos/app/console/semaphore/main_opt.cpp \
