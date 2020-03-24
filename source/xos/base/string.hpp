@@ -51,11 +51,15 @@ public:
     enum { end_char = VEndChar };
 
     /// constructor / destructor
-    stringt(const char* chars, size_t length) {
-        this->append(chars, length);
+    stringt(const char_t* chars, size_t length) {
+        if ((chars) && (length)) {
+            this->append(chars, length);
+        }
     }
-    stringt(const char* chars) {
-        this->append(chars);
+    stringt(const char_t* chars) {
+        if ((chars)) {
+            this->append(chars);
+        }
     }
     stringt(const string_t& copy): extends(copy) {
     }

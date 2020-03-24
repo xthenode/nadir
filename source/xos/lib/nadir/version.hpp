@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////
-/// Copyright (c) 1988-2019 $organization$
+/// Copyright (c) 1988-2020 $organization$
 ///
 /// This software is provided by the author and contributors ``as is'' 
 /// and any express or implied warranties, including, but not limited to, 
@@ -13,49 +13,29 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: main_opt.hpp
+///   File: version.hpp
 ///
 /// Author: $author$
-///   Date: 12/20/2019
+///   Date: 3/19/2020
 ///////////////////////////////////////////////////////////////////////
-#ifndef XOS_APP_CONSOLE_NADIR_MAIN_OPT_HPP
-#define XOS_APP_CONSOLE_NADIR_MAIN_OPT_HPP
+#ifndef XOS_LIB_NADIR_VERSION_HPP
+#define XOS_LIB_NADIR_VERSION_HPP
 
-#include "xos/app/console/main.hpp"
+#include "xos/lib/version.hpp"
 
 namespace xos {
-namespace app {
-namespace console {
+namespace lib {
 namespace nadir {
 
-/// class main_optt
-template <class TExtends = xos::app::console::main, class TImplements = typename TExtends::implements>
-class exported main_optt: virtual public TImplements, public TExtends {
+/// class version
+class exported version {
 public:
-    typedef TImplements implements;
-    typedef TExtends extends;
-    typedef main_optt derives;
-
-    typedef typename extends::char_t char_t;
-    typedef typename extends::end_char_t end_char_t;
-    enum { end_char = extends::end_char };
-
-    /// constructor / destructor
-    main_optt() {
-    }
-    virtual ~main_optt() {
-    }
-private:
-    main_optt(const main_optt& copy): extends(copy) {
-    }
-
-protected:
-}; /// class main_optt
-typedef main_optt<> main_opt;
+    /// which
+    static const lib::version& which();
+}; /// class version
 
 } /// namespace nadir
-} /// namespace console
-} /// namespace app
+} /// namespace lib
 } /// namespace xos
 
-#endif /// ndef XOS_APP_CONSOLE_NADIR_MAIN_OPT_HPP
+#endif /// ndef XOS_LIB_NADIR_VERSION_HPP 

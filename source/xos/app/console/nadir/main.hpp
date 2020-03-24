@@ -22,6 +22,7 @@
 #define XOS_APP_CONSOLE_NADIR_MAIN_HPP
 
 #include "xos/app/console/nadir/main_opt.hpp"
+#include "xos/lib/nadir/version.hpp"
 
 namespace xos {
 namespace app {
@@ -51,7 +52,20 @@ public:
 private:
     maint(const maint& copy): extends(copy) {
     }
-public:
+
+protected:
+    /// ...run
+    virtual int run(int argc, char_t** argv, char_t** env) {
+        ::xos::lib::version::string_t string;
+        const ::xos::lib::version& version = ::xos::lib::nadir::version::which();
+        const ::xos::lib::version::char_t *chars = 0, *name = 0;
+        int err = 0;
+        if ((chars = version.to_chars(string)) && (name = version.name())) {
+            this->outlln(name, " version = " , chars, "\n", null);
+        } 
+        err = this->usage(argc, argv, env);
+        return err;
+    }
 }; /// class maint
 typedef maint<> main;
 

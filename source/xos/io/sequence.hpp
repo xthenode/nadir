@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////
-/// Copyright (c) 1988-2019 $organization$
+/// Copyright (c) 1988-2020 $organization$
 ///
 /// This software is provided by the author and contributors ``as is'' 
 /// and any express or implied warranties, including, but not limited to, 
@@ -13,49 +13,45 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: main_opt.hpp
+///   File: sequence.hpp
 ///
 /// Author: $author$
-///   Date: 12/20/2019
+///   Date: 3/10/2020
 ///////////////////////////////////////////////////////////////////////
-#ifndef XOS_APP_CONSOLE_NADIR_MAIN_OPT_HPP
-#define XOS_APP_CONSOLE_NADIR_MAIN_OPT_HPP
+#ifndef XOS_IO_SEQUENCE_HPP
+#define XOS_IO_SEQUENCE_HPP
 
-#include "xos/app/console/main.hpp"
+#include "xos/base/base.hpp"
 
 namespace xos {
-namespace app {
-namespace console {
-namespace nadir {
+namespace io {
 
-/// class main_optt
-template <class TExtends = xos::app::console::main, class TImplements = typename TExtends::implements>
-class exported main_optt: virtual public TImplements, public TExtends {
+///  Class: sequencet
+template 
+<typename TWhat = char, typename TSized = TWhat,
+ typename TEndof = TSized, TEndof VEndof = 0,
+ class TImplements = implement>
+
+class exported sequencet: virtual public TImplements {
 public:
     typedef TImplements implements;
-    typedef TExtends extends;
-    typedef main_optt derives;
+    
+    typedef TWhat what_t;
+    typedef TSized sized_t;
+    typedef TEndof endof_t;
+    static const endof_t endof = VEndof;
+    
+};
+typedef sequencet<void, char> sequence;
 
-    typedef typename extends::char_t char_t;
-    typedef typename extends::end_char_t end_char_t;
-    enum { end_char = extends::end_char };
+typedef sequencet<char, char> char_sequence;
+typedef sequencet<tchar_t, tchar_t> tchar_sequence;
+typedef sequencet<wchar_t, wchar_t> wchar_sequence;
 
-    /// constructor / destructor
-    main_optt() {
-    }
-    virtual ~main_optt() {
-    }
-private:
-    main_optt(const main_optt& copy): extends(copy) {
-    }
+typedef sequencet<byte_t, byte_t> byte_sequence;
+typedef sequencet<word_t, word_t> word_sequence;
 
-protected:
-}; /// class main_optt
-typedef main_optt<> main_opt;
-
-} /// namespace nadir
-} /// namespace console
-} /// namespace app
+} /// namespace io
 } /// namespace xos
 
-#endif /// ndef XOS_APP_CONSOLE_NADIR_MAIN_OPT_HPP
+#endif /// ndef XOS_IO_SEQUENCE_HPP 

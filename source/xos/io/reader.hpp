@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////
-/// Copyright (c) 1988-2019 $organization$
+/// Copyright (c) 1988-2020 $organization$
 ///
 /// This software is provided by the author and contributors ``as is'' 
 /// and any express or implied warranties, including, but not limited to, 
@@ -13,49 +13,50 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: main_opt.hpp
+///   File: reader.hpp
 ///
 /// Author: $author$
-///   Date: 12/20/2019
+///   Date: 3/10/2020
 ///////////////////////////////////////////////////////////////////////
-#ifndef XOS_APP_CONSOLE_NADIR_MAIN_OPT_HPP
-#define XOS_APP_CONSOLE_NADIR_MAIN_OPT_HPP
+#ifndef XOS_IO_READER_HPP
+#define XOS_IO_READER_HPP
 
-#include "xos/app/console/main.hpp"
+#include "xos/io/seeker.hpp"
 
 namespace xos {
-namespace app {
-namespace console {
-namespace nadir {
+namespace io {
 
-/// class main_optt
-template <class TExtends = xos::app::console::main, class TImplements = typename TExtends::implements>
-class exported main_optt: virtual public TImplements, public TExtends {
+///  Class: readert
+template <class TImplements>
+class exported readert: virtual public TImplements {
 public:
     typedef TImplements implements;
-    typedef TExtends extends;
-    typedef main_optt derives;
 
-    typedef typename extends::char_t char_t;
-    typedef typename extends::end_char_t end_char_t;
-    enum { end_char = extends::end_char };
+    typedef typename implements::what_t what_t;
+    typedef typename implements::sized_t sized_t;
+    typedef typename implements::endof_t endof_t;
+    static const endof_t endof = implements::endof;
 
-    /// constructor / destructor
-    main_optt() {
-    }
-    virtual ~main_optt() {
-    }
-private:
-    main_optt(const main_optt& copy): extends(copy) {
-    }
+    /// read / fill
+    virtual ssize_t read(what_t* what, size_t size) {
+        ssize_t count = 0;
+        return count;
+    }    
+    virtual ssize_t fill() {
+        ssize_t count = 0;
+        return count;
+    }    
+}; /// class exported readert
+typedef readert<seeker> reader;
 
-protected:
-}; /// class main_optt
-typedef main_optt<> main_opt;
+typedef readert<char_seeker> char_reader;
+typedef readert<tchar_seeker> tchar_reader;
+typedef readert<wchar_seeker> wchar_reader;
 
-} /// namespace nadir
-} /// namespace console
-} /// namespace app
+typedef readert<byte_seeker> byte_reader;
+typedef readert<word_seeker> word_reader;
+
+} /// namespace io
 } /// namespace xos
 
-#endif /// ndef XOS_APP_CONSOLE_NADIR_MAIN_OPT_HPP
+#endif /// ndef XOS_IO_READER_HPP 

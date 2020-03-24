@@ -294,7 +294,7 @@ template
  TError VErrorTimeout = platform_%What%_error_timeout,
  TError VErrorInterrupted = platform_%What%_error_interrupted,
  class TExtends = mt::derive::%What%t
- <TWhat, TError, VErrorSuccess, VErrorFailed, VErrorBusy, VErrorTimeout, VErrorInterrupted>, 
+ <T%What%, TError, VErrorSuccess, VErrorFailed, VErrorBusy, VErrorTimeout, VErrorInterrupted>, 
  class TImplements = typename TExtends::implements>
 class exported %What%t: virtual public TImplements, public TExtends {
 public:
