@@ -55,12 +55,9 @@ $${nadir_DEFINES} \
 # libnadir HEADERS
 #
 libnadir_HEADERS += \
-$${NADIR_SRC}/xos/base/base.hpp \
+$${NADIR_SRC}/xos/lib/nadir/version.hpp \
 
 # libnadir SOURCES
 #
 libnadir_SOURCES += \
-$${NADIR_SRC}/xos/base/base.cpp \
-
-
-
+$${NADIR_SRC}/xos/lib/nadir/version.cpp \
