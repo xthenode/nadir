@@ -59,6 +59,33 @@ public:
     }
     virtual ~attachedt() {
     }
+
+    /// ...mode_is_binary...
+    virtual bool set_mode_is_binary(bool mode_is_binary = true) {
+        attached_t detached = (attached_t)unattached;
+        if ((attached_t)unattached != (detached = this->attached_to())) {
+            return set_mode_is_binary_detached(detached, mode_is_binary);
+        }
+        return false;
+    }
+    virtual bool set_mode_is_binary_detached(attached_t detached, bool mode_is_binary = true) const {
+        if ((attached_t)unattached != (detached)) {
+#if defined(WINDOWS)
+            int fd = 0;
+            if (0 <= (fd = _fileno(detached))) {
+                int err = 0, mode = (mode_is_binary)?(_O_BINARY):(_O_TEXT);
+                if (0 > (err = ::_setmode(fd, mode))) {
+                    LOGGER_IS_LOGGED_ERROR("...failed errno = " << errno << " on ::_setmode(fd = " << fd << ", mode = " << mode << ")");
+                } else {
+                    return true;
+                }
+            }
+#else // defined(WINDOWS)
+            return mode_is_binary;
+#endif // defined(WINDOWS)
+        }
+        return false;
+    }
 }; /// class attachedt
 typedef attachedt<> attached;
 

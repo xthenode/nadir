@@ -41,6 +41,7 @@ public:
     typedef TExtends extends;
     typedef maint derives;
 
+    typedef typename implements::file_t file_t;
     typedef typename implements::string_t string_t;
     typedef TChar char_t;
     typedef char_t end_char_t;
