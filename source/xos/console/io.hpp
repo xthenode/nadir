@@ -103,10 +103,11 @@ public:
         return 0;
     }
     virtual ssize_t in(what_t *what, size_t size) {
-        return 0;
+        file_t f = in_std_in();
+        return in(f, what, size);
     }
     virtual ssize_t in(file_t in, what_t *what, size_t size) {
-        return 0;
+        return console::in(in, what, size);
     }
 protected:
     virtual file_t in_std_in() {

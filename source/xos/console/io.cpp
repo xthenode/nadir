@@ -25,6 +25,15 @@ namespace console {
 
 /// class iot
 
+/// in...
+ssize_t in(file_t f, char *what, size_t size) {
+    ssize_t count = 0;
+    if ((f != ((file_t)null)) && (what)) {
+        count = ::fread(what, sizeof(char), size, f);
+    }
+    return count;
+}
+
 /// out...
 ssize_t outlln(const char *what, ...) {
     ssize_t count = 0;
