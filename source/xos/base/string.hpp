@@ -35,7 +35,7 @@ template
  typename TEndChar = TChar, TEndChar VEndChar = 0, 
  class TSStream = ::std::basic_stringstream<TChar>,
  class TString = ::std::basic_string<TChar>, 
- class TChars = charst<TChar, TEndChar, VEndChar>,
+ class TChars = implemented::charst<TChar, TEndChar, VEndChar>,
  class TImplements = TChars, class TExtends = TString>
 
 class exported stringt: virtual public TImplements, public TExtends {
