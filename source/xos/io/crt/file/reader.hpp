@@ -78,7 +78,7 @@ public:
         return count;
     }    
 
-    /// open_safe...
+    /// open...detached
     virtual attached_t open_safe_detached(const char* name, const sized_t* pattern, mode_t mode = mode_binary) const {
         attached_t detached = 0;
 
@@ -94,6 +94,22 @@ public:
                         this->close_detached(detached);
                         detached = 0;
                     }
+                }
+            }
+        }
+        return detached;
+    }
+    virtual attached_t open_detached(const char* name, mode_t mode = mode_binary) const {
+        attached_t detached = 0;
+
+        if ((name) && (name[0])) {
+            const char *read_mode = (mode != mode_binary)?(this->mode_read()):(this->mode_read_binary());
+
+            if ((read_mode) && (read_mode[0])) {
+
+                if ((!(detached = ::fopen(name, read_mode)))) {
+                    LOGGER_IS_LOGGED_ERROR("...errno = " << errno << " on ::fopen(\"" << name << "\", \"" << read_mode << "\")");
+                } else {
                 }
             }
         }

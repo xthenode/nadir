@@ -145,6 +145,16 @@ public:
             this->logln();
         }
     }
+    virtual ssize_t vlogf(const levels& _levels, const char* format, va_list va) {
+        ssize_t count = 0;
+        lock_t lock(*this);
+        if ((this->is_enabled_for(_levels))) {
+            if ((format)) {
+                count = this->logfv(format, va);
+            }
+        }
+        return count;
+    }
 
     /// enable...
     virtual void enable_for(const levels& _levels) {
@@ -154,7 +164,7 @@ public:
     }
     virtual bool is_enabled_for(const levels& _levels) const { 
         level::enable enabled = _levels, enabled_for = this->enabled_for();
-        bool is_enabled_for = ((enabled_for & enabled) == enabled);
+        bool is_enabled_for = ((level::all == enabled) || ((enabled_for & enabled) == enabled));
         return is_enabled_for;
     }
     virtual levels enabled_for_default() const { 

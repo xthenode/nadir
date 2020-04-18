@@ -70,6 +70,9 @@ public:
     virtual operator enable() const {
         return enable_;
     }
+    virtual enable enabled() const {
+        return enable_;
+    }
 
 protected:
     enable enable_;

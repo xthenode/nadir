@@ -169,6 +169,25 @@ public:
     virtual ~openedt() {
     }
 
+    /// open...
+    virtual bool open(const char* name, mode_t mode = mode_binary) {
+        if ((this->closed())) {
+            attached_t detached = (attached_t)unattached;
+            if ((attached_t)unattached != (detached = open_attached(name, mode))) {
+                this->attach_opened(detached);
+                return true;
+            }
+        }
+        return false;
+    }
+    virtual attached_t open_attached(const char* name, mode_t mode = mode_binary) {
+        attached_t detached = (attached_t)unattached;
+        if ((attached_t)unattached != (detached = open_detached(name, mode))) {
+            this->attach(detached);
+        }
+        return detached;
+    }
+
     /// open_safe...
     virtual bool open_safe(const char* name, const sized_t* pattern, mode_t mode = mode_binary) {
         if ((this->closed())) {
@@ -227,6 +246,12 @@ public:
             return safe;
         }
         return false;
+    }
+
+    /// open...
+    virtual attached_t open_detached(const char* name, mode_t mode = mode_binary) const {
+        attached_t detached = 0;
+        return detached;
     }
 }; /// class openedt
 } /// namespace safe

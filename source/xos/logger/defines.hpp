@@ -126,14 +126,14 @@ if ((logger)?(logger->is_enabled_for(level_)):(false)) {\
 #define LOGGER_LOG_LOCATION_ANY_LEVEL(logger_, message_) { \
 LOGGER_INTERFACE* logger = logger_; \
 if ((logger)) {\
-   LOGGER_LEVEL level_; \
+   LOGGING_LEVELS level_ = LOGGING_LEVELS_ALL; \
    LOGGER_MESSAGE message; \
    logger->log(level_, LOGGER_LOCATION, message << message_); } }
 
 #define LOGGER_LOG_LOCATION_ANY_LEVELF(logger_, format_, ...) { \
 LOGGER_INTERFACE* logger = logger_; \
 if ((logger)) {\
-   LOGGER_LEVEL level_; \
+   LOGGING_LEVELS level_ = LOGGING_LEVELS_ALL; \
    logger->logf(level_, LOGGER_LOCATION, format_, ##__VA_ARGS__); } }
 
 #define LOGGER_IF_LOGGED_LOCATION(is_logged_, logger_, level_, message_) { \
@@ -149,6 +149,12 @@ if ((this->is_logged())) { LOGGER_LOG_LOCATION(logger_, level_, message_); } }
 if ((this->is_logged())) { LOGGER_LOG_LOCATIONF(logger_, level_, format_,  ##__VA_ARGS__); } }
 /// ...
 /// LOGGER_LOG_LOCATION
+
+#define LOGGER_LOG_ANY_LEVELFV(logger_, format_, va_) { \
+LOGGER_INTERFACE* logger = logger_; \
+if ((logger)) {\
+   LOGGING_LEVELS level_ = LOGGING_LEVELS_ALL; \
+   logger->logfv(level_, format_, va_); } }
 
 /// LOGGER_LOG
 /// ...
@@ -232,6 +238,8 @@ if ((this->is_logged())) { LOGGER_LOG_LOCATIONF(logger_, level_, format_,  ##__V
 #define LOGGER_LOG_INFOF(__message__, ...) LOGGER_LOGF(DEFAULT_LOGGER, LOGGING_LEVELS_INFO, __message__, ##__VA_ARGS__)
 #define LOGGER_LOG_DEBUGF(__message__, ...) LOGGER_LOGF(DEFAULT_LOGGER, LOGGING_LEVELS_DEBUG, __message__, ##__VA_ARGS__)
 #define LOGGER_LOG_TRACEF(__message__, ...) LOGGER_LOGF(DEFAULT_LOGGER, LOGGING_LEVELS_TRACE, __message__, ##__VA_ARGS__)
+
+#define LOGGER_LOG_ANYFV(__format__, __va__) LOGGER_LOG_ANY_LEVELFV(DEFAULT_LOGGER, __format__, __va__)
 /// ...
 /// LOGGER_LOG_ ANY / FATAL .. TRACE
 
