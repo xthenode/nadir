@@ -195,6 +195,14 @@ protected:
 
 public:
     /// err...
+    virtual ssize_t errlln(const what_t *what, ...) {
+        ssize_t count = 0;
+        va_list va;
+        va_start(va, what);
+        count = this->errllnv(what, va);
+        va_end(va);
+        return count;
+    }
     virtual ssize_t errl(const what_t *what, ...) {
         ssize_t count = 0;
         va_list va;
@@ -202,6 +210,10 @@ public:
         count = this->errlv(what, va);
         va_end(va);
         return count;
+    }
+    virtual ssize_t errllnv(const what_t *what, va_list va) {
+        file_t f = err_std_err();
+        return console::outllnv(f, what, va);
     }
     virtual ssize_t errlv(const what_t *what, va_list va) {
         file_t f = err_std_err();
