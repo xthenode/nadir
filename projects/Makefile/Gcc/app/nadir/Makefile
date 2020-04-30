@@ -76,8 +76,10 @@ ${nadir_USRLIBDIRS} \
 #
 # Executable .cpp sources
 #
-#nadir_exe_EXE_CPP_SOURCES += \
-#${NADIR_SRC}/nadir/base/Base.cpp \
+nadir_exe_EXE_CPP_SOURCES += \
+${NADIR_SRC}/xos/app/console/nadir/main_opt.cpp \
+${NADIR_SRC}/xos/app/console/nadir/main.cpp \
+${NADIR_SRC}/xos/console/main_main.cpp \
 
 #
 # Executable .m sources
