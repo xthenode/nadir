@@ -439,6 +439,13 @@ public:
 }; /// class charst
 typedef charst<> chars;
 
+typedef charst<char> chars_t;
+typedef charst<tchar_t> tchars_t;
+typedef charst<wchar_t> wchars_t;
+
+typedef charst<byte_t> bytes_t;
+typedef charst<word_t> words_t;
+
 } /// namespace xos
 
 #endif /// ndef XOS_BASE_CHARS_HPP 

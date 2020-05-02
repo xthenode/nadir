@@ -90,8 +90,13 @@ protected:
         if ((run_)) {
             err = (this->*run_)(argc, argv, env);
         } else {
-            err = this->version_run(argc, argv, env);
+            err = default_run(argc, argv, env);
         }
+        return err;
+    }
+    virtual int default_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        err = version_run(argc, argv, env);
         return err;
     }
     virtual int version_run(int argc, char_t** argv, char_t** env) {

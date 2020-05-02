@@ -169,6 +169,14 @@ public:
     virtual ssize_t outfv(const sized_t *format, va_list va) {
         return 0;
     }
+    virtual ssize_t outxln(const void* out, size_t length, bool upper_case = false) {
+        file_t f = out_std_out();
+        return outxln(f, out, length, upper_case);
+    }
+    virtual ssize_t outx(const void* out, size_t length, bool upper_case = false) {
+        file_t f = out_std_out();
+        return outx(f, out, length, upper_case);
+    }
     virtual ssize_t out(const what_t *what, size_t length) {
         file_t f = out_std_out();
         return console::out(f, what, length);
@@ -231,6 +239,14 @@ public:
         file_t f = err_std_err();
         return console::outfv(f, format, va);
     }
+    virtual ssize_t errxln(const void* out, size_t length, bool upper_case = false) {
+        file_t f = err_std_err();
+        return outxln(f, out, length, upper_case);
+    }
+    virtual ssize_t errx(const void* out, size_t length, bool upper_case = false) {
+        file_t f = err_std_err();
+        return outx(f, out, length, upper_case);
+    }
     virtual ssize_t err(const what_t *what, size_t length) {
         file_t f = err_std_err();
         return console::out(f, what, length);
@@ -251,6 +267,66 @@ protected:
         return (file_t)stderr;
     }
 
+protected:
+    /// outx...
+    virtual ssize_t outxln(file_t f, const void* out, size_t length, bool upper_case = false) const {
+        ssize_t count = 0, amount = 0;
+        if (0 <= (amount = this->outx(f, out, length, upper_case))) {
+            count += amount;
+            if (0 <= (amount = console::outln(f))) {
+                count += amount;
+            }
+        }
+        return count;
+    }
+    virtual ssize_t outx(file_t f, const void* out, size_t length, bool upper_case = false) const {
+        ssize_t count = 0; const uint8_t* bytes = 0;
+
+        if ((bytes = (const uint8_t*)(out)) && (length)) {
+            ssize_t amount = 0; uint8_t b = 0; char_t x[2];
+
+            for (; 0 < length; --length) {
+                b = (*bytes++);
+                x[0] = dtox(b >> 4, upper_case);
+                x[1] = dtox(b & 15, upper_case);
+
+                if (0 < (amount = console::out(f, x, 2))) {
+                    count += amount;
+                } else {
+                    return amount;
+                }
+            }
+        }
+        return count;
+    }
+
+    /// dtox / xtod
+    virtual char_t dtox(uint8_t d, bool upper_case = false) const {
+        char a = (upper_case)?('A'):('a'); char_t x = (char_t)(0);
+        if ((0 <= d) && (9 >= d)) {
+            x = (char_t)(('0') +  d);
+        } else {
+            if ((10 <= d) && (15 >= d)) {
+                x = (char_t)((a) + (d - 10));
+            }
+        }
+        return x;
+    }
+    virtual int8_t xtod(const char_t& x) const {
+        int8_t d = -1;
+        if (((char_t)('A') <= x) && ((char_t)('F') >= x)) {
+            d = ((x - (char_t)('A')) + 10);
+        } else {
+            if (((char_t)('a') <= x) && ((char_t)('f') >= x)) {
+                d = ((x - (char_t)('a')) + 10);
+            } else  {
+                if (((char_t)('0') <= x) && ((char_t)('9') >= x)) {
+                    d = ((x - (char_t)('0')));
+                }
+            }
+        }
+        return d;
+    }
 }; /// class iot
 typedef iot<> io;
 
