@@ -91,12 +91,49 @@ public:
 }; /// class exported writert
 typedef writert<sequence> writer;
 
-typedef writert<char_sequence> char_writer;
-typedef writert<tchar_sequence> tchar_writer;
-typedef writert<wchar_sequence> wchar_writer;
-
 typedef writert<byte_sequence> byte_writer;
 typedef writert<word_sequence> word_writer;
+
+///  Class: char_writert
+template <class TSequence = char_sequence, class TImplements = writert<TSequence> >
+class exported char_writert: virtual public TImplements {
+public:
+    typedef TImplements implements;
+
+    typedef typename implements::what_t what_t;
+    typedef typename implements::sized_t sized_t;
+    typedef typename implements::endof_t endof_t;
+    static const endof_t endof = implements::endof;
+
+    /// writex
+    virtual ssize_t writex(const void* out, size_t length, bool upper_case = false) {
+        ssize_t count = 0;
+        const byte_t* bytes = 0;
+
+        if ((bytes = (const byte_t*)(out)) && (length)) {
+            ssize_t amount = 0;
+            uint8_t b = 0;
+            char_t x[2];
+
+            for (; 0 < length; --length) {
+                b = (*bytes++);
+                x[0] = this->dtox(b >> 4, upper_case);
+                x[1] = this->dtox(b & 15, upper_case);
+
+                if (0 < (amount = this->write(x, 2))) {
+                    count += amount;
+                } else {
+                    return amount;
+                }
+            }
+        }
+        return count;
+    }
+}; /// class exported char_writert
+
+typedef char_writert<char_sequence> char_writer;
+typedef char_writert<tchar_sequence> tchar_writer;
+typedef char_writert<wchar_sequence> wchar_writer;
 
 } /// namespace io
 } /// namespace xos

@@ -341,6 +341,8 @@ protected:
         return arg0;
     }
 
+protected:
+    typedef typename extends::out_writer_t out_writer_t;
 }; /// class main_optt
 typedef main_optt<> main_opt;
 

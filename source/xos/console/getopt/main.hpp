@@ -173,6 +173,9 @@ protected:
         args = 0;
         return 0;
     }
+
+protected:
+    typedef typename extends::out_writer_t out_writer_t;
 }; /// class maint
 typedef maint<> main;
 

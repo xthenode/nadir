@@ -127,6 +127,9 @@ public:
 protected:
 }; /// class to_stringt
 
+typedef to_stringt<bool> bool_to_string;
+typedef to_stringt<double> double_to_string;
+typedef to_stringt<float> float_to_string;
 typedef to_stringt<int> int_to_string;
 typedef to_stringt<pointer_t> pointer_to_string;
 typedef to_stringt<size_t> size_to_string;

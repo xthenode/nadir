@@ -22,6 +22,7 @@
 #define XOS_CONSOLE_MAIN_HPP
 
 #include "xos/console/io.hpp"
+#include "xos/io/writer.hpp"
 #include "xos/base/logger.hpp"
 
 #if !defined(__LOCATION__)
@@ -41,6 +42,7 @@ public:
     typedef TExtends extends;
     typedef maint derives;
 
+    typedef TIo io_t;
     typedef typename implements::file_t file_t;
     typedef typename implements::string_t string_t;
     typedef TChar char_t;
@@ -282,6 +284,41 @@ protected:
         static derives* the_main = 0;
         return the_main;
     }
+    
+protected:
+    typedef xos::io::sequencet<char_t> io_sequence_t;
+    typedef xos::io::writert<io_sequence_t> io_writer_implements_t;
+    typedef xos::extend io_writer_extends_t;
+    /// class out_writer_t
+    class exported out_writer_t: virtual public io_writer_implements_t, public io_writer_extends_t {
+    public:
+        typedef io_writer_implements_t implements;
+        typedef io_writer_extends_t extends;
+        typedef out_writer_t derives;
+    
+        typedef typename implements::what_t what_t;
+        typedef typename implements::sized_t sized_t;
+
+        /// constructor / destructor
+        out_writer_t(const out_writer_t& copy): extends(copy), io_(copy.io_) {
+        }
+        out_writer_t(io_t& io): io_(io) {
+        }
+        virtual ~out_writer_t() {
+        }
+        virtual ssize_t write(const what_t* what, size_t size) {
+            ssize_t count = 0;
+            count = io_.out(what, size);
+            return count;
+        }    
+        virtual ssize_t flush() {
+            ssize_t count = 0;
+            count = io_.out_flush();
+            return count;
+        }    
+    protected:
+        io_t& io_;
+    }; /// class out_writer_t
 
 protected:
     bool did_run_, did_usage_;
