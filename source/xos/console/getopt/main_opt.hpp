@@ -123,6 +123,7 @@ public:
     typedef TExtends extends;
     typedef main_optt derives;
 
+    typedef typename extends::writer_t writer_t;
     typedef typename extends::file_t file_t;
     typedef typename extends::string_t string_t;
     typedef typename extends::char_t char_t;
@@ -139,6 +140,9 @@ private:
     }
 
 protected:
+    typedef typename extends::in_reader_t in_reader_t;
+    typedef typename extends::out_writer_t out_writer_t;
+    typedef typename extends::err_writer_t err_writer_t;
     /// ...get_options...
     virtual int get_options(int argc, char_t** argv, char** env) {
         int err = 0;
@@ -340,9 +344,6 @@ protected:
         }
         return arg0;
     }
-
-protected:
-    typedef typename extends::out_writer_t out_writer_t;
 }; /// class main_optt
 typedef main_optt<> main_opt;
 

@@ -35,6 +35,7 @@ public:
     typedef TExtends extends;
     typedef maint derives;
 
+    typedef typename extends::writer_t writer_t;
     typedef typename extends::file_t file_t;
     typedef typename extends::string_t string_t;
     typedef typename extends::char_t char_t;
@@ -51,6 +52,9 @@ private:
     }
 
 protected:
+    typedef typename extends::in_reader_t in_reader_t;
+    typedef typename extends::out_writer_t out_writer_t;
+    typedef typename extends::err_writer_t err_writer_t;
     /// ...option...
     virtual int on_logging_option
     (int optval, const char_t* optarg,
@@ -173,9 +177,6 @@ protected:
         args = 0;
         return 0;
     }
-
-protected:
-    typedef typename extends::out_writer_t out_writer_t;
 }; /// class maint
 typedef maint<> main;
 

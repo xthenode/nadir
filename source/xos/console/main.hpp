@@ -22,6 +22,7 @@
 #define XOS_CONSOLE_MAIN_HPP
 
 #include "xos/console/io.hpp"
+#include "xos/io/reader.hpp"
 #include "xos/io/writer.hpp"
 #include "xos/base/logger.hpp"
 
@@ -43,6 +44,10 @@ public:
     typedef maint derives;
 
     typedef TIo io_t;
+    typedef xos::io::sequencet<TChar> sequence_t;
+    typedef xos::io::seekert<sequence_t> seeker_t;
+    typedef xos::io::readert<seeker_t> reader_t;
+    typedef xos::io::writert<sequence_t> writer_t;
     typedef typename implements::file_t file_t;
     typedef typename implements::string_t string_t;
     typedef TChar char_t;
@@ -52,7 +57,9 @@ public:
            exception_exist, exception_not_exist };
     
     /// constructor / destructor
-    maint(): did_run_(false), did_usage_(false) {
+    maint()
+    : did_run_(false), did_usage_(false), 
+      in_reader_(*this), out_writer_(*this), err_writer_(*this) {
         derives*& the_main = derives::the_main();
         if ((the_main)) {
             throw (exception_exist);
@@ -73,7 +80,9 @@ public:
         }
     }
 private:
-    maint(const maint& copy): did_run_(false), did_usage_(false) {
+    maint(const maint& copy)
+    : did_run_(false), did_usage_(false), 
+      in_reader_(*this), out_writer_(*this), err_writer_(*this) {
     }
 
 protected:
@@ -286,42 +295,123 @@ protected:
     }
     
 protected:
-    typedef xos::io::sequencet<char_t> io_sequence_t;
-    typedef xos::io::writert<io_sequence_t> io_writer_implements_t;
-    typedef xos::extend io_writer_extends_t;
-    /// class out_writer_t
-    class exported out_writer_t: virtual public io_writer_implements_t, public io_writer_extends_t {
+    typedef xos::extend io_extends_t;
+
+    /// class io_extend_t
+    class exported io_extend_t: public io_extends_t {
     public:
-        typedef io_writer_implements_t implements;
-        typedef io_writer_extends_t extends;
+        typedef io_extends_t extends;
+        typedef io_extend_t derives;
+    
+        /// constructor / destructor
+        io_extend_t(const io_extend_t& copy): extends(copy), io_(copy.io_) {
+        }
+        io_extend_t(io_t& io): io_(io) {
+        }
+        virtual ~io_extend_t() {
+        }
+    protected:
+        io_t& io_;
+    }; /// class io_extend_t
+    
+    /// class in_reader_t
+    class exported in_reader_t: virtual public reader_t, public io_extend_t {
+    public:
+        typedef reader_t implements;
+        typedef io_extend_t extends;
+        typedef in_reader_t derives;
+    
+        typedef typename implements::what_t what_t;
+        typedef typename implements::sized_t sized_t;
+
+        /// constructor / destructor
+        in_reader_t(const in_reader_t& copy): extends(copy) {
+        }
+        in_reader_t(io_t& io): extends(io) {
+        }
+        virtual ~in_reader_t() {
+        }
+        virtual ssize_t read(what_t* what, size_t size) {
+            ssize_t count = 0;
+            count = this->io_.in(what, size);
+            return count;
+        }    
+    }; /// class in_reader_t
+    
+    /// class out_writer_t
+    class exported out_writer_t: virtual public writer_t, public io_extend_t {
+    public:
+        typedef writer_t implements;
+        typedef io_extend_t extends;
         typedef out_writer_t derives;
     
         typedef typename implements::what_t what_t;
         typedef typename implements::sized_t sized_t;
 
         /// constructor / destructor
-        out_writer_t(const out_writer_t& copy): extends(copy), io_(copy.io_) {
+        out_writer_t(const out_writer_t& copy): extends(copy) {
         }
-        out_writer_t(io_t& io): io_(io) {
+        out_writer_t(io_t& io): extends(io) {
         }
         virtual ~out_writer_t() {
         }
         virtual ssize_t write(const what_t* what, size_t size) {
             ssize_t count = 0;
-            count = io_.out(what, size);
+            count = this->io_.out(what, size);
             return count;
         }    
         virtual ssize_t flush() {
             ssize_t count = 0;
-            count = io_.out_flush();
+            count = this->io_.out_flush();
             return count;
         }    
-    protected:
-        io_t& io_;
     }; /// class out_writer_t
+    
+    /// class err_writer_t
+    class exported err_writer_t: virtual public writer_t, public out_writer_t {
+    public:
+        typedef writer_t implements;
+        typedef out_writer_t extends;
+        typedef err_writer_t derives;
+    
+        typedef typename implements::what_t what_t;
+        typedef typename implements::sized_t sized_t;
+
+        /// constructor / destructor
+        err_writer_t(const err_writer_t& copy): extends(copy) {
+        }
+        err_writer_t(io_t& io): extends(io) {
+        }
+        virtual ~err_writer_t() {
+        }
+        virtual ssize_t write(const what_t* what, size_t size) {
+            ssize_t count = 0;
+            count = this->io_.err(what, size);
+            return count;
+        }    
+        virtual ssize_t flush() {
+            ssize_t count = 0;
+            count = this->io_.err_flush();
+            return count;
+        }    
+    }; /// class err_writer_t
+
+    /// ...reader / ...writer
+    virtual in_reader_t& in_reader() const {
+        return (in_reader_t&)in_reader_;
+    }
+    virtual out_writer_t& out_writer() const {
+        return (out_writer_t&)out_writer_;
+    }
+    virtual err_writer_t& err_writer() const {
+        return (err_writer_t&)err_writer_;
+    }
 
 protected:
     bool did_run_, did_usage_;
+    in_reader_t in_reader_;
+    out_writer_t out_writer_;
+    err_writer_t err_writer_;
 }; /// class maint
 typedef maint<> main;
 

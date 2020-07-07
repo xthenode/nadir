@@ -38,6 +38,7 @@ public:
     typedef TExtends extends;
     typedef maint derives;
 
+    typedef typename extends::writer_t writer_t;
     typedef typename extends::file_t file_t;
     typedef typename extends::string_t string_t;
     typedef typename extends::char_t char_t;
@@ -54,9 +55,13 @@ private:
     }
 
 protected:
+    typedef typename extends::in_reader_t in_reader_t;
+    typedef typename extends::out_writer_t out_writer_t;
+    typedef typename extends::err_writer_t err_writer_t;
+
     /// ...run
     virtual int run(int argc, char_t** argv, char_t** env) {
-        int err = 0;
+        int err = this->all_default_run(argc, argv, env);
         return err;
     }
 }; /// class maint
