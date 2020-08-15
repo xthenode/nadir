@@ -22,6 +22,7 @@
 #define XOS_BASE_TO_STRING_HPP
 
 #include "xos/base/string.hpp"
+#include "xos/base/exception.hpp"
 
 namespace xos {
 
@@ -135,6 +136,36 @@ typedef to_stringt<pointer_t> pointer_to_string;
 typedef to_stringt<size_t> size_to_string;
 typedef to_stringt<signed> signed_to_string;
 typedef to_stringt<unsigned> unsigned_to_string;
+
+/// class exception_to_stringt
+template 
+<class TException = exception, typename TChar = char, 
+ class TExtends = stringt<TChar>, class TImplements = implement>
+
+class exported exception_to_stringt: virtual public TImplements, public TExtends {
+public:
+    typedef TImplements implements;
+    typedef TExtends extends;
+    typedef exception_to_stringt derives;
+
+    typedef TException exception_t;
+    typedef typename extends::sstream_t sstream_t;
+    typedef typename extends::string_t string_t;
+    typedef typename extends::char_t char_t;
+    typedef typename extends::end_char_t end_char_t;
+    enum { end_char = extends::end_char };
+
+    exception_to_stringt(const exception_to_stringt& copy): extends(copy) {
+    }
+    exception_to_stringt(const exception_t& e) {
+        this->append(e.status_to_chars());
+    }
+    virtual ~exception_to_stringt() {
+    }
+
+protected:
+}; /// class exception_to_stringt
+typedef exception_to_stringt<> exception_to_string;
 
 } /// namespace xos
 

@@ -30,6 +30,7 @@ namespace xos {
 namespace console {
 
 /// in...
+file_t std_in();
 ssize_t inf(const char *format, ...);
 ssize_t infv(const char *format, va_list va);
 ssize_t in(char *what, size_t size);
@@ -38,6 +39,7 @@ ssize_t infv(file_t f, const char *format, va_list va);
 ssize_t in(file_t f, char *what, size_t size);
 
 /// out...
+file_t std_out();
 ssize_t outlln(const char *what, ...);
 ssize_t outllnv(const char *what, va_list va);
 ssize_t outl(const char *what, ...);
@@ -58,6 +60,7 @@ ssize_t outln(file_t f);
 ssize_t out_flush(file_t f);
 
 /// err...
+file_t std_err();
 ssize_t errlln(const char *what, ...);
 ssize_t errl(const char *what, ...);
 ssize_t errllnv(const char *what, va_list va);

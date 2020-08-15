@@ -26,6 +26,42 @@ namespace console {
 /// class iot
 
 /// in...
+file_t std_in() {
+    return (file_t)stdin;
+}
+ssize_t inf(const char *format, ...) {
+    ssize_t count = 0;
+    va_list va;
+    va_start(va, format);
+    count = infv(std_in(), format, va);
+    va_end(va);
+    return count;
+}
+ssize_t infv(const char *format, va_list va) {
+    ssize_t count = 0;
+    count = infv(std_in(), format, va);
+    return count;
+}
+ssize_t in(char *what, size_t size) {
+    ssize_t count = 0;
+    count = in(std_in(), what, size);
+    return count;
+}
+ssize_t inf(file_t f, const char *format, ...) {
+    ssize_t count = 0;
+    va_list va;
+    va_start(va, format);
+    count = infv(f, format, va);
+    va_end(va);
+    return count;
+}
+ssize_t infv(file_t f, const char *format, va_list va) {
+    ssize_t count = 0;
+    if ((f != ((file_t)null)) && (format)) {
+        count = ::vfscanf(f, format, va);
+    }
+    return count;
+}
 ssize_t in(file_t f, char *what, size_t size) {
     ssize_t count = 0;
     if ((f != ((file_t)null)) && (what)) {
@@ -35,6 +71,9 @@ ssize_t in(file_t f, char *what, size_t size) {
 }
 
 /// out...
+file_t std_out() {
+    return (file_t)stdout;
+}
 ssize_t outlln(const char *what, ...) {
     ssize_t count = 0;
     va_list va;
@@ -52,10 +91,10 @@ ssize_t outl(const char *what, ...) {
     return count;
 }
 ssize_t outllnv(const char *what, va_list va) {
-    return outllnv(stdout, what, va);
+    return outllnv(std_out(), what, va);
 }
 ssize_t outlv(const char *what, va_list va) {
-    return outlv(stdout, what, va);
+    return outlv(std_out(), what, va);
 }
 ssize_t outf(const char *format, ...) {
     ssize_t count = 0;
@@ -66,13 +105,13 @@ ssize_t outf(const char *format, ...) {
     return count;
 }
 ssize_t outfv(const char *format, va_list va) {
-    return outfv(stdout, format, va);
+    return outfv(std_out(), format, va);
 }
 ssize_t out(const char *what, size_t length) {
-    return out(stdout, what, length);
+    return out(std_out(), what, length);
 }
 ssize_t out(const char *what) {
-    return out(stdout, what);
+    return out(std_out(), what);
 }
 ssize_t outllnv(file_t f, const char *what, va_list va) {
     ssize_t count = 0, amount = 0;
@@ -139,6 +178,9 @@ ssize_t out_flush(file_t f) {
 }
 
 /// err...
+file_t std_err() {
+    return (file_t)stderr;
+}
 ssize_t errlln(const char *what, ...) {
     ssize_t count = 0;
     va_list va;
@@ -156,10 +198,10 @@ ssize_t errl(const char *what, ...) {
     return count;
 }
 ssize_t errllnv(const char *what, va_list va) {
-    return outllnv(stderr, what, va);
+    return outllnv(std_err(), what, va);
 }
 ssize_t errlv(const char *what, va_list va) {
-    return outlv(stderr, what, va);
+    return outlv(std_err(), what, va);
 }
 ssize_t errf(const char *format, ...) {
     ssize_t count = 0;
@@ -170,13 +212,13 @@ ssize_t errf(const char *format, ...) {
     return count;
 }
 ssize_t errfv(const char *format, va_list va) {
-    return outfv(stderr, format, va);
+    return outfv(std_err(), format, va);
 }
 ssize_t err(const char *what, size_t length) {
-    return out(stderr, what, length);
+    return out(std_err(), what, length);
 }
 ssize_t err(const char *what) {
-    return out(stderr, what);
+    return out(std_err(), what);
 }
 
 } /// namespace console
