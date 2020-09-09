@@ -368,10 +368,10 @@ protected:
     }; /// class out_writer_t
     
     /// class err_writer_t
-    class exported err_writer_t: virtual public writer_t, public out_writer_t {
+    class exported err_writer_t: virtual public writer_t, public io_extend_t {
     public:
         typedef writer_t implements;
-        typedef out_writer_t extends;
+        typedef io_extend_t extends;
         typedef err_writer_t derives;
     
         typedef typename implements::what_t what_t;
