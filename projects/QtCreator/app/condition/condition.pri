@@ -57,6 +57,8 @@ $${NADIR_SRC}/xos/base/locked.hpp \
 $${NADIR_SRC}/xos/base/waited.hpp \
 $${NADIR_SRC}/xos/base/signaled.hpp \
 \
+$${NADIR_SRC}/xos/system/times.hpp \
+\
 $${NADIR_SRC}/xos/platform/condition.h \
 $${NADIR_SRC}/xos/platform/condition.hpp \
 $${NADIR_SRC}/xos/platform/os/platform/condition.hpp \
@@ -82,9 +84,11 @@ condition_SOURCES += \
 $${NADIR_SRC}/xos/base/waited.cpp \
 $${NADIR_SRC}/xos/base/signaled.cpp \
 \
+$${NADIR_SRC}/xos/system/times.cpp \
+\
 $${NADIR_SRC}/xos/mt/os/mutex.cpp \
 $${NADIR_SRC}/xos/mt/mutexes.cpp \
-$${NADIR_SRC}/xos/mt/linux/condition.cpp \
+$${NADIR_SRC}/xos/mt/os/condition.cpp \
 $${NADIR_SRC}/xos/mt/conditions.cpp \
 \
 $${NADIR_SRC}/xos/console/io.cpp \
