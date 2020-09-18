@@ -29,26 +29,36 @@
 %Run,%(%else-then(%if-no(%is_run%,,%(%Run%)%)%,%(%if-no(%is_run%,,%(%run%)%)%)%)%)%,%
 %RUN,%(%else-then(%RUN%,%(%toupper(%Run%)%)%)%)%,%
 %run,%(%else-then(%_run%,%(%tolower(%Run%)%)%)%)%,%
+%is_params,%(%else-then(%is_params%,%(%is_Params%)%)%)%,%
+%params,%(%else-then(%if-no(%is_params%,,%(%params%)%)%,%(%if-no(%is_params%,,%()%)%)%)%)%,%
+%Params,%(%else-then(%if-no(%is_params%,,%(%Params%)%)%,%(%if-no(%is_params%,,%(%params%)%)%)%)%)%,%
+%PARAMS,%(%else-then(%PARAMS%,%(%toupper(%Params%)%)%)%)%,%
+%params,%(%else-then(%_params%,%(%tolower(%Params%)%)%)%)%,%
+%is_args,%(%else-then(%is_args%,%(%is_Args%)%)%)%,%
+%args,%(%else-then(%if-no(%is_args%,,%(%args%)%)%,%(%if-no(%is_args%,,%()%)%)%)%)%,%
+%Args,%(%else-then(%if-no(%is_args%,,%(%Args%)%)%,%(%if-no(%is_args%,,%(%args%)%)%)%)%)%,%
+%ARGS,%(%else-then(%ARGS%,%(%toupper(%Args%)%)%)%)%,%
+%args,%(%else-then(%_args%,%(%tolower(%Args%)%)%)%)%,%
 %%(
     /// ...%if-then(%Which%,_)%%Run%
-    virtual int %if-then(%Which%,_)%%Run%(int argc, char_t** argv, char** env) {
+    virtual int %if-then(%Which%,_)%%Run%(%if-then(%Params%,%(, )%)%int argc, char_t** argv, char** env) {
         int err = 0;
         return err;
     }
-    virtual int before_%if-then(%Which%,_)%%Run%(int argc, char_t** argv, char** env) {
+    virtual int before_%if-then(%Which%,_)%%Run%(%if-then(%Params%,%(, )%)%int argc, char_t** argv, char** env) {
         int err = 0;
         return err;
     }
-    virtual int after_%if-then(%Which%,_)%%Run%(int argc, char_t** argv, char** env) {
+    virtual int after_%if-then(%Which%,_)%%Run%(%if-then(%Params%,%(, )%)%int argc, char_t** argv, char** env) {
         int err = 0;
         return err;
     }
-    virtual int all_%if-then(%Which%,_)%%Run%(int argc, char_t** argv, char** env) {
+    virtual int all_%if-then(%Which%,_)%%Run%(%if-then(%Params%,%(, )%)%int argc, char_t** argv, char** env) {
         int err = 0;
-        if (!(err = before_%if-then(%Which%,_)%%Run%(argc, argv, env))) {
+        if (!(err = before_%if-then(%Which%,_)%%Run%(%if-then(%Args%,%(, )%)%argc, argv, env))) {
             int err2 = 0;
-            err = %if-then(%Which%,_)%%Run%(argc, argv, env);
-            if ((err2 = after_%if-then(%Which%,_)%%Run%(argc, argv, env))) {
+            err = %if-then(%Which%,_)%%Run%(%if-then(%Args%,%(, )%)%argc, argv, env);
+            if ((err2 = after_%if-then(%Which%,_)%%Run%(%if-then(%Args%,%(, )%)%argc, argv, env))) {
                 if (!(err)) err = err2;
             }
         }
