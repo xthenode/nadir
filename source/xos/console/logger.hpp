@@ -53,14 +53,18 @@ public:
     }
     loggert(console::io& io): io_(io), locked_(io_) {
     }
+    loggert(xos::locked &locked, logger::levels enabled_for): extends(enabled_for), io_(this_io_), locked_(locked) {
+    }
     loggert(xos::locked &locked): io_(this_io_), locked_(locked) {
+    }
+    loggert(logger::levels enabled_for): extends(enabled_for), io_(this_io_), locked_(io_) {
     }
     loggert(): io_(this_io_), locked_(io_) {
     }
     virtual ~loggert() {
     }
 private:
-    loggert(const loggert& copy): io_(this_io_) {
+    loggert(const loggert& copy): io_(this_io_), locked_(io_) {
         throw exception(exception_unexpected);
     }
 

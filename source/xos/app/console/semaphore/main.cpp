@@ -20,13 +20,19 @@
 ///////////////////////////////////////////////////////////////////////
 #include "xos/app/console/semaphore/main.hpp"
 
+#if !defined(XOS_APP_CONSOLE_SEMAPHORE_MAIN_INSTANCE)
+//#define XOS_APP_CONSOLE_SEMAPHORE_MAIN_INSTANCE
+#endif /// !defined(XOS_APP_CONSOLE_SEMAPHORE_MAIN_INSTANCE)
+
 namespace xos {
 namespace app {
 namespace console {
 namespace semaphore {
 
-/// class maint
+///  Class: maint
+#if defined(XOS_APP_CONSOLE_SEMAPHORE_MAIN_INSTANCE)
 static main the_main;
+#endif /// defined(XOS_APP_CONSOLE_SEMAPHORE_MAIN_INSTANCE)
 
 } /// namespace semaphore
 } /// namespace console

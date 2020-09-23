@@ -50,7 +50,7 @@ public:
     virtual ~maint() {
     }
 private:
-    maint(const maint& copy): threads_(0), sleep_((mseconds_t)-1), timeout_((mseconds_t)-1) {
+    maint(const maint& copy) {
     }
 
 protected:
@@ -150,7 +150,7 @@ public:
     virtual ~maint() {
     }
 private:
-    maint(const maint& copy): run_(0) {
+    maint(const maint& copy) {
     }
 
 protected:

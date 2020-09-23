@@ -20,12 +20,19 @@
 ///////////////////////////////////////////////////////////////////////
 #include "xos/app/console/nadir/main_opt.hpp"
 
+#if !defined(XOS_APP_CONSOLE_NADIR_MAIN_OPT_INSTANCE)
+//#define XOS_APP_CONSOLE_NADIR_MAIN_OPT_INSTANCE
+#endif /// !defined(XOS_APP_CONSOLE_NADIR_MAIN_OPT_INSTANCE)
+
 namespace xos {
 namespace app {
 namespace console {
 namespace nadir {
 
 /// class main_optt
+#if defined(XOS_APP_CONSOLE_NADIR_MAIN_OPT_INSTANCE)
+//static main_opt the_main_opt;
+#endif /// defined(XOS_APP_CONSOLE_NADIR_MAIN_OPT_INSTANCE)
 
 } /// namespace nadir
 } /// namespace console

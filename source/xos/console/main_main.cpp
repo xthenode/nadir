@@ -34,18 +34,18 @@ int main(int argc, char** argv, char** env) {
     int err = 0;
 
     try {
-        ::xos::console::logger logger;
+        LOGGING_LEVELS levels = DEFAULT_LOGGING_LEVELS;
+        ::xos::console::logger logger(levels);
 
         try {
             bool mutex_is_logged = true;
             ::xos::mt::os::mutex mutex(mutex_is_logged);
 
             mutex.set_is_logged(false);
+            GET_LOGGING_LEVEL(levels);
             try {
-                LOGGING_LEVELS levels = DEFAULT_LOGGING_LEVELS;
-                ::xos::console::logger logger(mutex);
+                ::xos::console::logger logger(mutex, levels);
     
-                GET_LOGGING_LEVEL(levels);
                 LOGGER_LOG_DEBUG("try {...");
                 try {
                     LOGGER_LOG_DEBUG("::xos::console::main::the_main(argc, argv, env)...");

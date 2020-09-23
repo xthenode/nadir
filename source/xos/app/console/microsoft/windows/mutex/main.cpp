@@ -20,6 +20,10 @@
 ///////////////////////////////////////////////////////////////////////
 #include "xos/app/console/microsoft/windows/mutex/main.hpp"
 
+#if !defined(XOS_APP_CONSOLE_MICROSOFT_WINDOWS_MUTEX_MAIN_INSTANCE)
+//#define XOS_APP_CONSOLE_MICROSOFT_WINDOWS_MUTEX_MAIN_INSTANCE
+#endif /// !defined(XOS_APP_CONSOLE_MICROSOFT_WINDOWS_MUTEX_MAIN_INSTANCE)
+
 namespace xos {
 namespace app {
 namespace console {
@@ -28,7 +32,9 @@ namespace windows {
 namespace mutex {
 
 /// class maint
+#if defined(XOS_APP_CONSOLE_MICROSOFT_WINDOWS_MUTEX_MAIN_INSTANCE)
 static main the_main;
+#endif /// defined(XOS_APP_CONSOLE_MICROSOFT_WINDOWS_MUTEX_MAIN_INSTANCE)
 
 } /// namespace mutex
 } /// namespace windows

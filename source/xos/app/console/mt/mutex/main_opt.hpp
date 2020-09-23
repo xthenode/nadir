@@ -51,7 +51,7 @@ public:
     virtual ~main_optt() {
     }
 private:
-    main_optt(const main_optt& copy): extends(copy) {
+    main_optt(const main_optt& copy) {
     }
 }; /// class main_optt
 typedef main_optt<> main_opt;
@@ -79,7 +79,7 @@ public:
     virtual ~main_optt() {
     }
 private:
-    main_optt(const main_optt& copy): extends(copy) {
+    main_optt(const main_optt& copy) {
     }
 }; /// class main_optt
 typedef main_optt<> main_opt;

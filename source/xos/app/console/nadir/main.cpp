@@ -20,13 +20,19 @@
 ///////////////////////////////////////////////////////////////////////
 #include "xos/app/console/nadir/main.hpp"
 
+#if !defined(XOS_APP_CONSOLE_NADIR_MAIN_INSTANCE)
+//#define XOS_APP_CONSOLE_NADIR_MAIN_INSTANCE
+#endif /// !defined(XOS_APP_CONSOLE_NADIR_MAIN_INSTANCE)
+
 namespace xos {
 namespace app {
 namespace console {
 namespace nadir {
 
-/// class maint
+///  Class: maint
+#if defined(XOS_APP_CONSOLE_NADIR_MAIN_INSTANCE)
 static main the_main;
+#endif /// defined(XOS_APP_CONSOLE_NADIR_MAIN_INSTANCE)
 
 } /// namespace nadir
 } /// namespace console

@@ -20,13 +20,19 @@
 ///////////////////////////////////////////////////////////////////////
 #include "xos/app/console/thread/main.hpp"
 
+#if !defined(XOS_APP_CONSOLE_THREAD_MAIN_INSTANCE)
+//#define XOS_APP_CONSOLE_THREAD_MAIN_INSTANCE
+#endif /// !defined(XOS_APP_CONSOLE_THREAD_MAIN_INSTANCE)
+
 namespace xos {
 namespace app {
 namespace console {
 namespace thread {
 
-/// class maint
+///  Class: maint
+#if defined(XOS_APP_CONSOLE_THREAD_MAIN_INSTANCE)
 static main the_main;
+#endif /// defined(XOS_APP_CONSOLE_THREAD_MAIN_INSTANCE)
 
 } /// namespace thread
 } /// namespace console

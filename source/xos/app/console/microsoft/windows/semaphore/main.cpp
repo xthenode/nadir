@@ -20,6 +20,10 @@
 ///////////////////////////////////////////////////////////////////////
 #include "xos/app/console/microsoft/windows/semaphore/main.hpp"
 
+#if !defined(XOS_APP_CONSOLE_MICROSOFT_WINDOWS_SEMAPHORE_MAIN_INSTANCE)
+//#define XOS_APP_CONSOLE_MICROSOFT_WINDOWS_SEMAPHORE_MAIN_INSTANCE
+#endif /// !defined(XOS_APP_CONSOLE_MICROSOFT_WINDOWS_SEMAPHORE_MAIN_INSTANCE)
+
 namespace xos {
 namespace app {
 namespace console {
@@ -28,7 +32,9 @@ namespace windows {
 namespace semaphore {
 
 /// class main
+#if defined(XOS_APP_CONSOLE_MICROSOFT_WINDOWS_SEMAPHORE_MAIN_INSTANCE)
 static main the_main;
+#endif /// defined(XOS_APP_CONSOLE_MICROSOFT_WINDOWS_SEMAPHORE_MAIN_INSTANCE)
 
 } /// namespace semaphore
 } /// namespace windows

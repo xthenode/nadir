@@ -20,12 +20,19 @@
 ///////////////////////////////////////////////////////////////////////
 #include "xos/app/console/condition/main_opt.hpp"
 
+#if !defined(XOS_APP_CONSOLE_CONDITION_MAIN_OPT_INSTANCE)
+//#define XOS_APP_CONSOLE_CONDITION_MAIN_OPT_INSTANCE
+#endif /// !defined(XOS_APP_CONSOLE_CONDITION_MAIN_OPT_INSTANCE)
+
 namespace xos {
 namespace app {
 namespace console {
 namespace condition {
 
 /// class main_optt
+#if defined(XOS_APP_CONSOLE_CONDITION_MAIN_OPT_INSTANCE)
+//static main_opt the_main_opt;
+#endif /// defined(XOS_APP_CONSOLE_CONDITION_MAIN_OPT_INSTANCE)
 
 } /// namespace condition
 } /// namespace console

@@ -20,12 +20,21 @@
 ///////////////////////////////////////////////////////////////////////
 #include "xos/app/console/microsoft/windows/mutex/main_opt.hpp"
 
+#if !defined(XOS_APP_CONSOLE_MICROSOFT_WINDOWS_MUTEX_MAIN_OPT_INSTANCE)
+//#define XOS_APP_CONSOLE_MICROSOFT_WINDOWS_MUTEX_MAIN_OPT_INSTANCE
+#endif /// !defined(XOS_APP_CONSOLE_MICROSOFT_WINDOWS_MUTEX_MAIN_OPT_INSTANCE)
+
 namespace xos {
 namespace app {
 namespace console {
 namespace microsoft {
 namespace windows {
 namespace mutex {
+
+///  Class: main_optt
+#if defined(XOS_APP_CONSOLE_MICROSOFT_WINDOWS_MUTEX_MAIN_OPT_INSTANCE)
+//static main_opt the_main_opt;
+#endif /// defined(XOS_APP_CONSOLE_MICROSOFT_WINDOWS_MUTEX_MAIN_OPT_INSTANCE)
 
 } /// namespace mutex
 } /// namespace windows

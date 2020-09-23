@@ -20,6 +20,10 @@
 ///////////////////////////////////////////////////////////////////////
 #include "xos/app/console/microsoft/windows/semaphore/main_opt.hpp"
 
+#if !defined(XOS_APP_CONSOLE_MICROSOFT_WINDOWS_SEMAPHORE_MAIN_OPT_INSTANCE)
+//#define XOS_APP_CONSOLE_MICROSOFT_WINDOWS_SEMAPHORE_MAIN_OPT_INSTANCE
+#endif /// !defined(XOS_APP_CONSOLE_MICROSOFT_WINDOWS_SEMAPHORE_MAIN_OPT_INSTANCE)
+
 namespace xos {
 namespace app {
 namespace console {
@@ -28,6 +32,9 @@ namespace windows {
 namespace semaphore {
 
 /// class main_optt
+#if defined(XOS_APP_CONSOLE_MICROSOFT_WINDOWS_SEMAPHORE_MAIN_OPT_INSTANCE)
+//static main_opt the_main_opt;
+#endif /// defined(XOS_APP_CONSOLE_MICROSOFT_WINDOWS_SEMAPHORE_MAIN_OPT_INSTANCE)
 
 } /// namespace semaphore
 } /// namespace windows
