@@ -37,6 +37,8 @@ $${nadir_INCLUDEPATH} \
 #
 mutex_DEFINES += \
 $${nadir_DEFINES} \
+LOGGING_LEVELS_DEFAULT=LOGGING_LEVELS_ERROR \
+XOS_APP_CONSOLE_MUTEX_MAIN_INSTANCE \
 
 ########################################################################
 # mutex OBJECTIVE_HEADERS

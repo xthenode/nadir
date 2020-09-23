@@ -37,6 +37,8 @@ $${nadir_INCLUDEPATH} \
 #
 winmutex_DEFINES += \
 $${nadir_DEFINES} \
+LOGGING_LEVELS_DEFAULT=LOGGING_LEVELS_ERROR \
+XOS_APP_CONSOLE_MICROSOFT_WINDOWS_MUTEX_MAIN_INSTANCE \
 
 ########################################################################
 # winmutex OBJECTIVE_HEADERS

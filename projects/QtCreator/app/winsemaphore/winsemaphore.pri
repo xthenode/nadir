@@ -37,6 +37,8 @@ $${nadir_INCLUDEPATH} \
 #
 winsemaphore_DEFINES += \
 $${nadir_DEFINES} \
+LOGGING_LEVELS_DEFAULT=LOGGING_LEVELS_ERROR \
+XOS_APP_CONSOLE_MICROSOFT_WINDOWS_SEMAPHORE_MAIN_INSTANCE \
 
 ########################################################################
 # winsemaphore OBJECTIVE_HEADERS

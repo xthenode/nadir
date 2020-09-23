@@ -37,6 +37,8 @@ $${nadir_INCLUDEPATH} \
 #
 nadir_exe_DEFINES += \
 $${nadir_DEFINES} \
+LOGGING_LEVELS_DEFAULT=LOGGING_LEVELS_ERROR \
+XOS_APP_CONSOLE_NADIR_MAIN_INSTANCE \
 
 ########################################################################
 # nadir_exe OBJECTIVE_HEADERS

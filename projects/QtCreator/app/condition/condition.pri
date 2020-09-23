@@ -37,6 +37,8 @@ $${nadir_INCLUDEPATH} \
 #
 condition_DEFINES += \
 $${nadir_DEFINES} \
+LOGGING_LEVELS_DEFAULT=LOGGING_LEVELS_ERROR \
+XOS_APP_CONSOLE_CONDITION_MAIN_INSTANCE \
 
 ########################################################################
 # condition OBJECTIVE_HEADERS

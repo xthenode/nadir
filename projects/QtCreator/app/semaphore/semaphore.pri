@@ -37,6 +37,8 @@ $${nadir_INCLUDEPATH} \
 #
 semaphore_DEFINES += \
 $${nadir_DEFINES} \
+LOGGING_LEVELS_DEFAULT=LOGGING_LEVELS_ERROR \
+XOS_APP_CONSOLE_SEMAPHORE_MAIN_INSTANCE \
 
 ########################################################################
 # semaphore OBJECTIVE_HEADERS

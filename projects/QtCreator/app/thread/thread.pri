@@ -37,6 +37,8 @@ $${nadir_INCLUDEPATH} \
 #
 thread_DEFINES += \
 $${nadir_DEFINES} \
+LOGGING_LEVELS_DEFAULT=LOGGING_LEVELS_ERROR \
+XOS_APP_CONSOLE_THREAD_MAIN_INSTANCE \
 
 ########################################################################
 # thread OBJECTIVE_HEADERS
