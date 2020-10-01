@@ -300,6 +300,10 @@
 				RelativePath="..\..\..\..\..\source\xos\console\logger.cpp"
 				>
 			</File>
+			<File
+				RelativePath="..\..\..\..\..\source\xos\lib\nadir\version.cpp"
+				>
+			</File>
 			<Filter
 				Name="getopt"
 				>
@@ -332,6 +336,10 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\source\xos\console\logger.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\source\xos\lib\nadir\version.hpp"
 				>
 			</File>
 		</Filter>

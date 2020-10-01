@@ -1,0 +1,48 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "app", "app", "{FEC2FDCF-BBC4-4558-8960-EFA6EF31F4FE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{13B4DA16-9E93-4316-AE97-BCE30452C39C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "properties", "properties", "{BA7BF9CD-9996-45B3-AFE2-49450CF8A68B}"
+	ProjectSection(SolutionItems) = preProject
+		..\nadir.vsprops = ..\nadir.vsprops
+		..\vcproj.vsprops = ..\vcproj.vsprops
+		vcversion.vsprops = vcversion.vsprops
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libnadir", "libnadir\libnadir.vcproj", "{2D7B1BC0-5D01-45AB-A32B-FC96ADF3231F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "nadir", "nadir\nadir.vcproj", "{E9624E5A-800D-4E12-BAEB-F24B42755B9F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mutex", "mutex\mutex.vcproj", "{61899F3C-DFF8-4C45-8BB1-84C560C4E887}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2D7B1BC0-5D01-45AB-A32B-FC96ADF3231F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2D7B1BC0-5D01-45AB-A32B-FC96ADF3231F}.Debug|Win32.Build.0 = Debug|Win32
+		{2D7B1BC0-5D01-45AB-A32B-FC96ADF3231F}.Release|Win32.ActiveCfg = Release|Win32
+		{2D7B1BC0-5D01-45AB-A32B-FC96ADF3231F}.Release|Win32.Build.0 = Release|Win32
+		{E9624E5A-800D-4E12-BAEB-F24B42755B9F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E9624E5A-800D-4E12-BAEB-F24B42755B9F}.Debug|Win32.Build.0 = Debug|Win32
+		{E9624E5A-800D-4E12-BAEB-F24B42755B9F}.Release|Win32.ActiveCfg = Release|Win32
+		{E9624E5A-800D-4E12-BAEB-F24B42755B9F}.Release|Win32.Build.0 = Release|Win32
+		{61899F3C-DFF8-4C45-8BB1-84C560C4E887}.Debug|Win32.ActiveCfg = Debug|Win32
+		{61899F3C-DFF8-4C45-8BB1-84C560C4E887}.Debug|Win32.Build.0 = Debug|Win32
+		{61899F3C-DFF8-4C45-8BB1-84C560C4E887}.Release|Win32.ActiveCfg = Release|Win32
+		{61899F3C-DFF8-4C45-8BB1-84C560C4E887}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E9624E5A-800D-4E12-BAEB-F24B42755B9F} = {FEC2FDCF-BBC4-4558-8960-EFA6EF31F4FE}
+		{61899F3C-DFF8-4C45-8BB1-84C560C4E887} = {FEC2FDCF-BBC4-4558-8960-EFA6EF31F4FE}
+		{2D7B1BC0-5D01-45AB-A32B-FC96ADF3231F} = {13B4DA16-9E93-4316-AE97-BCE30452C39C}
+	EndGlobalSection
+EndGlobal

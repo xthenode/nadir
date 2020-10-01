@@ -91,7 +91,7 @@
 
     <UserMacro
         Name="NADIR_DEFINES"
-        Value="WINSOCK_2"
+        Value="WINSOCK_2;LOGGING_LEVELS_DEFAULT=LOGGING_LEVELS_ERROR"
     />
     <UserMacro
         Name="NADIR_DEBUG_DEFINES"
