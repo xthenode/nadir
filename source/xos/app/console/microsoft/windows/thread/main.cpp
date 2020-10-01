@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////
-/// Copyright (c) 1988-2019 $organization$
+/// Copyright (c) 1988-2020 $organization$
 ///
 /// This software is provided by the author and contributors ``as is'' 
 /// and any express or implied warranties, including, but not limited to, 
@@ -13,25 +13,33 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: platform.hpp
+///   File: main.cpp
 ///
 /// Author: $author$
-///   Date: 12/3/2019
+///   Date: 9/30/2020
 ///////////////////////////////////////////////////////////////////////
-#ifndef XOS_BASE_PLATFORM_HPP
-#define XOS_BASE_PLATFORM_HPP
+#include "xos/app/console/microsoft/windows/thread/main.hpp"
 
-#include "xos/platform/configure.hpp"
-
-#if defined(WINDOWS)
-#include "xos/platform/microsoft/windows.hpp"
-#else /// defined(WINDOWS)
-#endif /// defined(WINDOWS)
+#if !defined(XOS_APP_CONSOLE_MICROSOFT_WINDOWS_THREAD_MAIN_INSTANCE)
+//#define XOS_APP_CONSOLE_MICROSOFT_WINDOWS_THREAD_MAIN_INSTANCE
+#endif /// !defined(XOS_APP_CONSOLE_MICROSOFT_WINDOWS_THREAD_MAIN_INSTANCE)
 
 namespace xos {
-namespace platform {
+namespace app {
+namespace console {
+namespace microsoft {
+namespace windows {
+namespace thread {
 
-} /// namespace platform
+///  Class: maint
+#if defined(XOS_APP_CONSOLE_MICROSOFT_WINDOWS_THREAD_MAIN_INSTANCE)
+static main the_main;
+#endif /// defined(XOS_APP_CONSOLE_MICROSOFT_WINDOWS_THREAD_MAIN_INSTANCE)
+
+
+} /// namespace thread
+} /// namespace windows
+} /// namespace microsoft
+} /// namespace console
+} /// namespace app
 } /// namespace xos
-
-#endif /// ndef XOS_BASE_PLATFORM_HPP

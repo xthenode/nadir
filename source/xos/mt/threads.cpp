@@ -21,11 +21,11 @@
 #include "xos/mt/threads.hpp"
 #include "xos/platform/os/platform/thread.cpp"
 
-/*/
 #if !defined(WINDOWS)
 #include "xos/platform/os/microsoft/windows/thread.cpp"
 #endif /// !defined(WINDOWS)
 
+/*/
 #if !defined(SOLARIS)
 #include "xos/platform/os/oracle/solaris/thread.cpp"
 #endif /// !defined(SOLARIS)

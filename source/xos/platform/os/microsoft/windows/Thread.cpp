@@ -19,8 +19,6 @@
 ///   Date: 1/23/2020
 ///////////////////////////////////////////////////////////////////////
 #include "xos/platform/os/microsoft/windows/Thread.hpp"
-#include "xos/platform/os/microsoft/windows/Handle.hpp"
-#include "xos/mt/os/thread.hpp"
 
 namespace xos {
 namespace platform {
@@ -47,6 +45,14 @@ HANDLE WINAPI CreateThread(
   _In_      DWORD                  dwCreationFlags,
   _Out_opt_ LPDWORD                lpThreadId ) {
     HANDLE hThread = 0;
+    bool initiallySuspended = (CREATE_SUSPENDED == (dwCreationFlags & CREATE_SUSPENDED));
+    try {
+        ::xos::platform::os::microsoft::windows::thread* thread = 0;
+        if ((thread = new ::xos::platform::os::microsoft::windows::thread(lpStartAddress, lpParameter, initiallySuspended))) {
+            return ((HANDLE)thread);
+        }
+    } catch (...) {
+    }
     return hThread;
 }
 uintptr_t _beginthreadex(
@@ -57,6 +63,14 @@ uintptr_t _beginthreadex(
    unsigned initflag,
    unsigned *thrdaddr ) {
     uintptr_t pthread = 0;
+    bool initiallySuspended = (CREATE_SUSPENDED == (initflag & CREATE_SUSPENDED));
+    try {
+        ::xos::platform::os::microsoft::windows::crt::thread* thread = 0;
+        if ((thread = new ::xos::platform::os::microsoft::windows::crt::thread(start_address, arglist, initiallySuspended))) {
+            return ((uintptr_t)thread);
+        }
+    } catch (...) {
+    }
     return pthread;
 }
 /*/

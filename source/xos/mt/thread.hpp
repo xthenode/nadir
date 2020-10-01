@@ -111,9 +111,18 @@ public:
         if (!(this->joined())) {
             throw join_exception(join_failed);
         }
+        if (!(this->destroyed())) {
+            throw create_exception(destroy_failed);
+        }
     }
 
     /// create / destroy / detach
+    virtual bool create(bool initially_suspended) {
+        if (!(initially_suspended)) {
+            return create();
+        }
+        return false;
+    }
     virtual bool create() {
         attached_t detached = (attached_t)(unattached);
         if ((attached_t)(unattached) != (detached = this->create_attached())) {
@@ -125,8 +134,12 @@ public:
     }
     virtual bool destroy() {
         if ((this->joined())) {
-            this->detach();
-            return true;
+            attached_t detached = (attached_t)(unattached);
+            if ((attached_t)(unattached) != (detached = this->detach())) {
+                if ((this->destroy_detached(detached))) {
+                    return true;
+                }
+            }
         }
         return false;
     }
@@ -171,7 +184,8 @@ template
  TError VErrorBusy = platform_thread_error_busy,
  TError VErrorTimeout = platform_thread_error_timeout,
  TError VErrorInterrupted = platform_thread_error_interrupted,
- class TExtends = mt::extended::threadt<TThread*>, 
+ typename TAttached = TThread*,
+ class TExtends = mt::extended::threadt<TAttached>, 
  class TImplements = typename TExtends::implements>
 class exported threadt: virtual public TImplements, public TExtends {
 public:
@@ -287,6 +301,12 @@ public:
             }
         }
         return detached;
+    }
+    virtual bool destroy_detached(attached_t detached) const {
+        if ((attached_t)(unattached) != (detached)) {
+            return destroy_detached(*detached);
+        }
+        return false;
     }
     virtual attached_t create_detached(thread_t& _thread) const {
         attached_t detached = (attached_t)(unattached);

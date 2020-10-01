@@ -23,6 +23,13 @@
 
 #include "xos/platform/types.hpp"
 
+#if !defined(HAS_VFSCNAF)
+inline int vfscanf(file_t f, const char *format, va_list va) {
+    return -EINVAL;
+}
+#else /// !defined(HAS_VFSCNAF)
+#endif /// !defined(HAS_VFSCNAF)
+
 namespace xos {
 namespace platform {
 namespace microsoft {

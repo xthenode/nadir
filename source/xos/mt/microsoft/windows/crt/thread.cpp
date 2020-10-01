@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////
-/// Copyright (c) 1988-2019 $organization$
+/// Copyright (c) 1988-2020 $organization$
 ///
 /// This software is provided by the author and contributors ``as is'' 
 /// and any express or implied warranties, including, but not limited to, 
@@ -13,25 +13,31 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: platform.hpp
+///   File: thread.cpp
 ///
 /// Author: $author$
-///   Date: 12/3/2019
+///   Date: 9/30/2020
 ///////////////////////////////////////////////////////////////////////
-#ifndef XOS_BASE_PLATFORM_HPP
-#define XOS_BASE_PLATFORM_HPP
+#include "xos/mt/microsoft/windows/crt/thread.hpp"
 
-#include "xos/platform/configure.hpp"
-
-#if defined(WINDOWS)
-#include "xos/platform/microsoft/windows.hpp"
-#else /// defined(WINDOWS)
-#endif /// defined(WINDOWS)
+#if !defined(XOS_MT_MICROSOFT_WINDOWS_CRT_THREAD_INSTANCE)
+//#define XOS_MT_MICROSOFT_WINDOWS_CRT_THREAD_INSTANCE
+#endif /// !defined(XOS_MT_MICROSOFT_WINDOWS_CRT_THREAD_INSTANCE)
 
 namespace xos {
-namespace platform {
+namespace mt {
+namespace microsoft {
+namespace windows {
+namespace crt {
 
-} /// namespace platform
+///  Class: threadt
+#if defined(XOS_MT_MICROSOFT_WINDOWS_CRT_THREAD_INSTANCE)
+//static thread the_thread;
+#endif /// defined(XOS_MT_MICROSOFT_WINDOWS_CRT_THREAD_INSTANCE)
+
+
+} /// namespace crt
+} /// namespace windows
+} /// namespace microsoft
+} /// namespace mt
 } /// namespace xos
-
-#endif /// ndef XOS_BASE_PLATFORM_HPP
