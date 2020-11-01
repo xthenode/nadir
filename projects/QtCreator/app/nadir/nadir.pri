@@ -96,6 +96,7 @@ $${NADIR_SRC}/xos/base/attached.cpp \
 $${NADIR_SRC}/xos/base/created.cpp \
 $${NADIR_SRC}/xos/base/locked.cpp \
 $${NADIR_SRC}/xos/base/logged.cpp \
+$${NADIR_SRC}/xos/base/logger.cpp \
 \
 $${NADIR_SRC}/xos/mt/posix/timed.cpp \
 $${NADIR_SRC}/xos/mt/posix/mutex.cpp \

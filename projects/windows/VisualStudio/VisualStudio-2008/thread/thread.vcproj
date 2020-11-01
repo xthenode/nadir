@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="libnadir"
-	ProjectGUID="{E906BD9F-3AAF-46BB-840B-F67AD6603AA1}"
-	RootNamespace="libnadir"
+	Name="thread"
+	ProjectGUID="{207FBFFE-7BC5-4D4B-9CB5-63FCA47CA880}"
+	RootNamespace="thread"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="196613"
 	>
@@ -21,9 +21,9 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="$(NADIR_LIB)"
+			OutputDirectory="$(NADIR_BIN)"
 			IntermediateDirectory="$(NADIR_OBJ)"
-			ConfigurationType="4"
+			ConfigurationType="1"
 			InheritedPropertySheets="..\vcversion.vsprops;..\..\vcproj.vsprops;..\..\nadir.vsprops"
 			CharacterSet="1"
 			>
@@ -46,7 +46,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="$(NADIR_INCLUDE_DIRS)"
-				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;$(NADIR_DEBUG_DEFINES)"
+				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;$(NADIR_DEBUG_DEFINES);XOS_APP_CONSOLE_MICROSOFT_WINDOWS_THREAD_MAIN_INSTANCE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
@@ -65,10 +65,19 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLibrarianTool"
+				Name="VCLinkerTool"
+				AdditionalDependencies="$(NADIR_LIBS)"
+				LinkIncremental="2"
+				AdditionalLibraryDirectories="$(NADIR_LIB_DIRS)"
+				GenerateDebugInformation="true"
+				SubSystem="1"
+				TargetMachine="1"
 			/>
 			<Tool
 				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -80,14 +89,17 @@
 				Name="VCFxCopTool"
 			/>
 			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
 		<Configuration
 			Name="Debug|x64"
-			OutputDirectory="$(NADIR_LIB)"
+			OutputDirectory="$(NADIR_BIN)"
 			IntermediateDirectory="$(NADIR_OBJ)"
-			ConfigurationType="4"
+			ConfigurationType="1"
 			InheritedPropertySheets="..\vcversion.vsprops;..\..\vcproj.vsprops;..\..\nadir.vsprops"
 			CharacterSet="1"
 			>
@@ -111,7 +123,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="$(NADIR_INCLUDE_DIRS)"
-				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;$(NADIR_DEBUG_DEFINES)"
+				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;$(NADIR_DEBUG_DEFINES);XOS_APP_CONSOLE_MICROSOFT_WINDOWS_THREAD_MAIN_INSTANCE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
@@ -130,10 +142,19 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLibrarianTool"
+				Name="VCLinkerTool"
+				AdditionalDependencies="$(NADIR_LIBS)"
+				LinkIncremental="2"
+				AdditionalLibraryDirectories="$(NADIR_LIB_DIRS)"
+				GenerateDebugInformation="true"
+				SubSystem="1"
+				TargetMachine="17"
 			/>
 			<Tool
 				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -145,14 +166,17 @@
 				Name="VCFxCopTool"
 			/>
 			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(NADIR_LIB)"
+			OutputDirectory="$(NADIR_BIN)"
 			IntermediateDirectory="$(NADIR_OBJ)"
-			ConfigurationType="4"
+			ConfigurationType="1"
 			InheritedPropertySheets="..\vcversion.vsprops;..\..\vcproj.vsprops;..\..\nadir.vsprops"
 			CharacterSet="1"
 			WholeProgramOptimization="1"
@@ -177,7 +201,7 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories="$(NADIR_INCLUDE_DIRS)"
-				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;$(NADIR_RELEASE_DEFINES)"
+				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;$(NADIR_RELEASE_DEFINES);XOS_APP_CONSOLE_MICROSOFT_WINDOWS_THREAD_MAIN_INSTANCE"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				TreatWChar_tAsBuiltInType="false"
@@ -195,10 +219,21 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLibrarianTool"
+				Name="VCLinkerTool"
+				AdditionalDependencies="$(NADIR_LIBS)"
+				LinkIncremental="1"
+				AdditionalLibraryDirectories="$(NADIR_LIB_DIRS)"
+				GenerateDebugInformation="true"
+				SubSystem="1"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				TargetMachine="1"
 			/>
 			<Tool
 				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -210,14 +245,17 @@
 				Name="VCFxCopTool"
 			/>
 			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
 		<Configuration
 			Name="Release|x64"
-			OutputDirectory="$(NADIR_LIB)"
+			OutputDirectory="$(NADIR_BIN)"
 			IntermediateDirectory="$(NADIR_OBJ)"
-			ConfigurationType="4"
+			ConfigurationType="1"
 			InheritedPropertySheets="..\vcversion.vsprops;..\..\vcproj.vsprops;..\..\nadir.vsprops"
 			CharacterSet="1"
 			WholeProgramOptimization="1"
@@ -243,7 +281,7 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories="$(NADIR_INCLUDE_DIRS)"
-				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;$(NADIR_RELEASE_DEFINES)"
+				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;$(NADIR_RELEASE_DEFINES);XOS_APP_CONSOLE_MICROSOFT_WINDOWS_THREAD_MAIN_INSTANCE"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				TreatWChar_tAsBuiltInType="false"
@@ -261,10 +299,21 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLibrarianTool"
+				Name="VCLinkerTool"
+				AdditionalDependencies="$(NADIR_LIBS)"
+				LinkIncremental="1"
+				AdditionalLibraryDirectories="$(NADIR_LIB_DIRS)"
+				GenerateDebugInformation="true"
+				SubSystem="1"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				TargetMachine="17"
 			/>
 			<Tool
 				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -274,6 +323,9 @@
 			/>
 			<Tool
 				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -288,45 +340,37 @@
 			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
-			<File
-				RelativePath="..\..\..\..\..\source\xos\base\base.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\source\xos\console\io.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\source\xos\console\logger.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\source\xos\lib\nadir\version.cpp"
-				>
-			</File>
 			<Filter
-				Name="getopt"
+				Name="console"
 				>
 				<File
-					RelativePath="..\..\..\..\..\source\thirdparty\gnu\getopt\getopt.c"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\..\source\thirdparty\gnu\getopt\getopt1.c"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\..\source\thirdparty\gnu\getopt\getopt_init.c"
+					RelativePath="..\..\..\..\..\source\xos\console\main_main.cpp"
 					>
 				</File>
 			</Filter>
 			<Filter
-				Name="os"
+				Name="app"
 				>
-				<File
-					RelativePath="..\..\..\..\..\source\xos\platform\os\oses.cpp"
+				<Filter
+					Name="console"
 					>
-				</File>
+					<Filter
+						Name="windows"
+						>
+						<Filter
+							Name="thread"
+							>
+							<File
+								RelativePath="..\..\..\..\..\source\xos\app\console\microsoft\windows\thread\main.cpp"
+								>
+							</File>
+							<File
+								RelativePath="..\..\..\..\..\source\xos\app\console\microsoft\windows\thread\main_opt.cpp"
+								>
+							</File>
+						</Filter>
+					</Filter>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter
@@ -334,22 +378,38 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
-			<File
-				RelativePath="..\..\..\..\..\source\xos\base\base.hpp"
+			<Filter
+				Name="console"
 				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\source\xos\console\io.hpp"
+				<File
+					RelativePath="..\..\..\..\..\source\xos\console\main_main.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="app"
 				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\source\xos\console\logger.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\source\xos\lib\nadir\version.hpp"
-				>
-			</File>
+				<Filter
+					Name="console"
+					>
+					<Filter
+						Name="windows"
+						>
+						<Filter
+							Name="thread"
+							>
+							<File
+								RelativePath="..\..\..\..\..\source\xos\app\console\microsoft\windows\thread\main.hpp"
+								>
+							</File>
+							<File
+								RelativePath="..\..\..\..\..\source\xos\app\console\microsoft\windows\thread\main_opt.hpp"
+								>
+							</File>
+						</Filter>
+					</Filter>
+				</Filter>
+			</Filter>
 		</Filter>
 	</Files>
 	<Globals>

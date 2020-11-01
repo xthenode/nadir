@@ -55,6 +55,14 @@ XOS_APP_CONSOLE_MICROSOFT_WINDOWS_MUTEX_MAIN_INSTANCE \
 # winmutex HEADERS
 #
 winmutex_HEADERS += \
+$${NADIR_SRC}/xos/logger/level.hpp \
+$${NADIR_SRC}/xos/logger/function.hpp \
+$${NADIR_SRC}/xos/logger/location.hpp \
+$${NADIR_SRC}/xos/logger/message.hpp \
+$${NADIR_SRC}/xos/logger/implement.hpp \
+$${NADIR_SRC}/xos/logger/defines.hpp \
+$${NADIR_SRC}/xos/base/logger.hpp \
+\
 $${NADIR_SRC}/xos/platform/microsoft/windows/posix/mutex.h \
 $${NADIR_SRC}/xos/platform/microsoft/windows/posix/mutex.hpp \
 \
