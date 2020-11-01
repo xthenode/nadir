@@ -172,6 +172,14 @@ public:
     virtual ssize_t outfv(const sized_t *format, va_list va) {
         return 0;
     }
+    virtual ssize_t outXln(const void* out, size_t length, bool upper_case = true) {
+        file_t f = out_std_out();
+        return outxln(f, out, length, upper_case);
+    }
+    virtual ssize_t outX(const void* out, size_t length, bool upper_case = true) {
+        file_t f = out_std_out();
+        return outx(f, out, length, upper_case);
+    }
     virtual ssize_t outxln(const void* out, size_t length, bool upper_case = false) {
         file_t f = out_std_out();
         return outxln(f, out, length, upper_case);
@@ -242,6 +250,14 @@ public:
         file_t f = err_std_err();
         return console::outfv(f, format, va);
     }
+    virtual ssize_t errXln(const void* out, size_t length, bool upper_case = true) {
+        file_t f = err_std_err();
+        return outxln(f, out, length, upper_case);
+    }
+    virtual ssize_t errX(const void* out, size_t length, bool upper_case = true) {
+        file_t f = err_std_err();
+        return outx(f, out, length, upper_case);
+    }
     virtual ssize_t errxln(const void* out, size_t length, bool upper_case = false) {
         file_t f = err_std_err();
         return outxln(f, out, length, upper_case);
@@ -257,6 +273,10 @@ public:
     virtual ssize_t err(const what_t *what) {
         file_t f = err_std_err();
         return console::out(f, what);
+    }
+    virtual ssize_t errln() {
+        file_t f = err_std_err();
+        return console::outln(f);
     }
     virtual ssize_t err_flush() {
         file_t f = err_std_err();

@@ -50,6 +50,14 @@
     XOS_VERSION_MAIN_OPTIONS_OPTIONS_EXTEND \
     XOS_CONSOLE_MAIN_OPTIONS_OPTIONS
 
+#define XOS_VERSION_MAIN_USAGE_OPTIONS_CHARS \
+    XOS_VERSION_MAIN_OPTIONS_CHARS_EXTEND \
+    XOS_CONSOLE_MAIN_USAGE_OPTIONS_CHARS
+
+#define XOS_VERSION_MAIN_USAGE_OPTIONS_OPTIONS \
+    XOS_VERSION_MAIN_OPTIONS_OPTIONS_EXTEND \
+    XOS_CONSOLE_MAIN_USAGE_OPTIONS_OPTIONS
+
 #define XOS_VERSION_MAIN_ARUMENTS_CHARS 0
 #define XOS_VERSION_MAIN_ARUMENTS_ARGS 0
 
@@ -96,12 +104,57 @@ protected:
     }
     virtual int default_run(int argc, char_t** argv, char_t** env) {
         int err = 0;
-        err = version_run(argc, argv, env);
+        err = all_version_run(argc, argv, env);
         return err;
     }
+
+    /// ...version_run
     virtual int version_run(int argc, char_t** argv, char_t** env) {
         int err = 0;
         err = this->usage(argc, argv, env);
+        return err;
+    }
+    virtual int before_version_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int after_version_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int all_version_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        if (!(err = before_version_run(argc, argv, env))) {
+            int err2 = 0;
+            err = version_run(argc, argv, env);
+            if ((err2 = after_version_run(argc, argv, env))) {
+                if (!(err)) err = err2;
+            }
+        }
+        return err;
+    }
+    virtual int set_version_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        run_ = &derives::all_version_run;
+        return err;
+    }
+    virtual int before_set_version_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int after_set_version_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int all_set_version_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        if (!(err = before_set_version_run(argc, argv, env))) {
+            int err2 = 0;
+            err = set_version_run(argc, argv, env);
+            if ((err2 = after_set_version_run(argc, argv, env))) {
+                if (!(err)) err = err2;
+            }
+        }
         return err;
     }
 
@@ -110,7 +163,7 @@ protected:
     (int optval, const char_t* optarg, const char_t* optname, 
      int optind, int argc, char_t**argv, char_t**env) {
         int err = 0;
-        run_ = &derives::version_run;
+        err = all_set_version_run(argc, argv, env);
         return err;
     }
     virtual const char_t* version_option_usage(const char_t*& optarg, const struct option* longopt) {

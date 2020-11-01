@@ -164,7 +164,7 @@ public:
     }
     virtual bool is_enabled_for(const levels& _levels) const { 
         level::enable enabled = _levels, enabled_for = this->enabled_for();
-        bool is_enabled_for = ((level::all == enabled) || ((enabled_for & enabled) == enabled));
+        bool is_enabled_for = ((level::all == enabled_for) || ((enabled_for & enabled) == enabled));
         return is_enabled_for;
     }
     virtual levels enabled_for_default() const { 

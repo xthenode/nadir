@@ -262,6 +262,28 @@ protected:
     size_t size_, length_;
 }; /// class arrayt
 
+/// class byte_arrayt
+template 
+<size_t VDefaultSize = 128, typename TWhat = byte_t, 
+ class TExtends = arrayt<TWhat, VDefaultSize>, class TImplements = typename TExtends::implements>
+class exported byte_arrayt: virtual public TImplements, public TExtends {
+public:
+    typedef TImplements implements;
+    typedef TExtends extends;
+    typedef byte_arrayt derives; 
+    
+    typedef typename extends::what_t what_t;
+    enum { default_size = extends::default_size };
+
+    /// constructors / destructor
+    byte_arrayt(const byte_arrayt& copy): extends(copy) {
+    }
+    byte_arrayt() {
+    }
+    virtual ~byte_arrayt() {
+    }
+}; /// class byte_arrayt
+
 typedef arrayt<char_t> array;
 typedef arrayt<byte_t> byte_array;
 typedef arrayt<word_t> word_array;

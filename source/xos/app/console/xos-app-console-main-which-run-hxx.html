@@ -28,7 +28,7 @@
     =====================================================================
     -->
     <head>
-        <title>Xthenode - Create HTML File</title>
+        <title>Xthenode - Create run()</title>
 
         <!--
         =====================================================================
@@ -54,7 +54,7 @@
     =====================================================================
     -->
     <body>
-        <a href="xos-app-console-main-which-run-hxx.html"><h3>Create HTML File</h3></a>
+        <a href="xos-app-console-main-which-run-hxx.html"><h3>Create <b>int run(int argc, char_t** argv, char_t** env)</b></h3></a>
 
         <!--
         =====================================================================
@@ -65,10 +65,22 @@
          Name="Form" Action="t.t" Method="POST" 
          onSubmit="return setFormSubmit(getFormValue2('FormTemplate','FormAction','Form'),getFormValue('FormMethod','Form'),'Form')">
              <div class="form"><hr/>
-             Which: <input name="Which" value="this"/><br/>
-             Run: <input name="Run" value="run"/><br/>
-             Params: <input name="Params" value=""/><br/>
-             Args: <input name="Args" value=""/><br/>
+             <b>virtual </b><input name="ReturnType" value="int"/>
+             <input name="Which" value="this"/>
+             <input type="checkbox" name="is_Which" value="no" unchecked="checked">no</input><b>_</b>
+             <input name="Run" value="run"/>
+             <input type="checkbox" name="is_Run" value="no" unchecked="checked">no</input><br/>
+             <b>(</b>Params: <input name="Params" value=""/>
+             <input type="checkbox" name="is_Params" value="no" unchecked="checked">no</input><b>, </b>
+             StdParams: <input name="StdParams" value="int argc, char_t** argv, char_t** env"/>
+             <input type="checkbox" name="is_StdParams" value="no" unchecked="checked">no</input><b>) {</b><br/>
+             %ReturnType% <input name="Return" value="err"/>
+             <b> = </b><input name="ReturnValue" value="0"/><b>;...</b><br/>
+             Args: <input name="Args" value=""/>
+             <input type="checkbox" name="is_Args" value="no" unchecked="checked">no</input><b>, </b>
+             StdArgs: <input name="StdArgs" value="argc, argv, env"/>
+             <input type="checkbox" name="is_StdArgs" value="no" unchecked="checked">no</input><br/>
+             <b>...}</b><br/>
     
              <br/>
              Content-Type: <select name="content_type">

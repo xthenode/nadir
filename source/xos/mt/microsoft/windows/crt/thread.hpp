@@ -23,12 +23,12 @@
 
 #include "xos/mt/thread.hpp"
 
-#if defined(windows)
+#if defined(WINDOWS)
 #include <process.h>
 #include <errno.h>
-#else /// defined(windows)
+#else /// defined(WINDOWS)
 #include "xos/platform/os/microsoft/windows/Thread.h"
-#endif /// defined(windows)
+#endif /// defined(WINDOWS)
 
 namespace xos {
 namespace mt {

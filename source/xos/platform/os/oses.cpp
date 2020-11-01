@@ -19,7 +19,10 @@
 ///   Date: 1/7/2020
 ///////////////////////////////////////////////////////////////////////
 #include "xos/platform/os/oses.hpp"
+
+#if !defined(LINUX)
 #include "xos/platform/os/posix/sys/time.cpp"
+#endif /// !defined(LINUX)
 
 #if !defined(WINDOWS)
 #include "xos/platform/os/microsoft/windows/io.cpp"

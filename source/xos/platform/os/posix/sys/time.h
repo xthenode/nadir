@@ -39,6 +39,7 @@ enum {
 /// windows
 /*/
 #else /// defined(WINDOWS)
+#if !defined(LINUX)
 /*/
 /// posix
 /// ...
@@ -57,6 +58,7 @@ enum {
 /// ...
 /// posix
 /*/
+#endif /// !defined(LINUX)
 #endif /*/ defined(WINDOWS) /*/
 
 #if !defined(CLOCK_HAS_GETTIME)
@@ -67,6 +69,7 @@ enum {
 extern "C" {
 #endif /*/ defined(__cplusplus) /*/
 
+#if !defined(LINUX)
 /*/
 /// posix
 /// ...
@@ -88,6 +91,7 @@ extern int usleep(useconds_t useconds);
 /// ...
 /// posix
 /*/
+#endif /// !defined(LINUX)
 
 #if defined(__cplusplus)
 } /*/ extern "C" /*/

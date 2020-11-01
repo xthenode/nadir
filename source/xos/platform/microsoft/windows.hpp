@@ -22,6 +22,7 @@
 #define XOS_PLATFORM_MICROSOFT_WINDOWS_HPP
 
 #include "xos/platform/types.hpp"
+#include "xos/platform/microsoft/windows/posix/sys/time.hpp"
 
 #if !defined(HAS_VFSCNAF)
 inline int vfscanf(file_t f, const char *format, va_list va) {

@@ -22,7 +22,7 @@
 #include "xos/platform/os/platform/thread.cpp"
 
 #if !defined(WINDOWS)
-#include "xos/platform/os/microsoft/windows/thread.cpp"
+#include "xos/platform/os/microsoft/windows/Thread.cpp"
 #endif /// !defined(WINDOWS)
 
 /*/

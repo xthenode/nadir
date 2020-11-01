@@ -71,7 +71,9 @@ public:
             attached_t detached = (attached_t)unattached;
             if ((attached_t)unattached != (detached = this->attached_to())) {
                 if (0 >= (count = ::fread(what, sizeof(sized_t), size, detached))) {
-                    LOGGER_IS_LOGGED_ERROR("...failed " << count << " on ::fread(what, " << sizeof(sized_t) << ", " << size << ", " << pointer_to_string(detached) << ")");
+                    if ((!::feof(detached)) || (::ferror(detached))) {
+                        LOGGER_IS_LOGGED_ERROR("...failed " << count << " on ::fread(what, " << sizeof(sized_t) << ", " << size << ", " << pointer_to_string(detached) << ")");
+                    }
                 }
             }
         }

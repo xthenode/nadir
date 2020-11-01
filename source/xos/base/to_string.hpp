@@ -167,6 +167,35 @@ protected:
 }; /// class exception_to_stringt
 typedef exception_to_stringt<> exception_to_string;
 
+/// class x_to_stringt
+template 
+<typename TChar = char, 
+ class TExtends = stringt<TChar>, class TImplements = implement>
+
+class exported x_to_stringt: virtual public TImplements, public TExtends {
+public:
+    typedef TImplements implements;
+    typedef TExtends extends;
+    typedef x_to_stringt derives;
+
+    typedef typename extends::sstream_t sstream_t;
+    typedef typename extends::string_t string_t;
+    typedef typename extends::char_t char_t;
+    typedef typename extends::end_char_t end_char_t;
+    enum { end_char = extends::end_char };
+
+    x_to_stringt(const x_to_stringt& copy): extends(copy) {
+    }
+    x_to_stringt(const void* data, size_t length) {
+        this->appendx(data, length);
+    }
+    virtual ~x_to_stringt() {
+    }
+
+protected:
+}; /// class x_to_stringt
+typedef x_to_stringt<> x_to_string;
+
 } /// namespace xos
 
 #endif /// ndef XOS_BASE_TO_STRING_HPP

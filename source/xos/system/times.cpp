@@ -19,7 +19,11 @@
 ///   Date: 8/27/2020
 ///////////////////////////////////////////////////////////////////////
 #include "xos/system/times.hpp"
+
+#if !defined(LINUX)
 #include "xos/platform/os/posix/sys/time.cpp"
+#endif /// !defined(LINUX)
+
 
 namespace xos {
 namespace system {
