@@ -133,6 +133,7 @@ typedef to_stringt<double> double_to_string;
 typedef to_stringt<float> float_to_string;
 typedef to_stringt<int> int_to_string;
 typedef to_stringt<pointer_t> pointer_to_string;
+typedef to_stringt<const_pointer_t> const_pointer_to_string;
 typedef to_stringt<size_t> size_to_string;
 typedef to_stringt<signed> signed_to_string;
 typedef to_stringt<unsigned> unsigned_to_string;

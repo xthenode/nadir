@@ -134,6 +134,10 @@ typedef int BOOL;
 #if !defined(pointer_t)
 #define pointer_t platform_pointer_t
 #endif /*/ !defined(pointer_t) /*/
+
+#if !defined(const_pointer_t)
+#define const_pointer_t platform_const_pointer_t
+#endif /*/ !defined(const_pointer_t) /*/
 /*/
 /// ...
 /// Apple
@@ -326,6 +330,7 @@ typedef char char_t;
 
 typedef FILE* file_t;
 typedef void* pointer_t;
+typedef const void* const_pointer_t;
 #define null ((pointer_t)0)
 
 typedef useconds_t nseconds_t;

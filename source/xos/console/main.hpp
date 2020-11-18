@@ -24,6 +24,7 @@
 #include "xos/console/io.hpp"
 #include "xos/io/reader.hpp"
 #include "xos/io/writer.hpp"
+#include "xos/base/logged.hpp"
 #include "xos/base/logger.hpp"
 
 #if !defined(__LOCATION__)
@@ -36,7 +37,7 @@ namespace console {
 /// class maint
 template 
 <typename TChar = char, class TIo = iot<TChar>,
- class TExtends = extend, class TImplements = TIo>
+ class TExtends = extended::logged, class TImplements = TIo>
 class exported maint: virtual public TImplements, public TExtends {
 public:
     typedef TImplements implements;

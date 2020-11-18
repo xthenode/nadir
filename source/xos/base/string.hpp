@@ -80,9 +80,19 @@ public:
         this->appendx(in, length, upper_case);
         return *this;
     }
+    virtual stringt& assignln(const char_t* chars, size_t length) {
+        this->clear();
+        this->appendln(chars, length);
+        return *this;
+    }
+    virtual stringt& assignln(const char_t* chars) {
+        this->clear();
+        this->appendln(chars);
+        return *this;
+    }
     virtual stringt& assignl(const char_t* chars, ...) {
         va_list va; va_start(va, chars);
-        assignv(chars, va);
+        this->assignv(chars, va);
         va_end(va);
         return *this;
     }
@@ -123,6 +133,31 @@ public:
                 this->append(x, 2);
             }
         }
+        return *this;
+    }
+    virtual stringt& appendln(const char_t* chars, size_t length) {
+        this->append(chars, length);
+        this->appendln();
+        return *this;
+    }
+    virtual stringt& appendln(const char_t* chars) {
+        this->append(chars);
+        this->appendln();
+        return *this;
+    }
+    virtual stringt& appendln() {
+        this->appendcr();
+        this->appendlf();
+        return *this;
+    }
+    virtual stringt& appendcr() {
+        char_t cr = ((char_t)'\r');
+        this->append(&cr, 1);
+        return *this;
+    }
+    virtual stringt& appendlf() {
+        char_t lf = ((char_t)'\n');
+        this->append(&lf, 1);
         return *this;
     }
     virtual stringt& appendl(const char_t* chars, ...) {
