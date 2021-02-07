@@ -16,7 +16,7 @@
 #   File: libnadir.pro
 #
 # Author: $author$
-#   Date: 12/3/2019
+#   Date: 12/3/2019, 12/22/2020
 #
 # Os specific QtCreator project for nadir static library libnadir
 ########################################################################
@@ -56,7 +56,7 @@ $${libnadir_OBJECTIVE_SOURCES} \
 #
 HEADERS += \
 $${libnadir_HEADERS} \
-$${OBJECTIVE_HEADERS} \
+$${libnadir_OBJECTIVE_HEADERS} \
 
 # SOURCES
 #

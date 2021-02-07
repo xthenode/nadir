@@ -39,6 +39,7 @@ $${nadir_INCLUDEPATH} \
 #
 libnadir_DEFINES += \
 $${nadir_DEFINES} \
+LOGGING_LEVELS_DEFAULT_ERROR \
 
 ########################################################################
 # libnadir OBJECTIVE_HEADERS

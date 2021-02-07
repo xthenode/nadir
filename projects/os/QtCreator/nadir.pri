@@ -16,11 +16,10 @@
 #   File: nadir.pri
 #
 # Author: $author$
-#   Date: 12/3/2019
+#   Date: 12/3/2019, 12/22/2020
 #
 # Os specific QtCreator project for nadir
 ########################################################################
-
 UNAME = $$system(uname)
 
 contains(UNAME,Darwin) {
@@ -34,9 +33,9 @@ NADIR_OS = windows
 } # contains(UNAME,Darwin)
 
 contains(BUILD_OS,NADIR_OS) {
-BUILD_OS = $${NADIR_OS}
+NADIR_BUILD = $${NADIR_OS}
 } else {
-BUILD_OS = os
+NADIR_BUILD = $${BUILD_OS}
 } # contains(BUILD_OS,NADIR_OS)
 
 contains(BUILD_CPP_VERSION,10) {
@@ -48,9 +47,16 @@ CONFIG += c++$${BUILD_CPP_VERSION}
 } # contains(BUILD_CPP_VERSION,98|03|11|14|17)
 } # contains(BUILD_CPP_VERSION,10)
 
+contains(NADIR_OS,macosx) {
+} else {
 contains(NADIR_OS,linux) {
 QMAKE_CXXFLAGS += -fpermissive
-}
+} else {
+contains(NADIR_OS,windows) {
+} else {
+} # contains(NADIR_OS,windows)
+} # contains(NADIR_OS,linux)
+} # contains(NADIR_OS,macosx)
 
 ########################################################################
 # nadir

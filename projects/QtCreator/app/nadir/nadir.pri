@@ -16,7 +16,7 @@
 #   File: nadir.pri
 #
 # Author: $author$
-#   Date: 12/3/2019
+#   Date: 12/3/2019, 12/22/2020
 #
 # generic QtCreator project for nadir executable nadir
 ########################################################################
@@ -37,7 +37,7 @@ $${nadir_INCLUDEPATH} \
 #
 nadir_exe_DEFINES += \
 $${nadir_DEFINES} \
-LOGGING_LEVELS_DEFAULT=LOGGING_LEVELS_ERROR \
+LOGGING_LEVELS_DEFAULT_ERROR \
 XOS_APP_CONSOLE_NADIR_MAIN_INSTANCE \
 
 ########################################################################
