@@ -24,6 +24,7 @@
 #include "xos/console/io.hpp"
 #include "xos/io/reader.hpp"
 #include "xos/io/writer.hpp"
+#include "xos/io/string/reader.hpp"
 #include "xos/base/logged.hpp"
 #include "xos/base/logger.hpp"
 
@@ -49,6 +50,11 @@ public:
     typedef xos::io::seekert<sequence_t> seeker_t;
     typedef xos::io::readert<seeker_t> reader_t;
     typedef xos::io::writert<sequence_t> writer_t;
+    typedef xos::io::char_sequencet<TChar> char_sequence_t;
+    typedef xos::io::seekert<char_sequence_t> char_seeker_t;
+    typedef xos::io::char_readert<char_seeker_t> char_reader_t;
+    typedef xos::io::char_writert<char_sequence_t> char_writer_t;
+    typedef xos::io::string::readert<char_reader_t> string_reader_t;
     typedef typename implements::file_t file_t;
     typedef typename implements::string_t string_t;
     typedef TChar char_t;
@@ -285,6 +291,7 @@ public:
         if ((the_main = derives::the_main())) {
             err = (*the_main)(argc, argv, env);
         } else {
+            LOGGER_LOG_ERROR("...failed 0 = derives::the_main() err = 1...")
             err = 1;
         }
         return err;

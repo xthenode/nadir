@@ -46,13 +46,19 @@
 ///////////////////////////////////////////////////////////////////////
 #include "xos/app/console/%framework%/main.hpp"
 
+#if !defined(XOS_APP_CONSOLE_%FRAMEWORK%_MAIN_INSTANCE)
+//#define XOS_APP_CONSOLE_%FRAMEWORK%_MAIN_INSTANCE
+#endif /// !defined(XOS_APP_CONSOLE_%FRAMEWORK%_MAIN_INSTANCE)
+
 namespace xos {
 namespace app {
 namespace console {
 namespace %framework% {
 
 /// class maint
+#if !defined(XOS_APP_CONSOLE_%FRAMEWORK%_MAIN_INSTANCE)
 static main the_main;
+#endif /// !defined(XOS_APP_CONSOLE_%FRAMEWORK%_MAIN_INSTANCE)
 
 } /// namespace %framework%
 } /// namespace console

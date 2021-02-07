@@ -38,8 +38,11 @@ public:
     typedef maint derives;
 
     typedef TVersion version_t;
+    typedef typename extends::reader_t reader_t;
+    typedef typename extends::writer_t writer_t;
     typedef typename extends::file_t file_t;
     typedef typename extends::string_t string_t;
+    typedef typename extends::char_reader_t char_reader_t;
     typedef typename extends::char_t char_t;
     typedef typename extends::end_char_t end_char_t;
     enum { end_char = extends::end_char };

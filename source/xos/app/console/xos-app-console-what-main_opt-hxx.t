@@ -19,6 +19,11 @@
 %#   Date: 6/27/2020
 %########################################################################
 %with(%
+%is_extends,%(%else-then(%is_extends%,%(%is_Extends%)%)%)%,%
+%extends,%(%else-then(%if-no(%is_extends%,,%(%extends%)%)%,%(%if-no(%is_extends%,,%(xos/app/console/main)%)%)%)%)%,%
+%Extends,%(%else-then(%if-no(%is_extends%,,%(%Extends%)%)%,%(%if-no(%is_extends%,,%(%extends%)%)%)%)%)%,%
+%EXTENDS,%(%else-then(%EXTENDS%,%(%toupper(%Extends%)%)%)%)%,%
+%extends,%(%else-then(%_extends%,%(%tolower(%Extends%)%)%)%)%,%
 %is_what,%(%else-then(%is_what%,%(%is_What%)%)%)%,%
 %what,%(%else-then(%if-no(%is_what%,,%(%what%)%)%,%(%if-no(%is_what%,,%(what)%)%)%)%)%,%
 %What,%(%else-then(%if-no(%is_what%,,%(%What%)%)%,%(%if-no(%is_what%,,%(%what%)%)%)%)%)%,%
@@ -52,7 +57,7 @@
 #ifndef XOS_APP_CONSOLE_%parse(%NAMESPACE%,/,,,,%(%namespace%_)%,namespace)%MAIN_OPT_HPP
 #define XOS_APP_CONSOLE_%parse(%NAMESPACE%,/,,,,%(%namespace%_)%,namespace)%MAIN_OPT_HPP
 
-#include "xos/app/console/main.hpp"
+#include "xos/app/console%else-then(%parse(%Extends%,/,%(/)%,,,%(%namespace%)%,namespace)%,%(/main)%)%.hpp"
 
 namespace xos {
 namespace app {
@@ -61,7 +66,7 @@ namespace %namespace% {)%,namespace)%
 
 /// class main_optt
 template 
-<class TExtends = xos::app::console::main, 
+<class TExtends = %parse(%Extends%,/,,%(::)%,,%(%namespace%)%,namespace)%, 
  class TImplements = typename TExtends::implements>
 
 class exported main_optt: virtual public TImplements, public TExtends {

@@ -105,7 +105,17 @@ public:
     typedef typename implements::endof_t endof_t;
     static const endof_t endof = implements::endof;
 
-    /// writex
+    /// writex...
+    virtual ssize_t writexln(const void* out, size_t length, bool upper_case = false) {
+        ssize_t count = 0, amount = 0;
+        if (0 <= (amount = this->writex(out, length, upper_case))) {
+            count += amount;
+            if (0 <= (amount = this->writeln())) {
+                count += amount;
+            }
+        }
+        return count;
+    }
     virtual ssize_t writex(const void* out, size_t length, bool upper_case = false) {
         ssize_t count = 0;
         const byte_t* bytes = 0;
@@ -125,6 +135,95 @@ public:
                 } else {
                     return amount;
                 }
+            }
+        }
+        return count;
+    }
+
+    /// write64...
+    virtual ssize_t write64ln(const void* out, size_t length) {
+        ssize_t count = 0, amount = 0;
+
+        if (0 <= (amount = this->write64(out, length))) {
+            count += amount;
+            if (0 <= (amount = this->writeln())) {
+                count += amount;
+            }
+        }
+        return count;
+    }
+    virtual ssize_t write64(const void* out, size_t length) {
+        ssize_t count = 0;
+        const uint8_t* byte = 0;
+
+        if ((byte = (const uint8_t*)(out)) && (length)) {
+            ssize_t amount = 0;
+            uint8_t b = 0, carry = 0, shift = 0;
+            if (0 <= length) {
+                for (carry = 0, shift = 2; 0 < length; --length, ++byte) {
+                    b = (*byte);
+                    if (0 > (amount = this->put64(b, carry, shift))) {
+                        return amount;
+                    }
+                    count += amount;
+                }
+            } else {
+                for (carry = 0, shift = 2; (b = (*byte)); ++byte) {
+                    if (0 > (amount = this->put64(b, carry, shift))) {
+                        return amount;
+                    }
+                    count += amount;
+                }
+            }
+            if ((2 != (shift))) {
+                if (0 > (amount = this->put64_end(carry, shift))) {
+                    return amount;
+                }
+                count += amount;
+            }
+        }
+        return count;
+    }
+    virtual ssize_t put64(uint8_t b, uint8_t& carry, uint8_t& shift) {
+        const uint8_t mask = ((uint8_t)-1);
+        ssize_t count = 0, amount = 0;
+        sized_t x = (sized_t)(0);
+        x = (sized_t)(this->dtob64(carry | (b >> shift)));
+        if (0 > (amount = this->write((const what_t*)(&x), 1))) {
+            return amount;
+        }
+        count += amount;
+        carry = (b & (mask >> (8 - shift))) << (6 - shift);
+        if (6 > (shift)) {
+            shift += 2;
+        } else {
+            x = (sized_t)(this->dtob64(carry));
+            if (0 > (amount = this->write((const what_t*)(&x), 1))) {
+                return amount;
+            }
+            count += amount;
+            carry = 0;
+            shift = 2;
+        }
+        return count;
+    }
+    virtual ssize_t put64_end(uint8_t& carry, uint8_t& shift) {
+        ssize_t count = 0, amount = 0;
+        sized_t x = (sized_t)(0);
+        x = (sized_t)(this->dtob64(carry));
+        if (0 > (amount = this->write((const what_t*)(&x), 1))) {
+            return amount;
+        }
+        count += amount;
+        for (x = ((sized_t)'='); shift != 2;) {
+            if (0 > (amount = this->write((const what_t*)(&x), 1))) {
+                return amount;
+            }
+            count += amount;
+            if (6 > (shift)) {
+                shift += 2;
+            } else {
+                shift = 2;
             }
         }
         return count;

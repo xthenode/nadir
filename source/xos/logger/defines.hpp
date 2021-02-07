@@ -16,7 +16,7 @@
 ///   File: defines.hpp
 ///
 /// Author: $author$
-///   Date: 12/5/2019
+///   Date: 12/5/2019, 12/22/2020
 ///////////////////////////////////////////////////////////////////////
 #ifndef XOS_LOGGER_DEFINES_HPP
 #define XOS_LOGGER_DEFINES_HPP
@@ -76,6 +76,16 @@ namespace logger {
 #define LOGGING_LEVELS_INFO ::xos::logger::levels::info
 #define LOGGING_LEVELS_DEBUG ::xos::logger::levels::debug
 #define LOGGING_LEVELS_TRACE ::xos::logger::levels::trace
+
+#if !defined(LOGGING_LEVELS_DEFAULT)
+#if defined(LOGGING_LEVELS_DEFAULT_TRACE)
+#define LOGGING_LEVELS_DEFAULT LOGGING_LEVELS_TRACE
+#elif defined(LOGGING_LEVELS_DEFAULT_DEBUG)
+#define LOGGING_LEVELS_DEFAULT LOGGING_LEVELS_DEBUG
+#elif defined(LOGGING_LEVELS_DEFAULT_ERROR)
+#define LOGGING_LEVELS_DEFAULT LOGGING_LEVELS_ERROR
+#endif /// defined(LOGGING_LEVELS_DEFAULT_TRACE)
+#endif /// !defined(LOGGING_LEVELS_DEFAULT)
 
 #if !defined(LOGGING_LEVELS_DEFAULT)
 #if defined(TRACE_BUILD)

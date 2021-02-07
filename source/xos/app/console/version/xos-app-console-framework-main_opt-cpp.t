@@ -46,12 +46,19 @@
 ///////////////////////////////////////////////////////////////////////
 #include "xos/app/console/%framework%/main_opt.hpp"
 
+#if !defined(XOS_APP_CONSOLE_%FRAMEWORK%_MAIN_OPT_INSTANCE)
+//#define XOS_APP_CONSOLE_%FRAMEWORK%_MAIN_OPT_INSTANCE
+#endif /// !defined(XOS_APP_CONSOLE_%FRAMEWORK%_MAIN_OPT_INSTANCE)
+
 namespace xos {
 namespace app {
 namespace console {
 namespace %framework% {
 
 /// class main_optt
+#if defined(XOS_APP_CONSOLE_%FRAMEWORK%_MAIN_OPT_INSTANCE)
+static main_opt the_main_opt;
+#endif /// defined(XOS_APP_CONSOLE_%FRAMEWORK%_MAIN_OPT_INSTANCE)
 
 } /// namespace %framework%
 } /// namespace console

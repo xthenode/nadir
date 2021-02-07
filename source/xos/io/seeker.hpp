@@ -59,15 +59,14 @@ public:
         return 0;
     }
 }; /// class seekert
-
 typedef seekert<sequence> seeker;
+
+typedef seekert<byte_sequence> byte_seeker;
+typedef seekert<word_sequence> word_seeker;
 
 typedef seekert<char_sequence> char_seeker;
 typedef seekert<tchar_sequence> tchar_seeker;
 typedef seekert<wchar_sequence> wchar_seeker;
-
-typedef seekert<byte_sequence> byte_seeker;
-typedef seekert<word_sequence> word_seeker;
 
 } /// namespace io
 } /// namespace xos

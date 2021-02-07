@@ -51,13 +51,19 @@
 ///////////////////////////////////////////////////////////////////////
 #include "xos/app/console/%parse(%namespace%,/,,,,%(%namespace%/)%,namespace)%main.hpp"
 
+#if !defined(XOS_APP_CONSOLE_%parse(%NAMESPACE%,/,,,,%(%namespace%_)%,namespace)%MAIN_INSTANCE)
+///#define XOS_APP_CONSOLE_%parse(%NAMESPACE%,/,,,,%(%namespace%_)%,namespace)%MAIN_INSTANCE
+#endif /// !defined(XOS_APP_CONSOLE_%parse(%NAMESPACE%,/,,,,%(%namespace%_)%,namespace)%MAIN_NSTANCE)
+
 namespace xos {
 namespace app {
 namespace console {%parse(%namespace%,/,,,,%(
 namespace %namespace% {)%,namespace)%
 
 /// class main
+#if defined(XOS_APP_CONSOLE_%parse(%NAMESPACE%,/,,,,%(%namespace%_)%,namespace)%MAIN_INSTANCE)
 static main the_main;
+#endif /// defined(XOS_APP_CONSOLE_%parse(%NAMESPACE%,/,,,,%(%namespace%_)%,namespace)%MAIN_INSTANCE)
 
 %reverse-parse(%namespace%,/,,,,%(} /// namespace %namespace%
 )%,namespace)%} /// namespace console

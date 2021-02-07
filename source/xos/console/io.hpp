@@ -54,6 +54,8 @@ ssize_t outl(file_t f, const char *what, ...);
 ssize_t outlv(file_t f, const char *what, va_list va);
 ssize_t outf(file_t f, const char *format, ...);
 ssize_t outfv(file_t f, const char *format, va_list va);
+ssize_t outln(file_t f, const char *what, size_t length);
+ssize_t outln(file_t f, const char *what);
 ssize_t out(file_t f, const char *what, size_t length);
 ssize_t out(file_t f, const char *what);
 ssize_t outln(file_t f);
@@ -123,14 +125,7 @@ protected:
 public:
     /// out...
     virtual ssize_t outln(const string_t& chars) {
-        ssize_t count = 0, amount = 0;
-        if (0 <= (count = out(chars))) {
-            if (0 <= (amount = outln())) {
-                count += amount;
-            } else {
-                count = amount;
-            }
-        }
+        ssize_t count = outln(chars.chars(), chars.length());
         return count;
     }
     virtual ssize_t out(const string_t& chars) {
@@ -188,6 +183,22 @@ public:
         file_t f = out_std_out();
         return outx(f, out, length, upper_case);
     }
+    virtual ssize_t out64ln(const void* out, size_t length) {
+        file_t f = out_std_out();
+        return out64ln(f, out, length);
+    }
+    virtual ssize_t out64(const void* out, size_t length) {
+        file_t f = out_std_out();
+        return out64(f, out, length);
+    }
+    virtual ssize_t outln(const what_t *what, size_t length) {
+        file_t f = out_std_out();
+        return console::outln(f, what, length);
+    }
+    virtual ssize_t outln(const what_t *what) {
+        file_t f = out_std_out();
+        return console::outln(f, what);
+    }
     virtual ssize_t out(const what_t *what, size_t length) {
         file_t f = out_std_out();
         return console::out(f, what, length);
@@ -214,6 +225,14 @@ protected:
 
 public:
     /// err...
+    virtual ssize_t errln(const string_t& chars) {
+        ssize_t count = errln(chars.chars(), chars.length());
+        return count;
+    }
+    virtual ssize_t err(const string_t& chars) {
+        ssize_t count = err(chars.chars(), chars.length());
+        return count;
+    }
     virtual ssize_t errlln(const what_t *what, ...) {
         ssize_t count = 0;
         va_list va;
@@ -265,6 +284,22 @@ public:
     virtual ssize_t errx(const void* out, size_t length, bool upper_case = false) {
         file_t f = err_std_err();
         return outx(f, out, length, upper_case);
+    }
+    virtual ssize_t err64ln(const void* out, size_t length) {
+        file_t f = err_std_err();
+        return out64ln(f, out, length);
+    }
+    virtual ssize_t err64(const void* out, size_t length) {
+        file_t f = err_std_err();
+        return out64(f, out, length);
+    }
+    virtual ssize_t errln(const what_t *what, size_t length) {
+        file_t f = err_std_err();
+        return console::outln(f, what, length);
+    }
+    virtual ssize_t errln(const what_t *what) {
+        file_t f = err_std_err();
+        return console::outln(f, what);
     }
     virtual ssize_t err(const what_t *what, size_t length) {
         file_t f = err_std_err();
@@ -322,7 +357,6 @@ protected:
         }
         return count;
     }
-
     /// dtox / xtod
     virtual char_t dtox(uint8_t d, bool upper_case = false) const {
         char a = (upper_case)?('A'):('a'); char_t x = (char_t)(0);
@@ -331,6 +365,8 @@ protected:
         } else {
             if ((10 <= d) && (15 >= d)) {
                 x = (char_t)((a) + (d - 10));
+            } else {
+                x = invalid_dtox(d);
             }
         }
         return x;
@@ -345,10 +381,164 @@ protected:
             } else  {
                 if (((char_t)('0') <= x) && ((char_t)('9') >= x)) {
                     d = ((x - (char_t)('0')));
+                } else {
+                    d = invalid_xtod(x);
                 }
             }
         }
         return d;
+    }
+    virtual char_t invalid_dtox(uint8_t d) const {
+        return (char_t)(0);
+    }
+    virtual int8_t invalid_xtod(const char_t& x) const {
+        return (int8_t)(-1);
+    }
+
+    /// out64...
+    virtual ssize_t out64ln(file_t f, const void* out, size_t length) {
+        ssize_t count = 0, amount = 0;
+
+        if (0 <= (amount = this->out64(f, out, length))) {
+            count += amount;
+            if (0 <= (amount = console::outln(f))) {
+                count += amount;
+            }
+        }
+        return count;
+    }
+    virtual ssize_t out64(file_t f, const void* out, size_t length) {
+        ssize_t count = 0;
+        const uint8_t* byte = 0;
+
+        if ((byte = (const uint8_t*)(out)) && (length)) {
+            ssize_t amount = 0;
+            uint8_t b = 0, carry = 0, shift = 0;
+            if (0 <= length) {
+                for (carry = 0, shift = 2; 0 < length; --length, ++byte) {
+                    b = (*byte);
+                    if (0 > (amount = this->put64(f, b, carry, shift))) {
+                        return amount;
+                    }
+                    count += amount;
+                }
+            } else {
+                for (carry = 0, shift = 2; (b = (*byte)); ++byte) {
+                    if (0 > (amount = this->put64(f, b, carry, shift))) {
+                        return amount;
+                    }
+                    count += amount;
+                }
+            }
+            if ((2 != (shift))) {
+                if (0 > (amount = this->put64_end(f, carry, shift))) {
+                    return amount;
+                }
+                count += amount;
+            }
+        }
+        return count;
+    }
+    virtual ssize_t put64(file_t f, uint8_t b, uint8_t& carry, uint8_t& shift) {
+        const uint8_t mask = ((uint8_t)-1);
+        ssize_t count = 0, amount = 0;
+        sized_t x = (sized_t)(0);
+        x = (sized_t)(this->dtob64(carry | (b >> shift)));
+        if (0 > (amount = console::out(f, (const what_t*)(&x), 1))) {
+            return amount;
+        }
+        count += amount;
+        carry = (b & (mask >> (8 - shift))) << (6 - shift);
+        if (6 > (shift)) {
+            shift += 2;
+        } else {
+            x = (sized_t)(this->dtob64(carry));
+            if (0 > (amount = console::out(f, (const what_t*)(&x), 1))) {
+                return amount;
+            }
+            count += amount;
+            carry = 0;
+            shift = 2;
+        }
+        return count;
+    }
+    virtual ssize_t put64_end(file_t f, uint8_t& carry, uint8_t& shift) {
+        ssize_t count = 0, amount = 0;
+        sized_t x = (sized_t)(0);
+        x = (sized_t)(this->dtob64(carry));
+        if (0 > (amount = console::out(f, (const what_t*)(&x), 1))) {
+            return amount;
+        }
+        count += amount;
+        for (x = ((sized_t)'='); shift != 2;) {
+            if (0 > (amount = console::out(f, (const what_t*)(&x), 1))) {
+                return amount;
+            }
+            count += amount;
+            if (6 > (shift)) {
+                shift += 2;
+            } else {
+                shift = 2;
+            }
+        }
+        return count;
+    }
+    /// ...dtob64 / ...b64tod
+    virtual char_t dtob64(uint8_t d) const {
+        char_t x = (char_t)(0);
+        if ((0 <= d) && (25 >= d)) {
+            x = (char_t)(('A') + d);
+        } else {
+            if ((26 <= d) && (51 >= d)) {
+                x = (char_t)(('a') + (d - 26));
+            } else {
+                if ((52 <= d) && (61 >= d)) {
+                    x = (char_t)(('0') + (d - 52));
+                } else {
+                    if ((62 == d)) {
+                        x = (char_t)(('+'));
+                    } else {
+                        if ((63 == d)) {
+                            x = (char_t)(('/'));
+                        } else {
+                            x = invalid_dtob64(d);
+                        }
+                    }
+                }
+            }
+        }
+        return x;
+    }
+    virtual int8_t b64tod(const char_t& x) const {
+        int8_t d = (int8_t)(0);
+        if (((char_t)('A') <= x) && ((char_t)('Z') >= x)) {
+            d = (x - (char_t)('A'));
+        } else {
+            if (((char_t)('a') <= x) && ((char_t)('z') >= x)) {
+                d = ((x - (char_t)('a')) + 26);
+            } else {
+                if (((char_t)('0') <= x) && ((char_t)('9') >= x)) {
+                    d = ((x - (char_t)('0')) + 52);
+                } else {
+                    if (((char_t)('+') == x)) {
+                        d = (62);
+                    } else {
+                        if (((char_t)('/') == x)) {
+                            d = (63);
+                        } else {
+                            d = invalid_b64tod(x);
+                        }
+                    }
+                }
+            }
+        }
+        return d;
+    }
+    virtual char_t invalid_dtob64(uint8_t d) const {
+        return (char_t)(0);
+    }
+    virtual int8_t invalid_b64tod(const char_t& x) const {
+        return (int8_t)(-1);
     }
 }; /// class iot
 typedef iot<> io;

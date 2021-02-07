@@ -64,6 +64,11 @@
 %Usage,%(%else-then(%if-no(%is_usage%,,%(%Usage%)%)%,%(%if-no(%is_usage%,,%(%usage%)%)%)%)%)%,%
 %USAGE,%(%else-then(%USAGE%,%(%toupper(%Usage%)%)%)%)%,%
 %usage,%(%else-then(%_usage%,%(%tolower(%Usage%)%)%)%)%,%
+%is_isusage,%(%else-then(%is_isusage%,%(%is_IsUsage%)%)%)%,%
+%isusage,%(%else-then(%if-no(%is_isusage%,,%(%isusage%)%)%,%(%if-no(%is_isusage%,,%(no)%)%)%)%)%,%
+%IsUsage,%(%else-then(%if-no(%is_isusage%,,%(%IsUsage%)%)%,%(%if-no(%is_isusage%,,%(%isusage%)%)%)%)%)%,%
+%ISUSAGE,%(%else-then(%ISUSAGE%,%(%toupper(%IsUsage%)%)%)%)%,%
+%isusage,%(%else-then(%_isusage%,%(%tolower(%IsUsage%)%)%)%)%,%
 %is_optionusage,%(%else-then(%is_optionusage%,%(%is_OptionUsage%)%)%)%,%
 %optionusage,%(%else-then(%if-no(%is_optionusage%,,%(%optionusage%)%)%,%(%if-no(%is_optionusage%,,%(%Option_%%Usage%)%)%)%)%)%,%
 %OptionUsage,%(%else-then(%if-no(%is_optionusage%,,%(%OptionUsage%)%)%,%(%if-no(%is_optionusage%,,%(%optionusage%)%)%)%)%)%,%
@@ -129,6 +134,41 @@
 %Parameters,%(%else-then(%if-no(%is_parameters%,,%(%Parameters%)%)%,%(%if-no(%is_parameters%,,%(%parameters%)%)%)%)%)%,%
 %PARAMETERS,%(%else-then(%PARAMETERS%,%(%toupper(%Parameters%)%)%)%)%,%
 %parameters,%(%else-then(%_parameters%,%(%tolower(%Parameters%)%)%)%)%,%
+%is_required,%(%else-then(%is_required%,%(%is_Required%)%)%)%,%
+%required,%(%else-then(%if-no(%is_required%,,%(%required%)%)%,%(%if-no(%is_required%,,%(None)%)%)%)%)%,%
+%Required,%(%else-then(%if-no(%is_required%,,%(%Required%)%)%,%(%if-no(%is_required%,,%(%required%)%)%)%)%)%,%
+%REQUIRED,%(%else-then(%REQUIRED%,%(%toupper(%Required%)%)%)%)%,%
+%required,%(%else-then(%_required%,%(%tolower(%Required%)%)%)%)%,%
+%is_none,%(%else-then(%is_none%,%(%is_None%)%)%)%,%
+%none,%(%else-then(%if-no(%is_none%,,%(%none%)%)%,%(%if-no(%is_none%,,%(%equal(none,%required%)%)%)%)%)%)%,%
+%None,%(%else-then(%if-no(%is_none%,,%(%None%)%)%,%(%if-no(%is_none%,,%(%none%)%)%)%)%)%,%
+%NONE,%(%else-then(%NONE%,%(%toupper(%None%)%)%)%)%,%
+%none,%(%else-then(%_none%,%(%tolower(%None%)%)%)%)%,%
+%is_optional,%(%else-then(%is_optional%,%(%is_Optional%)%)%)%,%
+%optional,%(%else-then(%if-no(%is_optional%,,%(%optional%)%)%,%(%if-no(%is_optional%,,%(%equal(optional,%required%)%)%)%)%)%)%,%
+%Optional,%(%else-then(%if-no(%is_optional%,,%(%Optional%)%)%,%(%if-no(%is_optional%,,%(%optional%)%)%)%)%)%,%
+%OPTIONAL,%(%else-then(%OPTIONAL%,%(%toupper(%Optional%)%)%)%)%,%
+%optional,%(%else-then(%_optional%,%(%tolower(%Optional%)%)%)%)%,%
+%is_long,%(%else-then(%is_long%,%(%is_Long%)%)%)%,%
+%long,%(%else-then(%if-no(%is_long%,,%(%long%)%)%,%(%if-no(%is_long%,,%()%)%)%)%)%,%
+%Long,%(%else-then(%if-no(%is_long%,,%(%Long%)%)%,%(%if-no(%is_long%,,%(%long%)%)%)%)%)%,%
+%LONG,%(%else-then(%LONG%,%(%toupper(%Long%)%)%)%)%,%
+%long,%(%else-then(%_long%,%(%tolower(%Long%)%)%)%)%,%
+%is_short,%(%else-then(%is_short%,%(%is_Short%)%)%)%,%
+%short,%(%else-then(%if-no(%is_short%,,%(%short%)%)%,%(%if-no(%is_short%,,%()%)%)%)%)%,%
+%Short,%(%else-then(%if-no(%is_short%,,%(%Short%)%)%,%(%if-no(%is_short%,,%(%short%)%)%)%)%)%,%
+%SHORT,%(%else-then(%SHORT%,%(%toupper(%Short%)%)%)%)%,%
+%short,%(%else-then(%_short%,%(%tolower(%Short%)%)%)%)%,%
+%is_char,%(%else-then(%is_char%,%(%is_Char%)%)%)%,%
+%char,%(%else-then(%if-no(%is_char%,,%(%char%)%)%,%(%if-no(%is_char%,,%(%Short%)%)%)%)%)%,%
+%Char,%(%else-then(%if-no(%is_char%,,%(%Char%)%)%,%(%if-no(%is_char%,,%(%char%)%)%)%)%)%,%
+%CHAR,%(%else-then(%CHAR%,%(%toupper(%Char%)%)%)%)%,%
+%char,%(%else-then(%_char%,%(%tolower(%Char%)%)%)%)%,%
+%is_name,%(%else-then(%is_name%,%(%is_Name%)%)%)%,%
+%name,%(%else-then(%if-no(%is_name%,,%(%name%)%)%,%(%if-no(%is_name%,,%(%Long%)%)%)%)%)%,%
+%Name,%(%else-then(%if-no(%is_name%,,%(%Name%)%)%,%(%if-no(%is_name%,,%(%name%)%)%)%)%)%,%
+%NAME,%(%else-then(%NAME%,%(%toupper(%Name%)%)%)%)%,%
+%name,%(%else-then(%_name%,%(%tolower(%Name%)%)%)%)%,%
 %%(%
 %%parse(%Parameters%,;,,,,%(%
 %%with(%
@@ -149,12 +189,12 @@
 %long,%(%else-then(%_long%,%(%tolower(%Long%)%)%)%)%,%
 %%(
 #define %IFNDEF%_%CLASS%_%NAME%_OPT "%Long%"
-#define %IFNDEF%_%CLASS%_%NAME%_OPTARG_REQUIRED MAIN_OPT_ARGUMENT_REQUIRED
+#define %IFNDEF%_%CLASS%_%NAME%_OPTARG_REQUIRED MAIN_OPT_ARGUMENT_%REQUIRED%
 #define %IFNDEF%_%CLASS%_%NAME%_OPTARG_RESULT 0
 #define %IFNDEF%_%CLASS%_%NAME%_OPTARG ""
 #define %IFNDEF%_%CLASS%_%NAME%_OPTUSE ""
-#define %IFNDEF%_%CLASS%_%NAME%_OPTVAL_S "%Short%:"
-#define %IFNDEF%_%CLASS%_%NAME%_OPTVAL_C '%Short%'
+#define %IFNDEF%_%CLASS%_%NAME%_OPTVAL_S "%Short%%if(%Optional%,%(::)%,%(%else(%None%,%(:)%)%)%)%"
+#define %IFNDEF%_%CLASS%_%NAME%_OPTVAL_C '%Char%'
 #define %IFNDEF%_%CLASS%_%NAME%_OPTION \
    {%IFNDEF%_%CLASS%_%NAME%_OPT, \
     %IFNDEF%_%CLASS%_%NAME%_OPTARG_REQUIRED, \
@@ -210,6 +250,8 @@
     (int optval, const char_t* optarg, const char_t* optname, 
      int optind, int argc, char_t**argv, char_t**env) {
         int err = 0;
+        if ((optarg) && (optarg[0])) {
+        }
         return err;
     }
 )%)%%
@@ -237,7 +279,7 @@
         }
         return err;
     }
-%parse(%Parameters%,;,,,,%(%
+%if-no(%IsUsage%,%()%,%(%parse(%Parameters%,;,,,,%(%
 %%with(%
 %is_name,%(%else-then(%is_name%,%(%is_Name%)%)%)%,%
 %name,%(%else-then(%if-no(%is_name%,,%(%name%)%)%,%(%if-no(%is_name%,,%(%right(%Parameter%,=)%)%)%)%)%)%,%
@@ -245,12 +287,12 @@
 %NAME,%(%else-then(%NAME%,%(%toupper(%Name%)%)%)%)%,%
 %name,%(%else-then(%_name%,%(%tolower(%Name%)%)%)%)%,%
 %%(    virtual const char_t* %Name%_option_usage(const char_t*& optarg, const struct option* longopt) {
-        optarg = %IFNDEF%_%CLASS%_%NAME%_OPTARG;
         const char_t* chars = %IFNDEF%_%CLASS%_%NAME%_OPTUSE;
+        optarg = %IFNDEF%_%CLASS%_%NAME%_OPTARG;
         return chars;
     }
 )%)%%
-%)%,Parameter)%%
+%)%,Parameter)%)%)%%
 %    virtual const char_t* option_usage(const char_t*& optarg, const struct option* longopt) {
         const char_t* chars = "";
         switch(longopt->val) {%
@@ -262,8 +304,10 @@
 %NAME,%(%else-then(%NAME%,%(%toupper(%Name%)%)%)%)%,%
 %name,%(%else-then(%_name%,%(%tolower(%Name%)%)%)%)%,%
 %%(
-        case %IFNDEF%_%CLASS%_%NAME%_OPTVAL_C:
-            chars = %Name%_option_usage(optarg, longopt);
+        case %IFNDEF%_%CLASS%_%NAME%_OPTVAL_C:%if-no(%IsUsage%,%(
+            optarg = %IFNDEF%_%CLASS%_%NAME%_OPTARG;
+            chars = %IFNDEF%_%CLASS%_%NAME%_OPTUSE;)%,%(
+            chars = %Name%_option_usage(optarg, longopt);)%)%
             break;)%)%%
 %)%,Parameter)%%
 %

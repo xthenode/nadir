@@ -51,12 +51,19 @@
 ///////////////////////////////////////////////////////////////////////
 #include "xos/app/console/%parse(%namespace%,/,,,,%(%namespace%/)%,namespace)%main_opt.hpp"
 
+#if !defined(XOS_APP_CONSOLE_%parse(%NAMESPACE%,/,,,,%(%namespace%_)%,namespace)%MAIN_OPT_INSTANCE)
+///#define XOS_APP_CONSOLE_%parse(%NAMESPACE%,/,,,,%(%namespace%_)%,namespace)%MAIN_OPT_INSTANCE
+#endif /// !defined(XOS_APP_CONSOLE_%parse(%NAMESPACE%,/,,,,%(%namespace%_)%,namespace)%MAIN_OPT_INSTANCE)
+
 namespace xos {
 namespace app {
 namespace console {%parse(%namespace%,/,,,,%(
 namespace %namespace% {)%,namespace)%
 
 /// class main_optt
+#if defined(XOS_APP_CONSOLE_%parse(%NAMESPACE%,/,,,,%(%namespace%_)%,namespace)%MAIN_OPT_INSTANCE)
+static main_opt the_main_opt;
+#endif /// defined(XOS_APP_CONSOLE_%parse(%NAMESPACE%,/,,,,%(%namespace%_)%,namespace)%MAIN_OPT_INSTANCE)
 
 %reverse-parse(%namespace%,/,,,,%(} /// namespace %namespace%
 )%,namespace)%} /// namespace console

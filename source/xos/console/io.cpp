@@ -142,6 +142,30 @@ ssize_t outfv(file_t f, const char *format, va_list va) {
     }
     return count;
 }
+ssize_t outln(file_t f, const char *what, size_t length) {
+    ssize_t count = 0;
+    if (0 <= (count = out(f, what, length))) {
+        ssize_t amount = 0;
+        if (0 <= (amount = outln(f))) {
+            count += amount;
+        } else {
+            count = amount;
+        }
+    }
+    return count;
+}
+ssize_t outln(file_t f, const char *what) {
+    ssize_t count = 0;
+    if (0 <= (count = out(f, what))) {
+        ssize_t amount = 0;
+        if (0 <= (amount = outln(f))) {
+            count += amount;
+        } else {
+            count = amount;
+        }
+    }
+    return count;
+}
 ssize_t out(file_t f, const char *what, size_t length) {
     ssize_t count = 0;
     if ((f != ((file_t)null)) && (what)) {
