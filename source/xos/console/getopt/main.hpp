@@ -144,6 +144,10 @@ protected:
             err = this->on_usage_option
             (optval, optarg, optname, optind, argc, argv, env);
             break;
+        case XOS_CONSOLE_MAIN_USAGE_OPTVAL_C:
+            err = this->on_usage_option
+            (optval, optarg, optname, optind, argc, argv, env);
+            break;
         default:
             err = extends::on_option
             (optval, optarg, optname, optind, argc, argv, env);
@@ -158,6 +162,9 @@ protected:
             chars = logging_option_usage(optarg, longopt);
             break;
         case XOS_CONSOLE_MAIN_HELP_OPTVAL_C:
+            chars = usage_option_usage(optarg, longopt);
+            break;
+        case XOS_CONSOLE_MAIN_USAGE_OPTVAL_C:
             chars = usage_option_usage(optarg, longopt);
             break;
         default:
