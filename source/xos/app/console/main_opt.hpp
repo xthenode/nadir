@@ -16,12 +16,27 @@
 ///   File: main_opt.hpp
 ///
 /// Author: $author$
-///   Date: 3/6/2020
+///   Date: 3/6/2020, 5/11/2021
 ///////////////////////////////////////////////////////////////////////
 #ifndef XOS_APP_CONSOLE_MAIN_OPT_HPP
 #define XOS_APP_CONSOLE_MAIN_OPT_HPP
 
 #include "xos/console/getopt/main.hpp"
+
+#define XOS_APP_CONSOLE_MAIN_OPTIONS_CHARS_EXTEND \
+
+#define XOS_APP_CONSOLE_MAIN_OPTIONS_OPTIONS_EXTEND \
+
+#define XOS_APP_CONSOLE_MAIN_OPTIONS_CHARS \
+   XOS_APP_CONSOLE_MAIN_OPTIONS_CHARS_EXTEND \
+   XOS_CONSOLE_MAIN_OPTIONS_CHARS
+
+#define XOS_APP_CONSOLE_MAIN_OPTIONS_OPTIONS \
+   XOS_APP_CONSOLE_MAIN_OPTIONS_OPTIONS_EXTEND \
+   XOS_CONSOLE_MAIN_OPTIONS_OPTIONS
+
+#define XOS_APP_CONSOLE_MAIN_ARGS 0
+#define XOS_APP_CONSOLE_MAIN_ARGV 0,
 
 namespace xos {
 namespace app {
